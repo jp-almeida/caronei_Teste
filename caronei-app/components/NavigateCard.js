@@ -14,9 +14,9 @@ const NavigateCard = () => {
   const navigation = useNavigation()
 
   return (
-    <SafeAreaView style={tw`bg-white flex 1`}>
-      <Text style={tw`text-center py-5 text-xl`}>Yo</Text>
-      <View style={tw`bborder-t border-gray-200 flex-shrink`}>
+    <SafeAreaView style={tw`bg-white flex-1`}>
+      <Text style={tw`text-center py-5 text-xl`}>Para onde?</Text>
+      <View style={tw`border-t border-gray-200 flex-shrink`}>
         <View>
           <GooglePlacesAutocomplete
             placeholder="Para onde?"
