@@ -27,7 +27,7 @@ const HomeScreen = () => {
           source={require("../images/logo.png")}
         />
         <GooglePlacesAutocomplete
-          placeholder="Para onde?"
+          placeholder="Local de partida"
           styles={{
             container: {
               flex: 0,
