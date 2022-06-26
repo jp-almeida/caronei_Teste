@@ -18,9 +18,11 @@ app.use(bodyParser.json());
 //criar um usuário
 app.post('/create', async(request, response) => {
 
-    let reqs = await model.User.create({
-        'email': request.body.emailUser,
-        'password': request.body.passwordUser,
+    let reqs = await model.Usuario.create({
+        'matricula': request.body.userMatricula,
+        'nome': request.body.userName,
+        'email': request.body.userEmail,
+        'senha': request.body.passwordUser,
         'createdAt': new Date(),
         'updatedAt': new Date(),
     })
