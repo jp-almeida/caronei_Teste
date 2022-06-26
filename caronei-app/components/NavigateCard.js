@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native"
-import React from "react"
+import React, { useEffect } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import tw from "twrnc"
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
@@ -22,6 +22,8 @@ const NavigateCard = () => {
             placeholder="Para onde?"
             styles={toInputBoxStyles}
             fetchDetails={true}
+            // @ts-ignore
+            returnKeyType={"default"}
             minLength={2}
             onPress={(data, details = null) => {
               dispatch(
