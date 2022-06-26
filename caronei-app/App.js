@@ -1,14 +1,16 @@
 import React from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { Provider } from "react-redux"
-import { store } from "./store"
-import HomeScreen from "./screens/HomeScreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import "react-native-gesture-handler"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import MapScreen from "./screens/MapScreen"
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
+
+import { store } from "./store"
+import HomeScreen from "./screens/HomeScreen"
+import MapScreen from "./screens/MapScreen"
+import SignUpScreen from "./screens/SignUpScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -17,6 +19,13 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
+            <Stack.Screen
+              name="SignUpScreen"
+              component={SignUpScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             <Stack.Screen
               name="HomeScreen"
               component={HomeScreen}
