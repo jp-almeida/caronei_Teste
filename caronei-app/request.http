@@ -25,3 +25,6 @@ Content-Type: application/json
     "userMatricula": "1111",
     "userPassword": "password"
 }
+
+###
+GET http://192.168.1.16:3000/username/12345

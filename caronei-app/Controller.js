@@ -73,9 +73,17 @@ app.post('/login', async(request, response) => {
 
 })
 
-//achar nome do usuário
-app.get('/username', async(request, response) =>{
-
+//achar nome do usuário pela matricula
+app.get('/username/:matricula', async(request, response) =>{
+    const {matricula} = request.params
+    const user = await model.Usuario.findByPk(matricula)
+    if (user == null){
+        return response.send(JSON.stringify("Anônimo"))
+    }
+    else{
+        return response.send(JSON.stringify(user.nomeCompleto))
+    }
+    
 })
 
 //oferecer carona
