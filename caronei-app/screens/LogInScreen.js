@@ -9,11 +9,16 @@ import {
 import React, { useState } from "react"
 import tw from "twrnc"
 import config from "../config/config.json"
+
+import { useDispatch } from "react-redux"
+import { loginAuth } from "../slices/userAuth"
 import { useNavigation } from "@react-navigation/native"
 
 //codigo adaptado de https://webdesignemfoco.com/cursos/react-js/integracoes-com-react-native-3-frontend
 
 const LogInScreen = () => {
+    const dispatch = useDispatch()
+
     const navigation = useNavigation()
 
     const [matricula, setMatricula] = useState(null)
@@ -39,12 +44,14 @@ const LogInScreen = () => {
         });
         
         let response = await reqs.json();
-        // console.log(response)
-        // if(response.token){ //muda o estado para logado caso tenha recebido o token
-        //     dispatch(login())
-        // }
         setMessage(response.message)
-        // console.log(messasge)
+        
+        if(response.token){ //muda o estado para logado caso tenha recebido o token
+            dispatch(loginAuth(response.token))
+            navigation.navigate("HomeScreen")
+        }
+
+        
     }
 
     return (

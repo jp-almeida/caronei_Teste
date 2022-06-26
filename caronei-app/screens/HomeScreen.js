@@ -8,6 +8,7 @@ import { GOOGLE_MAPS_APIKEY } from "@env"
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 import { useDispatch } from "react-redux"
 import { setDestination, setOrigin } from "../slices/navSlice"
+import { store } from "../store"
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -26,6 +27,7 @@ const HomeScreen = () => {
           // }}
           source={require("../images/logo.png")}
         />
+        <Text>Olá, {store.getState().auth.matricula}</Text>
         <GooglePlacesAutocomplete
           placeholder="Local de partida"
           styles={{
