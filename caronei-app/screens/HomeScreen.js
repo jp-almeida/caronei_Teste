@@ -59,8 +59,11 @@ const HomeScreen = () => {
         />
 
         <Text>Olá, {name}</Text>
-        <TouchableOpacity style={{}} onPress={ exitAccount}>
+        <TouchableOpacity style={{}} onPress={exitAccount}>
           <Text style={{}}>Sair</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{}} onPress={() => navigation.navigate("ProfileScreen") }>
+          <Text style={{}}>Perfil</Text>
         </TouchableOpacity>
 
 

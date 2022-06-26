@@ -12,6 +12,7 @@ import HomeScreen from "./screens/HomeScreen"
 import MapScreen from "./screens/MapScreen"
 import SignUpScreen from "./screens/SignUpScreen"
 import LogInScreen from "./screens/LogInScreen"
+import ProfileScreen from "./screens/ProfileScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -40,6 +41,13 @@ export default function App() {
             <Stack.Screen
               name="HomeScreen"
               component={HomeScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
               options={{
                 headerShown: false,
               }}

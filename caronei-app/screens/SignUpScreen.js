@@ -54,7 +54,7 @@ const SignUpScreen = () => {
         userName: name,
         userEmail: email,
         userMatricula: matricula,
-        passwordUser: password,
+        userPassword: password,
       }),
     })
     let resp = await reqs.json()

@@ -5,7 +5,7 @@ Content-Type: application/json
     "userName": "caio",
     "userEmail": "caio@teste.com",
     "userMatricula": "12345",
-    "passwordUser": "password"
+    "userPassword": "password"
 }
 
 ###
@@ -28,3 +28,6 @@ Content-Type: application/json
 
 ###
 GET http://192.168.1.16:3000/username/12345
+
+###
+GET http://192.168.1.16:3000/data/101010

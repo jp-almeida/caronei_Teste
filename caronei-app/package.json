@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "back": "nodemon Controller.js",
-    "all": "npm-run-all --parallel android back"
+    "all": "npm-run-all --parallel android back",
+    "migrate":"npx sequelize db:migrate"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.11",

@@ -85,6 +85,31 @@ app.get('/username/:matricula', async(request, response) =>{
     }
     
 })
+//achar todos os dados de um usuário pela matrícula
+app.get('/data/:matricula', async(request, response) =>{
+    const {matricula} = request.params
+    const user = await model.Usuario.findByPk(matricula)
+    if (user == null){
+        return response.send(("Erro"))
+    }
+    else{
+        return response.end(JSON.stringify({
+            name: user.nomeCompleto,
+            rating: user.avaliacao,
+            experience: user.experience,
+            email: user.email,
+            emailVisibility: user.visibilidadeEmail,
+            phone: user.numero,
+            phoneVisibility: user.visibilidadeNumero,
+            gender: user.genero,
+            genderVisibility: user.visibilidadeGenero,
+            birth: user.nascimento,
+            birthVisibility: user.visibilidadeNascimento,
+            
+        }))
+    }
+    
+})
 
 //oferecer carona
 app.get('/oferecer', async(request, response) =>{
