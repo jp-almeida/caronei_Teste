@@ -13,33 +13,14 @@ import { useNavigation } from "@react-navigation/native"
 
 //codigo adaptado de https://webdesignemfoco.com/cursos/react-js/integracoes-com-react-native-3-frontend
 
-const SignUpScreen = () => {
+const LogInScreen = () => {
     const navigation = useNavigation()
 
-    const [name, setName] = useState(null)
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
-    const [matricula, setMatricula] = useState(null)
     const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao) ou de preenchimento do formulario
-    const [passwordMessage, setPasswordMessage] = useState(null)
-
-    function checkPassword(text) { //verifica se os dois campos de senha são iguais
-        if (text != password) {
-            setPasswordMessage("As senhas não são iguais")
-            console.log(passwordMessage)
-        }
-        else {
-            setPasswordMessage(null)
-        }
-    }
-
-    async function registerUser() {
-        
-
-        if (passwordMessage) { //caso algo tenha dado errado no preenchimento do formulario de cadastro
-            setMessage("Verifique os campos")
-            return
-        }
+    
+    async function login() {
 
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
@@ -69,17 +50,10 @@ const SignUpScreen = () => {
                 <View style={tw`p-10 pt-50`}>
 
                     <View style={{}}>
-                    <Text style={{}}>CRIAR CONTA</Text>
+                    <Text style={{}}>ENTRE NA SUA CONTA</Text>
                         {message && (
                             <Text>{message}</Text>)}
-
-
-                        <TextInput
-                            style={{}}
-                            placeholder="Nome completo"
-                            onChangeText={(text) => setName(text)}
-                        />
-                        {/* podemos verificar se o email é válido usando aquelas formatações */}
+                        
                         <TextInput
                             style={{}}
                             placeholder="Email"
@@ -88,43 +62,20 @@ const SignUpScreen = () => {
 
                         <TextInput
                             style={{}}
-                            placeholder="Matricula"
-                            onChangeText={(text) => setMatricula(text)}
-                        />
-
-                        <TextInput
-                            style={{}}
-                            placeholder="Digite a senha"
+                            placeholder="Senha"
                             secureTextEntry={true}
                             onChangeText={(text) => setPassword(text)}
                         />
 
-                        <TextInput
-                            style={{}}
-                            placeholder="Confirmar senha"
-                            secureTextEntry={true}
-                            onChangeText={(text) => checkPassword(text)}
-                        />
-                        {passwordMessage && (
-                            <Text>{passwordMessage}</Text>)}
-
-
-                        <TouchableOpacity style={{}} onPress={registerUser}>
-                            <Text style={{}}>Enviar</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={{}}
-                            onPress={navigation.navigate("LogInScreen")}
-                        >
-                            <Text style={{}}>Já tenho uma conta</Text>
+                        <TouchableOpacity style={{}} onPress={login}>
+                            <Text style={{}}>Login</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={{}}
                             onPress={() => navigation.navigate("HomeScreen")}
                         >
-                            <Text style={{}}>Pular cadastro</Text>
+                            <Text style={{}}>Pular login</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -133,4 +84,4 @@ const SignUpScreen = () => {
     )
 }
 
-export default SignUpScreen
+export default LogInScreen
