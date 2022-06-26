@@ -2,6 +2,26 @@ POST http://192.168.1.16:3000/create
 Content-Type: application/json
 
 {
-    "emailUser": "caio@teste.com",
-    "passwordUser": "123"
+    "userName": "caio",
+    "userEmail": "caio@teste.com",
+    "userMatricula": "12345",
+    "passwordUser": "password"
+}
+
+###
+GET http://192.168.1.16:3000/login
+Content-Type: application/json
+
+{
+    "userMatricula": "12345",
+    "userPassword": "password"
+}
+
+###
+GET http://192.168.1.16:3000/login
+Content-Type: application/json
+
+{
+    "userMatricula": "1111",
+    "userPassword": "password"
 }

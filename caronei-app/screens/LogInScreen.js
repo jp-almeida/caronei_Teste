@@ -16,7 +16,7 @@ import { useNavigation } from "@react-navigation/native"
 const LogInScreen = () => {
     const navigation = useNavigation()
 
-    const [email, setEmail] = useState(null)
+    const [matricula, setMatricula] = useState(null)
     const [password, setPassword] = useState(null)
     const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao) ou de preenchimento do formulario
     
@@ -25,17 +25,14 @@ const LogInScreen = () => {
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
-        // console.log(original_port, url)
 
-        let reqs = await fetch(url + '/create', {
+        let reqs = await fetch(url + '/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userName: name,
-                userEmail: email,
                 userMatricula: matricula,
                 passwordUser: password,
             })
@@ -56,8 +53,8 @@ const LogInScreen = () => {
                         
                         <TextInput
                             style={{}}
-                            placeholder="Email"
-                            onChangeText={(text) => setEmail(text)}
+                            placeholder="Matricula"
+                            onChangeText={(text) => setMatricula(text)}
                         />
 
                         <TextInput

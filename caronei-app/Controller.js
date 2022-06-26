@@ -35,6 +35,24 @@ app.post('/create', async(request, response) => {
     }
 })
 
+app.get('/login', async(request, response) => {
+    const user = await model.Usuario.findByPk(request.body.userMatricula) //acha o registro no banco de dados pela matricula
+
+    if (user == null){ //caso não ache registro com a matricula informada
+        response.send(JSON.stringify("Usuário não cadastro. Verifique a matrícula informada"))
+    }
+    else{
+        if (user.senha != request.body.userPassword){
+            response.send(JSON.stringify("Senha incorreta"))
+        }
+        else{
+            response.send(JSON.stringify("Login realizado com sucesso"))
+        }
+            
+    }
+
+
+})
 
 
 //configurando o servidor
