@@ -1,0 +1,7 @@
+POST http://192.168.1.16:3000/create
+Content-Type: application/json
+
+{
+    "emailUser": "caio@teste.com",
+    "passwordUser": "123"
+}
