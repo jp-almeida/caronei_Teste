@@ -26,7 +26,6 @@ const SignUpScreen = () => {
     function checkPassword(text) { //verifica se os dois campos de senha são iguais
         if (text != password) {
             setPasswordMessage("As senhas não são iguais")
-            console.log(passwordMessage)
         }
         else {
             setPasswordMessage(null)
@@ -41,7 +40,7 @@ const SignUpScreen = () => {
             return
         }
 
-        //gambiarra porque as portas não estavam batendo
+        //gambiarra porque as portas não estavam batendo - troca as portas do url
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
         // console.log(original_port, url)
@@ -56,7 +55,7 @@ const SignUpScreen = () => {
                 userName: name,
                 userEmail: email,
                 userMatricula: matricula,
-                passwordUser: password,
+                userPassword: password,
             })
         });
         let resp = await reqs.json();
@@ -115,7 +114,7 @@ const SignUpScreen = () => {
 
                         <TouchableOpacity
                             style={{}}
-                            onPress={navigation.navigate("LogInScreen")}
+                            // onPress={navigation.navigate("LogInScreen")}
                         >
                             <Text style={{}}>Já tenho uma conta</Text>
                         </TouchableOpacity>

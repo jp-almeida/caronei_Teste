@@ -21,11 +21,11 @@ const LogInScreen = () => {
     const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao) ou de preenchimento do formulario
     
     async function login() {
-
+        
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
-
+        //console.log(url)
         let reqs = await fetch(url + '/login', {
             method: 'POST',
             headers: {
@@ -34,11 +34,17 @@ const LogInScreen = () => {
             },
             body: JSON.stringify({
                 userMatricula: matricula,
-                passwordUser: password,
+                userPassword: password,
             })
         });
-        let resp = await reqs.json();
-        setMessage(resp);
+        
+        let response = await reqs.json();
+        // console.log(response)
+        // if(response.token){ //muda o estado para logado caso tenha recebido o token
+        //     dispatch(login())
+        // }
+        setMessage(response.message)
+        // console.log(messasge)
     }
 
     return (

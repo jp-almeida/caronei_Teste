@@ -20,20 +20,27 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
-            <Stack.Screen
-              name="SignUpScreen"
-              component={SignUpScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
+          <Stack.Screen
               name="LogInScreen"
               component={LogInScreen}
               options={{
                 headerShown: false,
               }}
             />
+          <Stack.Screen
+              name="SignUpScreen"
+              component={SignUpScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+          
+
+            
+
+            
+            
+            
             <Stack.Screen
               name="HomeScreen"
               component={HomeScreen}
