@@ -1,14 +1,21 @@
-import { Text, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, SafeAreaView } from "react-native"
+import {
+    Text,
+    View,
+    TouchableWithoutFeedback,
+    TouchableOpacity,
+    TextInput,
+    SafeAreaView,
+} from "react-native"
 import React, { useState } from "react"
 import tw from "twrnc"
-import config from '../config/config.json'
+import config from "../config/config.json"
+import { useNavigation } from "@react-navigation/native"
 // import port from "../Controller.js"
-
 
 //codigo adaptado de https://webdesignemfoco.com/cursos/react-js/integracoes-com-react-native-3-frontend
 
-
 const SignUpScreen = () => {
+    const navigation = useNavigation()
 
     const [name, setName] = useState(null)
     const [email, setEmail] = useState(null)
@@ -16,20 +23,21 @@ const SignUpScreen = () => {
     const [matricula, setMatricula] = useState(null)
     const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao) ou de preenchimento do formulario
     const [passwordMessage, setPasswordMessage] = useState(null)
-    
-    function checkPassword(text){ //verific se os dois campos de senha são igauis
-        if(text != password){
+
+    function checkPassword(text) { //verific se os dois campos de senha são igauis
+        if (text != password) {
             setPasswordMessage("As senhas não são iguais")
             console.log(passwordMessage)
         }
-        else{
+        else {
             setPasswordMessage(null)
         }
     }
 
     async function registerUser() {
+        
 
-        if (passwordMessage){ //caso algo tenha dado errado no preenchimento do formulario de cadastro
+        if (passwordMessage) { //caso algo tenha dado errado no preenchimento do formulario de cadastro
             setMessage("Verifique os campos")
             return
         }
@@ -104,7 +112,10 @@ const SignUpScreen = () => {
                         <TouchableOpacity style={{}} onPress={registerUser}>
                             <Text style={{}}>Enviar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{}} onPress={() => console.log("IR PARA A HOME SCREEN")}>
+                        <TouchableOpacity
+                            style={{}}
+                            onPress={() => navigation.navigate("HomeScreen")}
+                        >
                             <Text style={{}}>Pular cadastro</Text>
                         </TouchableOpacity>
                     </View>
