@@ -17,14 +17,20 @@ app.use(bodyParser.json());
 
 //criar um usuário
 app.post('/create', async(request, response) => {
-    // console.log(request.body.emailUser)
+
     let reqs = await model.User.create({
         'email': request.body.emailUser,
         'password': request.body.passwordUser,
         'createdAt': new Date(),
         'updatedAt': new Date(),
     })
-    // return response.json(request.body.emailUser)
+
+    if(reqs){
+        response.send(JSON.stringify('O usuário foi cadastrado com sucesso!'));
+    }
+    else{
+        response.send(JSON.stringify('Ocorreu algum problema. Tente novamente'))
+    }
 })
 
 

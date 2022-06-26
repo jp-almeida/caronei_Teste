@@ -12,13 +12,14 @@ const SignUpScreen = () => {
     
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
+    const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao)
 
     async function registerUser(){
         //gambiarra porque as portas não estavam batendo
         original_port = config.urlRootNode.split(":")[2]
         url = config.urlRootNode.replace(original_port, config.backend_port)
         // console.log(original_port, url)
-        
+
         let reqs = await fetch(url +'/create',{
             method: 'POST',
             headers:{
@@ -30,6 +31,8 @@ const SignUpScreen = () => {
                 passwordUser: password,
             })
         });
+        let resp = await reqs.json();
+        setMessage(resp);
     }
 
     return (
@@ -38,7 +41,8 @@ const SignUpScreen = () => {
                 <View  style={tw`p-10 pt-50`}>
 
                     <View style={{}}>
-
+                        {message && (
+                            <Text>{message}</Text>)}
                         <TextInput
                             style={{}}
                             placeholder="Digite seu email"
@@ -55,6 +59,9 @@ const SignUpScreen = () => {
 
                         <TouchableOpacity style={{}} onPress={registerUser}>
                             <Text style={{}}>Enviar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{}} onPress={console.log("IR PARA A HOME SCREEN")}>
+                            <Text style={{}}>Pular cadastro</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
