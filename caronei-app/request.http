@@ -39,5 +39,5 @@ Content-Type: application/json
 
 {
     "matricula": "1",
-    "emailVisibility": true
+    "emailVisibility": false
 }

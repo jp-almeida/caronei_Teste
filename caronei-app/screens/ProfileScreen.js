@@ -6,6 +6,7 @@ import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
 import config from "../config/config.json"
 import { Icon } from "react-native-elements"
+import ProfileData from "../components/ProfileData"
 
 
 
@@ -65,6 +66,8 @@ const ProfileScreen = () => {
             data: response.birth,
             visibility: response.birthVisibility
         })
+
+        
         
     }
     
@@ -77,21 +80,24 @@ const ProfileScreen = () => {
                 <View style={tw`p-10 pt-50`}>
                     <View style={{}}>
                         <Text>MEU PERFIL</Text>
-
-                        <Text>Email: {email.data}</Text>
-                        <TouchableOpacity style={{}} onPress={() => console.log("ai")}>
-                            <Icon name="pencil" type="entypo" size={15}></Icon>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{}} onPress={() => console.log("ai")}>
-                            <Icon name = {email.visibility ? "unlock" : "lock"} size={15}></Icon>
-                        </TouchableOpacity>
                         
-
-                        <Text>Número: {phone.data}</Text>
+                        <ProfileData title="Email" element={email}></ProfileData>
+                        
                         <Text>Matrícula: {store.getState().auth.matricula}</Text>
-                        <Text>Data de nascimento: {birth.data}</Text>
-                        <Text>Gênero: {gender.data}</Text>
+                        
+                        <ProfileData title="Número" element={phone}></ProfileData>
+                        
+                        <ProfileData title="Data de nascimento" element={birth}></ProfileData>
+                        
+                        <ProfileData title="Gênero" element={gender}></ProfileData>
+                    
                     </View>
+                    {
+                    changed &&
+                    <TouchableOpacity style={{}} onPress={() => console.log("salvando alterações")}>
+                    <Text style={{}}>Salvar alterações</Text>
+                    </TouchableOpacity>
+                    }
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>
