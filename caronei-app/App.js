@@ -12,6 +12,7 @@ import HomeScreen from "./screens/HomeScreen"
 import MapScreen from "./screens/MapScreen"
 import SignUpScreen from "./screens/SignUpScreen"
 import LogInScreen from "./screens/LogInScreen"
+import DriverScreen from "./screens/DriverScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -20,7 +21,6 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
-
             <Stack.Screen
               name="SignUpScreen"
               component={SignUpScreen}
@@ -52,7 +52,15 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            
+
+            <Stack.Screen
+              name="DriverScreen"
+              component={DriverScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
             {/* <HomeScreen /> */}
           </Stack.Navigator>
         </SafeAreaProvider>

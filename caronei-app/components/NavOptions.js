@@ -19,7 +19,7 @@ const data = [
     id: "456",
     title: "Restaurantes",
     image: "https://links.papareact.com/28w",
-    screen: "EatsScreen",
+    screen: "DriverScreen",
   },
 ]
 
