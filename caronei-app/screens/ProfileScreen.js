@@ -70,6 +70,68 @@ const ProfileScreen = () => {
         
         
     }
+    async function updateUserData() {
+
+        //gambiarra porque as portas não estavam batendo
+        let original_port = config.urlRootNode.split(":")[2]
+        let url = config.urlRootNode.replace(original_port, config.backend_port)
+        let jsonBody = {}
+        
+
+        if(email.data.changed){
+            jsonBody.email = email.data
+            jsonBody.emailVisibility = email.visibility
+            setEmail({
+                data: email.data,
+                visibility: email.visibility,
+                changed: false
+            })
+        }
+
+        if(gender.data.changed){
+            jsonBody.gender = gender.data
+            jsonBody.genderVisibility = gender.visibility
+            setGender({
+                data: gender.data,
+                visibility: gender.visibility,
+                changed: false
+            })
+            
+        }
+
+        if(phone.data.changed){
+            jsonBody.phone = phone.data
+            jsonBody.phoneVisibility = phone.visibility
+            setPhone({
+                data: phone.data,
+                visibility: phone.visibility,
+                changed: false
+            })
+        }
+
+        if(birth.data.changed){
+            jsonBody.birth = birth.data
+            jsonBody.birthVisibility = birth.visibility
+            setData({
+                data: birth.data,
+                visibility: email.visibility,
+                changed: false
+            })
+        }
+
+        let reqs = await fetch(url + "/update", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(jsonBody),
+        })
+        let resp = await reqs.json()
+        
+        setChanged(false)
+    }
+
     
     if (!name){getUserData()}
     
@@ -80,17 +142,17 @@ const ProfileScreen = () => {
                 <View style={tw`p-10 pt-50`}>
                     <View style={{}}>
                         <Text>MEU PERFIL</Text>
-                        
-                        <ProfileData title="Email" element={email}></ProfileData>
-                        
+
+                        <ProfileData title="Email" element={email} setFunc={setEmail} changeFunc={setChanged}></ProfileData>
+                        <Text>Visibilidade do email: {email.visibility != undefined ? email.visibility.toString() : "undefined"}</Text>
                         <Text>Matrícula: {store.getState().auth.matricula}</Text>
-                        
+
                         <ProfileData title="Número" element={phone}></ProfileData>
-                        
+
                         <ProfileData title="Data de nascimento" element={birth}></ProfileData>
-                        
+
                         <ProfileData title="Gênero" element={gender}></ProfileData>
-                    
+
                     </View>
                     {
                     changed &&

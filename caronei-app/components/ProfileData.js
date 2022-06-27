@@ -3,6 +3,14 @@ import React from "react"
 import { Icon } from "react-native-elements"
 
 const ProfileData = (props) => {
+    function func(){
+        props.setFunc({
+            data: props.element.data,
+            visibility: !props.element.visibility,
+            changed: true}
+        )
+        props.changeFunc(true)
+    }
     return (
         <View>
             <Text>{props.title}:</Text>
@@ -11,9 +19,10 @@ const ProfileData = (props) => {
                 <Icon name="pencil" type="entypo" size={15}></Icon>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{}} onPress={() => console.log("ai")}>
-                <Icon name={props.element.visibility ? "unlock" : "lock"} type="entypo" size={15}></Icon>
+            <TouchableOpacity style={{}} onPress={func}>
+                <Icon name={props.element.visibility ? "public" : "public_off"} type="material" size={15} color={props.element.changed ? '#FF2D00': '#000000'}></Icon>
             </TouchableOpacity>
+            
         </View>
 
 
