@@ -100,16 +100,16 @@ app.get('/data/:matricula', async(request, response) =>{
             experience: user.experiencia,
             
             email: user.email,
-            emailVisibility: user.visibilidadeEmail,
+            emailVisibility: user.emailVisib,
             
             phone: user.numero,
-            phoneVisibility: user.visibilidadeNumero,
+            phoneVisibility: user.telefoneVisib,
             
             gender: user.genero,
-            genderVisibility: user.visibilidadeGenero,
+            genderVisibility: user.generoVisib,
             
             birth: user.nascimento,
-            birthVisibility: user.visibilidadeNascimento,
+            birthVisibility: user.nascimentoVisib,
             
         }))
     }
@@ -117,8 +117,8 @@ app.get('/data/:matricula', async(request, response) =>{
 })
 
 //alterar dados do usuário
-app.post('/update/', async(request, response) => {
-    
+app.post('/update', async(request, response) => {
+    console.log("chegou", request)
     model.Usuarios.update(
         { 
             email: request.body.email,
@@ -135,10 +135,10 @@ app.post('/update/', async(request, response) => {
         { where: { matricula: request.body.matricula } }
       )
         .then(result =>
-            response.send("Alterações realizadas com sucesso")
+            response.send(JSON.stringify("Alterações realizadas com sucesso"))
         )
         .catch(err =>
-            response.send(("Erro ao realizar as alterações"))
+            response.send(JSON.stringify("Erro ao realizar as alterações"))
         )
 
 })

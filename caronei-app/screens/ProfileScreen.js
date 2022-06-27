@@ -75,10 +75,10 @@ const ProfileScreen = () => {
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
-        let jsonBody = {}
+        let jsonBody = {matricula : store.getState().auth.matricula.toString()}
         
 
-        if(email.data.changed){
+        if(email.changed){
             jsonBody.email = email.data
             jsonBody.emailVisibility = email.visibility
             setEmail({
@@ -88,7 +88,7 @@ const ProfileScreen = () => {
             })
         }
 
-        if(gender.data.changed){
+        if(gender.changed){
             jsonBody.gender = gender.data
             jsonBody.genderVisibility = gender.visibility
             setGender({
@@ -99,7 +99,7 @@ const ProfileScreen = () => {
             
         }
 
-        if(phone.data.changed){
+        if(phone.changed){
             jsonBody.phone = phone.data
             jsonBody.phoneVisibility = phone.visibility
             setPhone({
@@ -109,7 +109,7 @@ const ProfileScreen = () => {
             })
         }
 
-        if(birth.data.changed){
+        if(birth.changed){
             jsonBody.birth = birth.data
             jsonBody.birthVisibility = birth.visibility
             setData({
@@ -118,7 +118,8 @@ const ProfileScreen = () => {
                 changed: false
             })
         }
-
+        // console.log("JASOOOON", JSON.stringify(jsonBody))
+        
         let reqs = await fetch(url + "/update", {
             method: "POST",
             headers: {
@@ -128,6 +129,7 @@ const ProfileScreen = () => {
             body: JSON.stringify(jsonBody),
         })
         let resp = await reqs.json()
+        
         
         setChanged(false)
     }
@@ -156,7 +158,7 @@ const ProfileScreen = () => {
                     </View>
                     {
                     changed &&
-                    <TouchableOpacity style={{}} onPress={() => console.log("salvando alterações")}>
+                    <TouchableOpacity style={{}} onPress={updateUserData}>
                     <Text style={{}}>Salvar alterações</Text>
                     </TouchableOpacity>
                     }
