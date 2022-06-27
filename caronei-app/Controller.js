@@ -18,13 +18,13 @@ app.use(bodyParser.json());
 //criar um usuário
 app.post('/create', async(request, response) => {
     //verificar se a matrícula já foi cadastrada
-    const user = await model.Usuario.findByPk(request.body.userMatricula) //acha o registro no banco de dados pela matricula
-    if(user){
-        response.send(JSON.stringify('Usuário já cadastrado'))
-    }
+    // const user = await model.Usuarios.findByPk(request.body.userMatricula) //acha o registro no banco de dados pela matricula
+    // if(user){
+    //     response.send(JSON.stringify('Usuário já cadastrado'))
+    // }
     //falta verificar se o email já foi cadastrado
-    else{
-        let reqs = await model.Usuario.create({
+    // else{
+        let reqs = await model.Usuarios.create({
             'matricula': request.body.userMatricula,
             'nomeCompleto': request.body.userName,
             'email': request.body.userEmail,
@@ -41,11 +41,12 @@ app.post('/create', async(request, response) => {
         }
     }
     
-})
+// }
+)
 
 //fazer login
 app.post('/login', async(request, response) => {
-    const user = await model.Usuario.findByPk(request.body.userMatricula) //acha o registro no banco de dados pela matricula
+    const user = await model.Usuarios.findByPk(request.body.userMatricula) //acha o registro no banco de dados pela matricula
     
     let response_data = { //resposta do back para o front
         token: null,
@@ -76,7 +77,7 @@ app.post('/login', async(request, response) => {
 //achar nome do usuário pela matricula
 app.get('/username/:matricula', async(request, response) =>{
     const {matricula} = request.params
-    const user = await model.Usuario.findByPk(matricula)
+    const user = await model.Usuarios.findByPk(matricula)
     if (user == null){
         return response.send(JSON.stringify("Anônimo"))
     }
@@ -88,7 +89,7 @@ app.get('/username/:matricula', async(request, response) =>{
 //achar todos os dados de um usuário pela matrícula
 app.get('/data/:matricula', async(request, response) =>{
     const {matricula} = request.params
-    const user = await model.Usuario.findByPk(matricula)
+    const user = await model.Usuarios.findByPk(matricula)
     if (user == null){
         return response.send(("Erro"))
     }
@@ -96,13 +97,17 @@ app.get('/data/:matricula', async(request, response) =>{
         return response.end(JSON.stringify({
             name: user.nomeCompleto,
             rating: user.avaliacao,
-            experience: user.experience,
+            experience: user.experiencia,
+            
             email: user.email,
             emailVisibility: user.visibilidadeEmail,
+            
             phone: user.numero,
             phoneVisibility: user.visibilidadeNumero,
+            
             gender: user.genero,
             genderVisibility: user.visibilidadeGenero,
+            
             birth: user.nascimento,
             birthVisibility: user.visibilidadeNascimento,
             
@@ -111,6 +116,32 @@ app.get('/data/:matricula', async(request, response) =>{
     
 })
 
+//alterar dados do usuário
+app.post('/update/', async(request, response) => {
+    
+    model.Usuarios.update(
+        { 
+            email: request.body.email,
+            emailVisib: request.body.emailVisibility,
+            numero: request.body.number,
+            numeroVisib: request.body.phoneVisibility,
+            genero: request.body.gender,
+            generoVisib: request.body.genderVisibility,
+            nascimento: request.body.birth,
+            nascimentoVisib: request.body.birthVisibility,
+            updatedAt: new Date()
+    
+    },
+        { where: { matricula: request.body.matricula } }
+      )
+        .then(result =>
+            response.send("Alterações realizadas com sucesso")
+        )
+        .catch(err =>
+            response.send(("Erro ao realizar as alterações"))
+        )
+
+})
 //oferecer carona
 app.get('/oferecer', async(request, response) =>{
     

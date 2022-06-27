@@ -5,11 +5,13 @@ import tw from "twrnc"
 import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
 import config from "../config/config.json"
+import { Icon } from "react-native-elements"
 
 
 
 const ProfileScreen = () => {
     const [name, setName] = useState(null)
+    const [changed, setChanged] = useState(false)
     const [rating, setRating] = useState(null)
     const [experience, setExperience] = useState(null)
 
@@ -75,7 +77,16 @@ const ProfileScreen = () => {
                 <View style={tw`p-10 pt-50`}>
                     <View style={{}}>
                         <Text>MEU PERFIL</Text>
+
                         <Text>Email: {email.data}</Text>
+                        <TouchableOpacity style={{}} onPress={() => console.log("ai")}>
+                            <Icon name="pencil" type="entypo" size={15}></Icon>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{}} onPress={() => console.log("ai")}>
+                            <Icon name = {email.visibility ? "unlock" : "lock"} size={15}></Icon>
+                        </TouchableOpacity>
+                        
+
                         <Text>Número: {phone.data}</Text>
                         <Text>Matrícula: {store.getState().auth.matricula}</Text>
                         <Text>Data de nascimento: {birth.data}</Text>

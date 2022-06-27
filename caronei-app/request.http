@@ -4,8 +4,8 @@ Content-Type: application/json
 {
     "userName": "caio",
     "userEmail": "caio@teste.com",
-    "userMatricula": "12345",
-    "userPassword": "password"
+    "userMatricula": "1",
+    "userPassword": "1"
 }
 
 ###
@@ -31,3 +31,13 @@ GET http://192.168.1.16:3000/username/12345
 
 ###
 GET http://192.168.1.16:3000/data/101010
+
+
+###
+POST http://192.168.1.16:3000/update
+Content-Type: application/json
+
+{
+    "matricula": "1",
+    "emailVisibility": true
+}
