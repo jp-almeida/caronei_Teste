@@ -20,7 +20,7 @@ const ProfileData = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity style={{}} onPress={func}>
-                <Icon name={props.element.visibility ? "public" : "public"} type="material" size={15} color={props.element.changed ? '#FF2D00': '#000000'}></Icon>
+                <Icon name={props.element.visibility ? "public" : "public_off"} type="material" size={15} color={props.element.changed ? '#FF2D00': '#000000'}></Icon>
             </TouchableOpacity>
             
         </View>
