@@ -1,4 +1,4 @@
-npx sequelize-cli model:generate --name Usuario --attributes nomeCompleto:string,email:string,senha:string,matricula:integer,validado:date
+npx sequelize-cli model:generate --name Usuarios --attributes nomeCompleto:string,email:string,emailVisib:boolean,senha:string,matricula:integer,validado:date,nascimento:string,nascimentoVisib:boolean,genero:string,generoVisib:boolean,telefone:string,telefoneVisib:boolean,avaliacao:float,experiencia:integer
 
 npx sequelize-cli model:generate --name Carona_Oferecida --attributes matriculaMotorista:integer,origem:string,destino:string,ativa:boolean
 npx sequelize-cli model:generate --name Carona_Solicitada --attributes matriculaPassageiro:integer,origem:string,destino:string,ativa:boolean

@@ -6,7 +6,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 // @ts-ignore
 import { GOOGLE_MAPS_APIKEY } from "@env"
 import { useDispatch } from "react-redux"
-import { setDestination } from "../slices/navSlice"
+import { selectOrigin, setDestination } from "../slices/navSlice"
 import { useNavigation } from "@react-navigation/native"
 
 const NavigateCard = () => {
@@ -32,6 +32,8 @@ const NavigateCard = () => {
                   description: data.description,
                 })
               )
+              console.log("details", details?.geometry.location)
+              console.log("data", data.description)
               // @ts-ignore
               navigation.navigate("RideOptionsCard")
             }}
