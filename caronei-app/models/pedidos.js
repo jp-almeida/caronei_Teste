@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     latitudeDestino: DataTypes.FLOAT,
     longitudeDestino: DataTypes.FLOAT,
     latitudePartida: DataTypes.FLOAT,
-    latitudeDestino: DataTypes.FLOAT
+    longitudePartida: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'Pedidos',
