@@ -148,8 +148,25 @@ app.get('/oferecer', async(request, response) =>{
 })
 
 //solicitar carona
-app.get('/solicitar', async(request, response) =>{
-
+app.post('/solicitar', async(request, response) =>{
+    console.log("entrou")
+    let reqs = await model.Usuarios.create({
+        'matricula': request.body.matriculaPedido,
+        'nomeDestino': request.body.nomeDestino,
+        'nomePartida': request.body.nomePartida,
+        'latitudeDestino':request.body.latitudeDestino,
+        'longitudeDestino':request.body.longitudeDestino,
+        'latitudePartida':request.body.latitudePartida,
+        'longitudePartida':request.body.longitudePartida,
+        'createdAt': new Date(),
+        'updatedAt': new Date(),
+    })
+    if(reqs){
+        response.send(JSON.stringify('Carona solicitada'));
+    }
+    else{
+        response.send(JSON.stringify('Ocorreu algum problema. Tente novamente'))
+    }
 })
 
 
