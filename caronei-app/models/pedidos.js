@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Pedidos.init({
     matriculaPedido: {
+      primaryKey: true,
+      autoIncrement:false,
       type: DataTypes.INTEGER,
       references:{
         model:"usuarios",

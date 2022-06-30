@@ -5,7 +5,7 @@ const config = require('./config/config.json') //arquivo de configurações
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const model = require('./models')
+const model = require('./models');
 
 let app = express();
 
@@ -144,14 +144,19 @@ app.post('/update', async(request, response) => {
 })
 //oferecer carona
 app.get('/oferecer', async(request, response) =>{
+    //recuperar todas as corridas no banco de dados
+    let pedidos = await model.Pedidos.findAll({
+        attributes: ["nomeDestino","nomePartida","latitudePartida", "longitudePartida", "latitudeDestino", "longitudeDestino"]
+    }) //retorna um array
+    
     
 })
 
 //solicitar carona
 app.post('/solicitar', async(request, response) =>{
     console.log("entrou")
-    let reqs = await model.Usuarios.create({
-        'matricula': request.body.matriculaPedido,
+    let reqs = await model.Pedidos.create({
+        'matriculaPedido': request.body.matricula,
         'nomeDestino': request.body.nomeDestino,
         'nomePartida': request.body.nomePartida,
         'latitudeDestino':request.body.latitudeDestino,

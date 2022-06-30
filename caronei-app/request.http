@@ -1,8 +1,13 @@
+###
+GET http://192.168.1.16:3000/oferecer
+
+
+###
 POST http://192.168.1.16:3000/solicitar
 Content-Type: application/json
 
 {
-    "matriculaPedido": 111111,
+    "matricula": 111111,
     "nomeDestino": "Seara",
     "nomePartida": "Bloco 910",
     "latitudeDestino":123,
@@ -10,6 +15,7 @@ Content-Type: application/json
     "latitudePartida":789,
     "longitudePartida":101112
 }
+
 
 
 
