@@ -1,5 +1,11 @@
 // @ts-nocheck
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from "react-native"
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native"
 import React, { useState } from "react"
 import { Image } from "react-native"
 import tw from "twrnc"
@@ -13,32 +19,32 @@ import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
 import config from "../config/config.json"
 
-
-
 const HomeScreen = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [name, setName] = useState(null)
 
-  function exitAccount(){
+  function exitAccount() {
     dispatch(logoutAuth())
     navigation.navigate("LogInScreen")
   }
-  async function getUserName(){
+  async function getUserName() {
     //gambiarra porque as portas não estavam batendo
     let original_port = config.urlRootNode.split(":")[2]
     let url = config.urlRootNode.replace(original_port, config.backend_port)
-    
-    let reqs = await fetch(url + '/username/'+store.getState().auth.matricula, {
-        method: 'GET',
+
+    let reqs = await fetch(
+      url + "/username/" + store.getState().auth.matricula,
+      {
+        method: "GET",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-    });
+      }
+    )
     const response = await reqs.json()
     setName(response)
-    
   }
   getUserName()
 
@@ -51,10 +57,6 @@ const HomeScreen = () => {
             height: 200,
             resizeMode: "contain",
           }}
-          // source={{
-          //   uri: "./images/logo.png",
-          //   uri: "https://links.papareact.com/gzs",
-          // }}
           source={require("../images/logo.png")}
         />
 
@@ -62,10 +64,12 @@ const HomeScreen = () => {
         <TouchableOpacity style={{}} onPress={exitAccount}>
           <Text style={{}}>Sair</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{}} onPress={() => navigation.navigate("ProfileScreen") }>
+        <TouchableOpacity
+          style={{}}
+          onPress={() => navigation.navigate("ProfileScreen")}
+        >
           <Text style={{}}>Perfil</Text>
         </TouchableOpacity>
-
 
         <GooglePlacesAutocomplete
           placeholder="Local de partida"
@@ -87,6 +91,7 @@ const HomeScreen = () => {
             dispatch(setDestination(null))
           }}
           fetchDetails={true}
+          returnKeyType={"search"}
           enablePoweredByContainer={false}
           minLength={2}
           query={{
@@ -94,7 +99,7 @@ const HomeScreen = () => {
             language: "en",
           }}
           nearbyPlacesAPI="GooglePlacesSearch"
-          debouce={400}
+          debounce={400}
         />
         <NavOptions />
       </View>
