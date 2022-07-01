@@ -25,10 +25,10 @@ POST http://192.168.1.16:3000/create
 Content-Type: application/json
 
 {
-    "userName": "caio",
-    "userEmail": "caio@teste.com",
-    "userMatricula": "1",
-    "userPassword": "1"
+    "userName": "teste",
+    "userEmail": "teste@teste.com",
+    "userMatricula": "2",
+    "userPassword": "2"
 }
 
 ###

@@ -6,6 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const model = require('./models');
+const golib = require("geolib")
 
 let app = express();
 
@@ -17,29 +18,26 @@ app.use(bodyParser.json());
 
 //criar um usuário
 app.post('/create', async(request, response) => {
-    //verificar se a matrícula já foi cadastrada
-    // const user = await model.Usuarios.findByPk(request.body.userMatricula) //acha o registro no banco de dados pela matricula
-    // if(user){
-    //     response.send(JSON.stringify('Usuário já cadastrado'))
-    // }
-    //falta verificar se o email já foi cadastrado
-    // else{
-        let reqs = await model.Usuarios.create({
-            'matricula': request.body.userMatricula,
-            'nomeCompleto': request.body.userName,
-            'email': request.body.userEmail,
-            'senha': request.body.userPassword,
-            'createdAt': new Date(),
-            'updatedAt': new Date(),
-        })
-    
-        if(reqs){
-            response.send(JSON.stringify('O usuário foi cadastrado com sucesso!'));
-        }
-        else{
-            response.send(JSON.stringify('Ocorreu algum problema. Tente novamente'))
-        }
+    //caso não exista um usuário, ele irá criar
+    //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
+    let user, created = await model.Usuarios.findOrCreate({
+        where: {matricula: request.body.userMatricula},
+        defaults:
+        {'nomeCompleto': request.body.userName,
+        'email': request.body.userEmail,
+        'senha': request.body.userPassword,
+        'createdAt': new Date(),
+        'updatedAt': new Date(),}})
+    if(!created){
+        return response.send(JSON.stringify('Usuário já cadastrado'));
     }
+    if(user && created){
+        return response.send(JSON.stringify('O usuário foi cadastrado com sucesso!'));
+    }
+    else{
+        return response.send(JSON.stringify('Ocorreu algum problema. Tente novamente'))
+    }
+}
     
 // }
 )
@@ -142,13 +140,14 @@ app.post('/update', async(request, response) => {
         )
 
 })
+
 //oferecer carona
-app.get('/oferecer', async(request, response) =>{
+app.get('/oferecer/:matricula/:coordOrigem/:coordDestino/:nomeOrigem/:nomeDestino', async(request, response) =>{
+    
     //recuperar todas as corridas no banco de dados
     let pedidos = await model.Pedidos.findAll({
         attributes: ["nomeDestino","nomePartida","latitudePartida", "longitudePartida", "latitudeDestino", "longitudeDestino"]
     }) //retorna um array
-    
     
 })
 
