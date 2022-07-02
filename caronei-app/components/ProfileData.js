@@ -6,7 +6,6 @@ const ProfileData = (props) => {
 
     const [isEditing, setIsEditing] = useState(false) //indica se este componente está sendo editado ou não
     const [currentData, setCurrentData] = useState(null)
-    const [currentVisibility, setCurrentVisibility] = useState(null)
     
     function updateData(switchVisibility = false){
         props.setFunc({

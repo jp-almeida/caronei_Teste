@@ -8,6 +8,8 @@ import config from "../config/config.json"
 import { Icon } from "react-native-elements"
 import ProfileData from "../components/ProfileData"
 import Collapsible from 'react-native-collapsible';
+// import RNPickerSelect from 'react-native-picker-select';
+
 
 //PARA SABER MAIS SOBRE O NEGOCIO DE COLAPSAR https://www.npmjs.com/package/react-native-collapsible
 
@@ -147,6 +149,7 @@ const ProfileScreen = () => {
                         <TouchableOpacity style={{}} onPress={() => setCollapsed(!isCollapsed)}>
                             <Icon name="done" type="material" size={15}></Icon>
                         </TouchableOpacity>
+                        
                         <Collapsible collapsed={isCollapsed}>
                             <ProfileData title="Email" element={email} setFunc={setEmail} changeFunc={setChanged}></ProfileData>
                             
@@ -157,8 +160,15 @@ const ProfileScreen = () => {
                             <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
 
                             <ProfileData title="Gênero" element={gender} setFunc={setGender} changeFunc={setChanged}></ProfileData>
-
                         </Collapsible>
+                        {/* <RNPickerSelect
+                            onValueChange={(value) => console.log(value)}
+                            items={[
+                                { label: 'Football', value: 'football' },
+                                { label: 'Baseball', value: 'baseball' },
+                                { label: 'Hockey', value: 'hockey' },
+                            ]}
+                        /> */}
                         
                     </View>
                     {
