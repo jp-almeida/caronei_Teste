@@ -32,8 +32,6 @@ const NavigateCard = () => {
                   description: data.description,
                 })
               )
-              console.log("details", details?.geometry.location)
-              console.log("data", data.description)
               // @ts-ignore
               navigation.navigate("RideOptionsCard")
             }}

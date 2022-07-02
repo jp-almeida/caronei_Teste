@@ -13,6 +13,7 @@
     "migrate": "npx sequelize db:migrate"
   },
   "dependencies": {
+    "@mapbox/polyline": "^1.1.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
