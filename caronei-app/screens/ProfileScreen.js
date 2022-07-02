@@ -8,7 +8,7 @@ import config from "../config/config.json"
 import { Icon } from "react-native-elements"
 import ProfileData from "../components/ProfileData"
 import Collapsible from 'react-native-collapsible';
-// import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-community/picker';
 
 
 //PARA SABER MAIS SOBRE O NEGOCIO DE COLAPSAR https://www.npmjs.com/package/react-native-collapsible
@@ -159,16 +159,26 @@ const ProfileScreen = () => {
 
                             <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
 
-                            <ProfileData title="Gênero" element={gender} setFunc={setGender} changeFunc={setChanged}></ProfileData>
+                            <Text>Gênero</Text>
+                            <Picker
+                                selectedValue={gender.data}
+                                style={{height: 50, width: 100}}
+                                onValueChange={(itemValue, itemIndex) =>{
+                                    setGender({
+                                        data: itemValue,
+                                        visibility: gender.visibility,
+                                        changed: true
+                                    })
+                                    setChanged(true)
+                                    }
+                                }>
+                                <Picker.Item label="Femino" value="F" />
+                                <Picker.Item label="Masculino" value="M" />
+                                <Picker.Item label="Outro" value="O" />
+                                <Picker.Item label="Não quero informar" value={null} />
+                            </Picker>
                         </Collapsible>
-                        {/* <RNPickerSelect
-                            onValueChange={(value) => console.log(value)}
-                            items={[
-                                { label: 'Football', value: 'football' },
-                                { label: 'Baseball', value: 'baseball' },
-                                { label: 'Hockey', value: 'hockey' },
-                            ]}
-                        /> */}
+                        
                         
                     </View>
                     {
