@@ -2,6 +2,7 @@
 - [Rodando o projeto](#rodando-o-projeto) -> depois do <code>git pull</code>
 - [Configurações iniciais](#configurações-iniciais) -> depois do <code>git clone</code>
 - [Solução de problemas](#solução-de-problemas) -> algumas soluções para problemas durante o desenvolvimento
+- [Links importantes](#links-importantes) -> alguns links úteis de dependências
 
 
 ## Rodando o projeto
@@ -59,3 +60,9 @@ Alguns problemas podem ocorrer.
 - Finalizar o react com <code>ctrl + c</code> no terminal que ele está rodando
 - Reiniciar o react com <code>expo r -c</code> (limpa o cache) -> depois tem que escrever <code>a</code> para abrir com o android
 - Reiniciar o back normalmente
+
+
+
+## Links importantes
+- [Rating - React Native Elements](https://reactnativeelements.com/docs/1.2.0/rating)
+- [Collapsible](https://www.npmjs.com/package/react-native-collapsible)
