@@ -66,3 +66,4 @@ Alguns problemas podem ocorrer.
 ## Links importantes
 - [Rating - React Native Elements](https://reactnativeelements.com/docs/1.2.0/rating)
 - [Collapsible](https://www.npmjs.com/package/react-native-collapsible)
+- [Icones compatíveis (material)](https://materialdesignicons.com/)
