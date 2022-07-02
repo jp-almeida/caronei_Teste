@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     TextInput,
     SafeAreaView,
+    Keyboard
 } from "react-native"
 import React, { useState } from "react"
 import tw from "twrnc"
@@ -84,6 +85,13 @@ const LogInScreen = () => {
 
                         <TouchableOpacity
                             style={{}}
+                            onPress={() => navigation.navigate("RecoverPswdScreen")}
+                        >
+                            <Text style={{}}>Esqueci minha senha</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={{}}
                             onPress={() => navigation.navigate("HomeScreen")}
                         >
                             <Text style={{}}>Pular login</Text>
@@ -96,3 +104,4 @@ const LogInScreen = () => {
 }
 
 export default LogInScreen
+
