@@ -10,6 +10,7 @@ import ProfileData from "../components/ProfileData"
 import Collapsible from 'react-native-collapsible';
 import { Picker } from '@react-native-community/picker';
 import StarRating from 'react-native-star-rating';
+import RNDateTimePicker from "@react-native-community/datetimepicker"
 
 function getGenderName(gender) {
     switch (gender) {
@@ -46,7 +47,8 @@ const ProfileScreen = () => {
     })
     const [birth, setBirth] = useState({
         data: null,
-        visibility: null
+        visibility: null,
+        isEditing: false
     })
     function switchGenderAttribute(attribute) {
         let editing = gender.isEditing
@@ -93,20 +95,25 @@ const ProfileScreen = () => {
         setExperience(response.experience)
         setEmail({
             data: response.email,
-            visibility: response.emailVisibility
+            visibility: response.emailVisibility,
+            changed: false
         })
         setGender({
             value: response.gender,
             data: getGenderName(response.gender),
-            visibility: response.genderVisibility
+            visibility: response.genderVisibility,
+            changed: false
         })
         setPhone({
             data: response.phone,
-            visibility: response.phoneVisibility
+            visibility: response.phoneVisibility,
+            changed: false
         })
         setBirth({
-            data: response.birth,
-            visibility: response.birthVisibility
+            data: new Date(response.birth),
+            visibility: response.birthVisibility,
+            changed: false,
+            isEditing: false
         })
 
     }
@@ -154,7 +161,7 @@ const ProfileScreen = () => {
         if (birth.changed) {
             jsonBody.birth = birth.data
             jsonBody.birthVisibility = birth.visibility
-            setData({
+            setBirth({
                 data: birth.data,
                 visibility: email.visibility,
                 changed: false
@@ -180,7 +187,6 @@ const ProfileScreen = () => {
     if (!name) { getUserData() }
 
     const [isCollapsedProfile, setCollapsedProfile] = useState(false)
-
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
@@ -229,7 +235,41 @@ const ProfileScreen = () => {
 
                             <ProfileData title="Número" element={phone} setFunc={setPhone} changeFunc={setChanged}></ProfileData>
 
-                            <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
+                            <Text>Data de nascimento</Text>
+                            <Text>
+                                {birth.data ?
+                                birth.data.getDate() + "/" + (birth.data.getMonth()+1) + "/" + birth.data.getFullYear() :
+                                "(Informe sua data de nascimento)"}
+                            </Text>
+                            <TouchableOpacity style={{}} onPress={() => {
+                                setBirth({
+                                    data: birth.data,
+                                    visibility: birth.visibility,
+                                    changed: birth.changed,
+                                    isEditing: !birth.isEditing
+                                })
+                            }}>
+                                <Icon name={birth.isEditing ? "done" : "edit"} type="material" size={15}></Icon>
+                            </TouchableOpacity>
+                            
+                            {birth.isEditing &&
+                                <RNDateTimePicker 
+                                    mode="date"
+                                    
+                                    value={birth.data ? birth.data : new Date()}
+                                    maximumDate= {new Date()}
+                                    onChange={(event, date) => {
+                                        setBirth({
+                                            data: date,
+                                            visibility: birth.visibility,
+                                            changed: true,
+                                            isEditing: false
+                                        })
+                                        setChanged(true)
+                                    }}
+                                />
+                            }
+                            
 
                             <Text>Gênero</Text>
 
@@ -238,7 +278,7 @@ const ProfileScreen = () => {
                             </TouchableOpacity>
 
                             {!gender.isEditing && //se não tiver editando, mostra o genero como texto
-                                <Text>{gender.data}</Text>}
+                                <Text>{gender.data ? gender.data : "(Informe seu gênero)"}</Text>}
 
                             <TouchableOpacity style={{}} onPress={() => { //troca a visibilidade do genero
                                 switchGenderAttribute("visibility")
