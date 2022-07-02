@@ -13,6 +13,19 @@ import {Picker} from '@react-native-community/picker';
 
 //PARA SABER MAIS SOBRE O NEGOCIO DE COLAPSAR https://www.npmjs.com/package/react-native-collapsible
 
+function getGenderName(gender){
+    switch(gender){
+        case "M":
+            return "Masculino"
+        case "F":
+            return "Feminino"
+        case "O":
+            return "Outro"
+        default:
+            return "Não quero informar"
+    }
+}
+
 const ProfileScreen = () => {
     const [name, setName] = useState(null)
     const [changed, setChanged] = useState(false)
@@ -24,8 +37,10 @@ const ProfileScreen = () => {
         visibility: null
     })
     const [gender, setGender] = useState({
+        value: null,
         data: null,
-        visibility: null
+        visibility: null,
+        isEditing: false
     })
     const [phone, setPhone] = useState({
         data: null,
@@ -35,6 +50,30 @@ const ProfileScreen = () => {
         data: null,
         visibility: null
     })
+    function switchGenderAttribute(attribute){
+        let editing = gender.isEditing
+        let vis = gender.visibility
+        let chang = gender.changed
+        switch(attribute){
+            case "visibility":
+                vis = !vis
+                chang = true
+                setChanged(true)    
+                break
+            case "isEditing":
+                editing = !editing
+                break
+            default:
+                return null
+        }  
+        setGender({
+            value: gender.value,
+            data: gender.data,
+            visibility: vis,
+            isEditing: editing,
+            changed: chang,
+        })
+    }
 
     async function getUserData(){
         //gambiarra porque as portas não estavam batendo
@@ -49,6 +88,8 @@ const ProfileScreen = () => {
             },
         });
         const response = await reqs.json()
+        
+        
         setName(response.name)
         setRating(response.rating)
         setExperience(response.experience)
@@ -57,7 +98,8 @@ const ProfileScreen = () => {
             visibility: response.emailVisibility
         })
         setGender({
-            data: response.gender,
+            value: response.gender,
+            data: getGenderName(response.gender),
             visibility: response.genderVisibility
         })
         setPhone({
@@ -89,11 +131,13 @@ const ProfileScreen = () => {
         }
 
         if(gender.changed){
-            jsonBody.gender = gender.data
+            jsonBody.gender = gender.value
             jsonBody.genderVisibility = gender.visibility
             setGender({
                 data: gender.data,
+                value: gender.value,
                 visibility: gender.visibility,
+                isEditing: false,
                 changed: false
             })
             
@@ -137,20 +181,24 @@ const ProfileScreen = () => {
     
     if (!name){getUserData()}
     
-    const [isCollapsed, setCollapsed] = useState(false)
+    const [isCollapsedProfile, setCollapsedProfile] = useState(false)
+    
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={tw`p-10 pt-50`}>
                     <View style={{}}>
-                        <Text>MEU PERFIL</Text>
                         
-                        <TouchableOpacity style={{}} onPress={() => setCollapsed(!isCollapsed)}>
-                            <Icon name="done" type="material" size={15}></Icon>
+                        <TouchableOpacity style={{}} onPress={() => { //botão de expandir e colapsar
+                            setCollapsedProfile(!isCollapsedProfile)
+                        }}>
+                            <Icon name={isCollapsedProfile ? "expand-more" : "expand-less"} type="material" size={15}></Icon>
                         </TouchableOpacity>
                         
-                        <Collapsible collapsed={isCollapsed}>
+                        <Text>MEU PERFIL</Text>
+                        
+                        <Collapsible collapsed={isCollapsedProfile}>
                             <ProfileData title="Email" element={email} setFunc={setEmail} changeFunc={setChanged}></ProfileData>
                             
                             <Text>Matrícula: {store.getState().auth.matricula}</Text>
@@ -160,23 +208,40 @@ const ProfileScreen = () => {
                             <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
 
                             <Text>Gênero</Text>
-                            <Picker
-                                selectedValue={gender.data}
-                                style={{height: 50, width: 100}}
-                                onValueChange={(itemValue, itemIndex) =>{
-                                    setGender({
-                                        data: itemValue,
-                                        visibility: gender.visibility,
-                                        changed: true
-                                    })
-                                    setChanged(true)
-                                    }
-                                }>
-                                <Picker.Item label="Femino" value="F" />
-                                <Picker.Item label="Masculino" value="M" />
-                                <Picker.Item label="Outro" value="O" />
-                                <Picker.Item label="Não quero informar" value={null} />
-                            </Picker>
+                            
+                            <TouchableOpacity style={{}} onPress={() => switchGenderAttribute("isEditing")}>
+                                <Icon name={gender.isEditing ? "done" : "edit"} type="material" size={15}></Icon>
+                            </TouchableOpacity>
+                            
+                            {!gender.isEditing && //se não tiver editando, mostra o genero como texto
+                            <Text>{gender.data}</Text>}
+
+                            <TouchableOpacity style={{}} onPress={() => { //troca a visibilidade do genero
+                                switchGenderAttribute("visibility")}}>
+                                <Icon name={gender.visibility ? "public" : "public-off"} type="material" size={15} color="#000000"></Icon>
+                            </TouchableOpacity>
+                            
+                            {gender.isEditing && //se tiver editando, mostra o genero como o picker select
+                                <Picker
+                                    selectedValue={gender.value}
+                                    style={{height: 50, width: 100}}
+                                    onValueChange={(itemValue, itemIndex) =>{
+                                        setGender({
+                                            value: itemValue,
+                                            data: getGenderName(itemValue),
+                                            visibility: gender.visibility,
+                                            isEditing: true,
+                                            changed: true
+                                        })
+                                        setChanged(true)
+                                        }
+                                    }>
+                                    <Picker.Item label="Femino" value="F" />
+                                    <Picker.Item label="Masculino" value="M" />
+                                    <Picker.Item label="Outro" value="O" />
+                                    <Picker.Item label="Não quero informar" value={null} />
+                                </Picker>
+                            }   
                         </Collapsible>
                         
                         

@@ -9,7 +9,7 @@ const ProfileData = (props) => {
     
     function updateData(switchVisibility = false){
         props.setFunc({
-            data: currentData,
+            data: (currentData ? currentData : props.element.data), //se não tiver currentData significa que não foi editado. Não pode mandar "null", então recupera o conteúdo antigo
             visibility: switchVisibility ? (!props.element.visibility) : props.element.visibility,
             changed: true}
         )
@@ -30,9 +30,9 @@ const ProfileData = (props) => {
         <View>
             <Text>{props.title}:</Text> 
             <TouchableOpacity style={{}} onPress={() => { //troca a visibilidade do elemento e atualiza os dados no componente pai
-                updateData(switchVisibility = true)
+                updateData(true)
                 }}>
-                <Icon name={props.element.visibility ? "public" : "public"} type="material" size={15} color="#000000"></Icon>
+                <Icon name={props.element.visibility ? "public" : "public-off"} type="material" size={15} color="#000000"></Icon>
             </TouchableOpacity>
 
             {!isEditing && //se não tiver editando, irá aparecer um texto normal
