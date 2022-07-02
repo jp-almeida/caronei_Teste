@@ -1,58 +1,36 @@
 import { Text, View, TouchableOpacity, TouchableWithoutFeedback, TextInput } from "react-native"
 import React, { useState } from "react"
 import { Icon } from "react-native-elements"
+import EditButton from "./EditButton"
+import VisibilityButton from "./VisibilityButton"
 
 const ProfileData = (props) => {
-
-    const [isEditing, setIsEditing] = useState(false) //indica se este componente está sendo editado ou não
-    const [currentData, setCurrentData] = useState(null)
-    
-    function updateData(switchVisibility = false){
-        props.setFunc({
-            data: (currentData ? currentData : props.element.data), //se não tiver currentData significa que não foi editado. Não pode mandar "null", então recupera o conteúdo antigo
-            visibility: switchVisibility ? (!props.element.visibility) : props.element.visibility,
-            changed: true}
-        )
-        props.changeFunc(true)
-    }
-    function editData(){
-        if(isEditing){ //se tiver editando
-            setIsEditing(false) //para de editar
-            updateData() //atualiza os dados
-        }
-        else{ //se não tiver editando
-            setIsEditing(true) //começará a editar
-        }
-        
-    }
     
     return (
         <View>
             <Text>{props.title}:</Text> 
-            <TouchableOpacity style={{}} onPress={() => { //troca a visibilidade do elemento e atualiza os dados no componente pai
-                updateData(true)
-                }}>
-                <Icon name={props.element.visibility ? "public" : "public-off"} type="material" size={15} color="#000000"></Icon>
-            </TouchableOpacity>
+            <VisibilityButton element={props.element} changeFunction={props.changeFunction} editFunction={props.editFunction} />
 
-            {!isEditing && //se não tiver editando, irá aparecer um texto normal
-                <Text>{props.element.data}</Text>
-            }
-            
-            {isEditing && //se tiver editando, irá aparecer a caixa para escrever
+            {props.element.isEditing ? 
+            //se não tiver editando, irá aparecer um texto normal
                 <TextInput
                     style={{}}
                     defaultValue= {props.element.data}
-                    onChangeText={(text) => setCurrentData(text)}
+                    onChangeText={(text) => {
+                        props.editFunction({
+                        ...props.element,
+                        data: text,
+                        changed: true
+                        })
+                        props.changeFunction(true)
+                    }
+                }
                 />
+                : //se tiver editando, irá aparecer a caixa para escrever
+                    <Text>{props.element.data}</Text>
             }
 
-            <TouchableOpacity style={{}} onPress={() => editData()}>
-                <Icon name={isEditing ? "done" : "edit"} type="material" size={15}></Icon>
-            </TouchableOpacity>
-            
-
-            
+            <EditButton element={props.element} editFunction = {props.editFunction} changeFunction = {props.changeFunc} />
             
         </View>
 
