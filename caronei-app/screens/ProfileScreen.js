@@ -66,8 +66,6 @@ const ProfileScreen = () => {
             data: response.birth,
             visibility: response.birthVisibility
         })
-
-        
         
     }
     async function updateUserData() {
@@ -118,7 +116,6 @@ const ProfileScreen = () => {
                 changed: false
             })
         }
-        // console.log("JASOOOON", JSON.stringify(jsonBody))
         
         let reqs = await fetch(url + "/update", {
             method: "POST",
@@ -130,6 +127,7 @@ const ProfileScreen = () => {
         })
         let resp = await reqs.json()
         
+        console.log(resp)
         
         setChanged(false)
     }
@@ -146,20 +144,20 @@ const ProfileScreen = () => {
                         <Text>MEU PERFIL</Text>
 
                         <ProfileData title="Email" element={email} setFunc={setEmail} changeFunc={setChanged}></ProfileData>
-                        <Text>Visibilidade do email: {email.visibility != undefined ? email.visibility.toString() : "undefined"}</Text>
+                        
                         <Text>Matrícula: {store.getState().auth.matricula}</Text>
 
-                        <ProfileData title="Número" element={phone}></ProfileData>
+                        <ProfileData title="Número" element={phone} setFunc={setPhone} changeFunc={setChanged}></ProfileData>
 
-                        <ProfileData title="Data de nascimento" element={birth}></ProfileData>
+                        <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
 
-                        <ProfileData title="Gênero" element={gender}></ProfileData>
+                        <ProfileData title="Gênero" element={gender} setFunc={setGender} changeFunc={setChanged}></ProfileData>
 
                     </View>
                     {
-                    changed &&
+                    changed && //caso tenha alterações, mostrar o botão de salvar alterações
                     <TouchableOpacity style={{}} onPress={updateUserData}>
-                    <Text style={{}}>Salvar alterações</Text>
+                        <Text style={{}}>Salvar alterações</Text>
                     </TouchableOpacity>
                     }
                 </View>

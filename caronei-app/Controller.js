@@ -100,7 +100,7 @@ app.get('/data/:matricula', async(request, response) =>{
             email: user.email,
             emailVisibility: user.emailVisib,
             
-            phone: user.numero,
+            phone: user.telefone,
             phoneVisibility: user.telefoneVisib,
             
             gender: user.genero,
@@ -116,28 +116,28 @@ app.get('/data/:matricula', async(request, response) =>{
 
 //alterar dados do usuário
 app.post('/update', async(request, response) => {
-    console.log("chegou", request)
+
     model.Usuarios.update(
         { 
             email: request.body.email,
             emailVisib: request.body.emailVisibility,
-            numero: request.body.number,
-            numeroVisib: request.body.phoneVisibility,
+            telefone: request.body.phone,
+            telefoneVisib: request.body.phoneVisibility,
             genero: request.body.gender,
             generoVisib: request.body.genderVisibility,
             nascimento: request.body.birth,
             nascimentoVisib: request.body.birthVisibility,
             updatedAt: new Date()
     
-    },
-        { where: { matricula: request.body.matricula } }
-      )
-        .then(result =>
-            response.send(JSON.stringify("Alterações realizadas com sucesso"))
-        )
-        .catch(err =>
-            response.send(JSON.stringify("Erro ao realizar as alterações"))
-        )
+        },
+            { where: { matricula: request.body.matricula } }
+    )
+    .then(result =>
+        response.send(JSON.stringify("Alterações realizadas com sucesso"))
+    )
+    .catch(err =>
+        response.send(JSON.stringify("Erro ao realizar as alterações"))
+    )
 
 })
 
@@ -153,7 +153,6 @@ app.get('/oferecer/:matricula/:coordOrigem/:coordDestino/:nomeOrigem/:nomeDestin
 
 //solicitar carona
 app.post('/solicitar', async(request, response) =>{
-    console.log("entrou")
     let reqs = await model.Pedidos.create({
         'matriculaPedido': request.body.matricula,
         'nomeDestino': request.body.nomeDestino,
