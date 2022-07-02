@@ -13,6 +13,7 @@
     "migrate": "npx sequelize db:migrate"
   },
   "dependencies": {
+    "@mapbox/polyline": "^1.1.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/picker": "^1.8.1",
     "@react-native-picker/picker": "2.4.0",

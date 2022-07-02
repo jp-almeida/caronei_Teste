@@ -17,7 +17,7 @@ const data = [
   },
   {
     id: "456",
-    title: "Restaurantes",
+    title: "Oferecer carona",
     image: require("../images/ride.png"),
     screen: "DriverScreen",
   },
