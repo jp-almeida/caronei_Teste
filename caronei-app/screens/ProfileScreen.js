@@ -8,13 +8,11 @@ import config from "../config/config.json"
 import { Icon } from "react-native-elements"
 import ProfileData from "../components/ProfileData"
 import Collapsible from 'react-native-collapsible';
-import {Picker} from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
+import StarRating from 'react-native-star-rating';
 
-
-//PARA SABER MAIS SOBRE O NEGOCIO DE COLAPSAR https://www.npmjs.com/package/react-native-collapsible
-
-function getGenderName(gender){
-    switch(gender){
+function getGenderName(gender) {
+    switch (gender) {
         case "M":
             return "Masculino"
         case "F":
@@ -50,22 +48,22 @@ const ProfileScreen = () => {
         data: null,
         visibility: null
     })
-    function switchGenderAttribute(attribute){
+    function switchGenderAttribute(attribute) {
         let editing = gender.isEditing
         let vis = gender.visibility
         let chang = gender.changed
-        switch(attribute){
+        switch (attribute) {
             case "visibility":
                 vis = !vis
                 chang = true
-                setChanged(true)    
+                setChanged(true)
                 break
             case "isEditing":
                 editing = !editing
                 break
             default:
                 return null
-        }  
+        }
         setGender({
             value: gender.value,
             data: gender.data,
@@ -75,12 +73,12 @@ const ProfileScreen = () => {
         })
     }
 
-    async function getUserData(){
+    async function getUserData() {
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
-        
-        let reqs = await fetch(url + '/data/'+store.getState().auth.matricula, {
+
+        let reqs = await fetch(url + '/data/' + store.getState().auth.matricula, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -88,8 +86,8 @@ const ProfileScreen = () => {
             },
         });
         const response = await reqs.json()
-        
-        
+
+
         setName(response.name)
         setRating(response.rating)
         setExperience(response.experience)
@@ -110,17 +108,17 @@ const ProfileScreen = () => {
             data: response.birth,
             visibility: response.birthVisibility
         })
-        
+
     }
     async function updateUserData() {
 
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
-        let jsonBody = {matricula : store.getState().auth.matricula.toString()}
-        
+        let jsonBody = { matricula: store.getState().auth.matricula.toString() }
 
-        if(email.changed){
+
+        if (email.changed) {
             jsonBody.email = email.data
             jsonBody.emailVisibility = email.visibility
             setEmail({
@@ -130,7 +128,7 @@ const ProfileScreen = () => {
             })
         }
 
-        if(gender.changed){
+        if (gender.changed) {
             jsonBody.gender = gender.value
             jsonBody.genderVisibility = gender.visibility
             setGender({
@@ -140,10 +138,10 @@ const ProfileScreen = () => {
                 isEditing: false,
                 changed: false
             })
-            
+
         }
 
-        if(phone.changed){
+        if (phone.changed) {
             jsonBody.phone = phone.data
             jsonBody.phoneVisibility = phone.visibility
             setPhone({
@@ -153,7 +151,7 @@ const ProfileScreen = () => {
             })
         }
 
-        if(birth.changed){
+        if (birth.changed) {
             jsonBody.birth = birth.data
             jsonBody.birthVisibility = birth.visibility
             setData({
@@ -162,7 +160,7 @@ const ProfileScreen = () => {
                 changed: false
             })
         }
-        
+
         let reqs = await fetch(url + "/update", {
             method: "POST",
             headers: {
@@ -172,35 +170,61 @@ const ProfileScreen = () => {
             body: JSON.stringify(jsonBody),
         })
         let resp = await reqs.json()
-        
+
         console.log(resp)
-        
+
         setChanged(false)
     }
 
-    
-    if (!name){getUserData()}
-    
+
+    if (!name) { getUserData() }
+
     const [isCollapsedProfile, setCollapsedProfile] = useState(false)
-    
+
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={tw`p-10 pt-50`}>
+                <View style={{marginTop:40, marginLeft:30}}>
+                    <Image
+                        style={{
+                            width: 80,
+                            height: 80,
+                            resizeMode: "contain",
+                        }}
+                        source={require("../images/profile_picture.png")}
+                    />
+                    <Text>{name}</Text>
+                    
+                    {!rating && //caso ainda não tenha avaliações
+                    <Text>Você ainda não foi avaliado</Text>}
+                    
+                    {rating &&
+                        <View style={{width:100}}>
+                            <Text>{rating}</Text>
+                            <StarRating
+                                disabled = {true}
+                                rating={rating}
+                                starSize = {30}
+                                fullStarColor = "#4D4C7D"
+                                starStyle = {{}}
+                            />
+                        </View>
+                    }
+
                     <View style={{}}>
-                        
+
                         <TouchableOpacity style={{}} onPress={() => { //botão de expandir e colapsar
                             setCollapsedProfile(!isCollapsedProfile)
                         }}>
                             <Icon name={isCollapsedProfile ? "expand-more" : "expand-less"} type="material" size={15}></Icon>
                         </TouchableOpacity>
-                        
+
                         <Text>MEU PERFIL</Text>
-                        
+
                         <Collapsible collapsed={isCollapsedProfile}>
                             <ProfileData title="Email" element={email} setFunc={setEmail} changeFunc={setChanged}></ProfileData>
-                            
+
                             <Text>Matrícula: {store.getState().auth.matricula}</Text>
 
                             <ProfileData title="Número" element={phone} setFunc={setPhone} changeFunc={setChanged}></ProfileData>
@@ -208,24 +232,25 @@ const ProfileScreen = () => {
                             <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
 
                             <Text>Gênero</Text>
-                            
+
                             <TouchableOpacity style={{}} onPress={() => switchGenderAttribute("isEditing")}>
                                 <Icon name={gender.isEditing ? "done" : "edit"} type="material" size={15}></Icon>
                             </TouchableOpacity>
-                            
+
                             {!gender.isEditing && //se não tiver editando, mostra o genero como texto
-                            <Text>{gender.data}</Text>}
+                                <Text>{gender.data}</Text>}
 
                             <TouchableOpacity style={{}} onPress={() => { //troca a visibilidade do genero
-                                switchGenderAttribute("visibility")}}>
+                                switchGenderAttribute("visibility")
+                            }}>
                                 <Icon name={gender.visibility ? "public" : "public-off"} type="material" size={15} color="#000000"></Icon>
                             </TouchableOpacity>
-                            
+
                             {gender.isEditing && //se tiver editando, mostra o genero como o picker select
                                 <Picker
                                     selectedValue={gender.value}
-                                    style={{height: 50, width: 100}}
-                                    onValueChange={(itemValue, itemIndex) =>{
+                                    style={{ height: 50, width: 100 }}
+                                    onValueChange={(itemValue, itemIndex) => {
                                         setGender({
                                             value: itemValue,
                                             data: getGenderName(itemValue),
@@ -234,24 +259,25 @@ const ProfileScreen = () => {
                                             changed: true
                                         })
                                         setChanged(true)
-                                        }
+                                    }
                                     }>
                                     <Picker.Item label="Femino" value="F" />
                                     <Picker.Item label="Masculino" value="M" />
                                     <Picker.Item label="Outro" value="O" />
                                     <Picker.Item label="Não quero informar" value={null} />
                                 </Picker>
-                            }   
+                            }
                         </Collapsible>
-                        
-                        
+
+
                     </View>
                     {
-                    changed && //caso tenha alterações, mostrar o botão de salvar alterações
-                    <TouchableOpacity style={{}} onPress={updateUserData}>
-                        <Text style={{}}>Salvar alterações</Text>
-                    </TouchableOpacity>
+                        changed && //caso tenha alterações, mostrar o botão de salvar alterações
+                        <TouchableOpacity style={{}} onPress={updateUserData}>
+                            <Text style={{}}>Salvar alterações</Text>
+                        </TouchableOpacity>
                     }
+
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

@@ -36,15 +36,15 @@ const ProfileData = (props) => {
             </TouchableOpacity>
 
             {!isEditing && //se não tiver editando, irá aparecer um texto normal
-            <Text>{props.element.data}</Text>
+                <Text>{props.element.data}</Text>
             }
             
             {isEditing && //se tiver editando, irá aparecer a caixa para escrever
-            <TextInput
-                style={{}}
-                defaultValue= {props.element.data}
-                onChangeText={(text) => setCurrentData(text)}
-            />
+                <TextInput
+                    style={{}}
+                    defaultValue= {props.element.data}
+                    onChangeText={(text) => setCurrentData(text)}
+                />
             }
 
             <TouchableOpacity style={{}} onPress={() => editData()}>
