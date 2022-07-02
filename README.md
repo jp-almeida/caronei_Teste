@@ -13,7 +13,7 @@ Verifica se houve alguma mudança nas dependências
 - <code>yarn</code>
 - <code>npm install</code>
 
-### 2º passso - Inicializar o XAMPP
+### 2º passo - Inicializar o XAMPP
 Inicializar o servidor apache e o banco de dados mysql
 - Abrir o aplicativo (pesquisar por "XAMPP" na busca)
 - Na coluna **actions** clicar em **start** tanto na linha do **apache** quanto na linha do **mysql**
@@ -64,6 +64,7 @@ Alguns problemas podem ocorrer.
 
 
 ## Links importantes
-- [Rating - React Native Elements](https://reactnativeelements.com/docs/1.2.0/rating)
+- [Star rating](https://github.com/djchie/react-native-star-rating)
 - [Collapsible](https://www.npmjs.com/package/react-native-collapsible)
 - [Icones compatíveis (material)](https://materialdesignicons.com/)
+- [Date Picker](https://github.com/react-native-datetimepicker/datetimepicker)
