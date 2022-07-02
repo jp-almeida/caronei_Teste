@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     TextInput,
     SafeAreaView,
+    Keyboard
 } from "react-native"
 import React, { useState } from "react"
 import tw from "twrnc"

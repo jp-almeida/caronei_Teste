@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import React, { useState } from "react"
-import { Image } from "react-native"
+import { Image, Keyboard } from "react-native"
 import tw from "twrnc"
 import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
 import config from "../config/config.json"
 import { Icon } from "react-native-elements"
 import ProfileData from "../components/ProfileData"
+import Collapsible from 'react-native-collapsible';
 
-
+//PARA SABER MAIS SOBRE O NEGOCIO DE COLAPSAR https://www.npmjs.com/package/react-native-collapsible
 
 const ProfileScreen = () => {
     const [name, setName] = useState(null)
@@ -20,7 +21,6 @@ const ProfileScreen = () => {
         data: null,
         visibility: null
     })
-    
     const [gender, setGender] = useState({
         data: null,
         visibility: null
@@ -135,6 +135,7 @@ const ProfileScreen = () => {
     
     if (!name){getUserData()}
     
+    const [isCollapsed, setCollapsed] = useState(false)
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
@@ -142,17 +143,23 @@ const ProfileScreen = () => {
                 <View style={tw`p-10 pt-50`}>
                     <View style={{}}>
                         <Text>MEU PERFIL</Text>
-
-                        <ProfileData title="Email" element={email} setFunc={setEmail} changeFunc={setChanged}></ProfileData>
                         
-                        <Text>Matrícula: {store.getState().auth.matricula}</Text>
+                        <TouchableOpacity style={{}} onPress={() => setCollapsed(!isCollapsed)}>
+                            <Icon name="done" type="material" size={15}></Icon>
+                        </TouchableOpacity>
+                        <Collapsible collapsed={isCollapsed}>
+                            <ProfileData title="Email" element={email} setFunc={setEmail} changeFunc={setChanged}></ProfileData>
+                            
+                            <Text>Matrícula: {store.getState().auth.matricula}</Text>
 
-                        <ProfileData title="Número" element={phone} setFunc={setPhone} changeFunc={setChanged}></ProfileData>
+                            <ProfileData title="Número" element={phone} setFunc={setPhone} changeFunc={setChanged}></ProfileData>
 
-                        <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
+                            <ProfileData title="Data de nascimento" element={birth} setFunc={setBirth} changeFunc={setChanged}></ProfileData>
 
-                        <ProfileData title="Gênero" element={gender} setFunc={setGender} changeFunc={setChanged}></ProfileData>
+                            <ProfileData title="Gênero" element={gender} setFunc={setGender} changeFunc={setChanged}></ProfileData>
 
+                        </Collapsible>
+                        
                     </View>
                     {
                     changed && //caso tenha alterações, mostrar o botão de salvar alterações
