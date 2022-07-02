@@ -14,6 +14,8 @@ import SignUpScreen from "./screens/SignUpScreen"
 import LogInScreen from "./screens/LogInScreen"
 import DriverScreen from "./screens/DriverScreen"
 import ProfileScreen from "./screens/ProfileScreen"
+import RecoverPswdScreen from "./screens/RecoverPswdScreen"
+import PswdRecoveredScreen from "./screens/PswdRecoveredScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -25,6 +27,22 @@ export default function App() {
             <Stack.Screen
               name="SignUpScreen"
               component={SignUpScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
+              name="RecoverPswdScreen"
+              component={RecoverPswdScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
+              name="PswdRecoveredScreen"
+              component={PswdRecoveredScreen}
               options={{
                 headerShown: false,
               }}
