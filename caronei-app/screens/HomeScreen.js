@@ -18,6 +18,7 @@ import { logoutAuth } from "../slices/userAuth"
 import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
 import config from "../config/config.json"
+import paradas from "../paradas/paradas.json"
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
