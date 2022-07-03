@@ -15,6 +15,7 @@ import { Image } from "react-native"
 import { useDispatch } from "react-redux"
 import { loginAuth } from "../slices/userAuth"
 import { useNavigation } from "@react-navigation/native"
+import { DefaultButton } from '../components/Button'
 
 //codigo adaptado de https://webdesignemfoco.com/cursos/react-js/integracoes-com-react-native-3-frontend
 
@@ -24,9 +25,9 @@ const InitialScreen = () => {
     const navigation = useNavigation()
 
     const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao) ou de preenchimento do formulario
-    
+
     async function login() {
-        
+
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
@@ -42,44 +43,65 @@ const InitialScreen = () => {
                 userPassword: password,
             })
         });
-        
+
         let response = await reqs.json();
         setMessage(response.message)
-        
+
     }
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={tw`p-10 pt-50`}>
-                    <Image
+                <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
+                    <View
                         style={{
-                            width: 150,
-                            height: 200,
-                            resizeMode: "contain",
+                            flex: 1,
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            padding: 45
                         }}
-                        source={require("../images/logo.png")}
+                    >
+                        <Image
+                            style={{
+                                width: 150,
+                                height: 200,
+                                resizeMode: "contain",
+                            }}
+                            source={require("../images/logo.png")}
                         />
-                    
-                    <Text style={{}}>Olá, seja bem vindo</Text>
 
-                    <View style={{}}>
-                        <TouchableOpacity
-                            style={{}}
-                            onPress={() => navigation.navigate("SignUpScreen")}
-                        >
-                            <Text style={{}}>Criar uma conta</Text>
-                        </TouchableOpacity>
+                        <Text style={{textAlign: 'center', color: '#4D4C7D'}}>Olá, seja bem vindo</Text>
 
-                        <Text style={{}}>Já tem uma conta?</Text>
-                        
-                        <TouchableOpacity
-                            style={{}}
-                            onPress={() => navigation.navigate("LogInScreen")}
-                        >
-                            <Text style={{}}>Entrar</Text>
-                        </TouchableOpacity>
+                        <View>
+                            <View style={{ marginBottom: 15 }}>
+                                <DefaultButton title="Criar uma conta" onPress={() => navigation.navigate('SignUpScreen')} />
+                            </View>
+    
+                            <Text style={{color: '#4D4C7D'}}>Já tem conta?</Text>
 
+                            <View style={{}}>
+                                <DefaultButton title="Entrar" onPress={() => navigation.navigate('LogInScreen')} />
+                            </View>
+                            
+
+                           
+                            <Image
+                                style={{
+                                    width: 150,
+                                    height: 200,
+                                    resizeMode: "contain",
+                                }}
+                                source={require("../images/ufc_logo.png")}
+                            />
+                            <Image
+                                style={{
+                                    width: 150,
+                                    height: 200,
+                                    resizeMode: "contain",
+                                }}
+                                source={require("../images/cc_logo.png")}
+                            />
+                        </View>
                     </View>
                 </View>
             </TouchableWithoutFeedback>

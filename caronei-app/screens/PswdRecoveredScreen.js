@@ -77,7 +77,7 @@ const PswdRecoveredScreen = () => {
                       style={{}}
                       onPress={() => navigation.navigate("LogInScreen")}
                   >
-                      <Text style={{}}>Confirmar e voltar para tela inicial</Text>
+                      <Text style={{}}>Confirmar e voltar para Login</Text>
                   </TouchableOpacity>
 
         

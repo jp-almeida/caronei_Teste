@@ -125,7 +125,7 @@ const LogInScreen = () => {
               </View>
 
               <View style={{}}>
-                <DefaultButton title="Voltar" onPress={() => {}} />
+                <DefaultButton title="Voltar" onPress={() => navigation.navigate('InitialScreen')} />
               </View>
 
               <TouchableOpacity
