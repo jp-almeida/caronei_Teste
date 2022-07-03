@@ -10,35 +10,36 @@ import {
 import React, { useState } from "react"
 import tw from "twrnc"
 import config from "../config/config.json"
-
+import { Image } from "react-native"
 
 import { useDispatch } from "react-redux"
+import { loginAuth } from "../slices/userAuth"
 import { useNavigation } from "@react-navigation/native"
 
 //codigo adaptado de https://webdesignemfoco.com/cursos/react-js/integracoes-com-react-native-3-frontend
 
-const RecoverPswdScreen = () => {
+const InitialScreen = () => {
     const dispatch = useDispatch()
 
     const navigation = useNavigation()
 
-    const [email, setEmail] = useState(null)
+    const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao) ou de preenchimento do formulario
     
-    
-    async function recoverPswd() {
+    async function login() {
         
         //gambiarra porque as portas não estavam batendo
         let original_port = config.urlRootNode.split(":")[2]
         let url = config.urlRootNode.replace(original_port, config.backend_port)
         //console.log(url)
-        let reqs = await fetch(url + '/recoverpswd', {
+        let reqs = await fetch(url + '/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userEmail: email,
+                userMatricula: matricula,
+                userPassword: password,
             })
         });
         
@@ -51,39 +52,40 @@ const RecoverPswdScreen = () => {
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={tw`p-10 pt-50`}>
-
-                <View style={{}}>
-                    <Text style={{}}>RECUPERE SUA CONTA</Text>
-                    <Text style={{}}>Entre seu email</Text>
-                        <TextInput
-                            style={{}}
-                            placeholder="Email"
-                            onChangeText={(text) => setEmail(text)}
+                    <Image
+                        style={{
+                            width: 150,
+                            height: 200,
+                            resizeMode: "contain",
+                        }}
+                        source={require("../images/logo.png")}
                         />
+                    
+                    <Text style={{}}>Olá, seja bem vindo</Text>
 
-                        <Text style={{}}>Após apertar Continuar, um código será enviado para seu e-mail para que você possa redefinir sua senha </Text>
-
+                    <View style={{}}>
                         <TouchableOpacity
                             style={{}}
-                            onPress={() => navigation.navigate("PswdRecoveredScreen")}
+                            onPress={() => navigation.navigate("SignUpScreen")}
                         >
-                            <Text style={{}}>Continuar</Text>
+                            <Text style={{}}>Criar uma conta</Text>
                         </TouchableOpacity>
 
+                        <Text style={{}}>Já tem uma conta?</Text>
+                        
                         <TouchableOpacity
                             style={{}}
                             onPress={() => navigation.navigate("LogInScreen")}
                         >
-                            <Text style={{}}>Voltar</Text>
+                            <Text style={{}}>Entrar</Text>
                         </TouchableOpacity>
+
                     </View>
-               
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>
     )
 }
 
-
-export default RecoverPswdScreen
+export default InitialScreen
 

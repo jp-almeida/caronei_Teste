@@ -5,6 +5,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context"
 import "react-native-gesture-handler"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
+
 import { store } from "./store"
 import HomeScreen from "./screens/HomeScreen"
 import MapScreen from "./screens/MapScreen"
@@ -14,6 +16,7 @@ import DriverScreen from "./screens/DriverScreen"
 import ProfileScreen from "./screens/ProfileScreen"
 import RecoverPswdScreen from "./screens/RecoverPswdScreen"
 import PswdRecoveredScreen from "./screens/PswdRecoveredScreen"
+import InitialScreen from "./screens/InitialScreen"
 import HomeScreen2 from "./screens/HomeScreen2"
 
 export default function App() {
@@ -30,6 +33,14 @@ export default function App() {
                 headerShown: false,
               }}
             /> */}
+            <Stack.Screen
+              name="InitialScreen"
+              component={InitialScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
             <Stack.Screen
               name="SignUpScreen"
               component={SignUpScreen}
