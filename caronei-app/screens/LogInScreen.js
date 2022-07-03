@@ -47,7 +47,7 @@ const LogInScreen = () => {
         let response = await reqs.json();
         setMessage(response.message)
 
-        if(response.token){ //muda o estado para logado caso tenha recebido o token
+        if(typeof(response.token) === "number"){ //muda o estado para logado caso tenha recebido o token
             dispatch(loginAuth(response.token))
 
             navigation.navigate("HomeScreen")

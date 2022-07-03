@@ -6,7 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const model = require('./models');
-const golib = require("geolib")
+const geolib = require("geolib")
 
 let app = express();
 
@@ -23,15 +23,17 @@ app.post('/create', async(request, response) => {
     let user, created = await model.Usuarios.findOrCreate({
         where: {matricula: request.body.userMatricula},
         defaults:
-        {'nomeCompleto': request.body.userName,
+        {
+        'matricula':request.body.userMatricula,
+        'nomeCompleto': request.body.userName,
         'email': request.body.userEmail,
         'senha': request.body.userPassword,
         'createdAt': new Date(),
         'updatedAt': new Date(),}})
-    if(!created){
+    if(user){
         return response.send(JSON.stringify('Usuário já cadastrado'));
     }
-    if(user && created){
+    if(created){
         return response.send(JSON.stringify('O usuário foi cadastrado com sucesso!'));
     }
     else{
@@ -67,8 +69,8 @@ app.post('/login', async(request, response) => {
         }
             
     }
-    
-    response.end(JSON.stringify(response_data))
+    console.log(response_data.token)
+    return response.end(JSON.stringify(response_data))
 
 })
 
@@ -172,7 +174,28 @@ app.post('/solicitar', async(request, response) =>{
     }
 })
 
+app.post('/adicionar-carro/', async(request,response) => {
+    console.log(request)
+    let user, created = await model.Carros.findOrCreate({
+        where: {
+            matricula: request.body.userMatricula, 
+            placa: request.body.placa},
+        defaults:
+        {'cor': request.body.cor,
+        'modelo': request.body.modelo,
+        'createdAt': new Date(),
+        'updatedAt': new Date(),}})
+    if(!created){
+        return response.send(JSON.stringify('Carro já cadastrado'));
+    }
+    if(user && created){
+        return response.send(JSON.stringify('O carro foi cadastrado com sucesso!'));
+    }
+    else{
+        return response.send(JSON.stringify('Ocorreu algum problema. Tente novamente'))
+    }
 
+})
 //configurando o servidor
 let port = config.backend_port //process.env.PORT || 3000
 
