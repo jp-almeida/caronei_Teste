@@ -68,3 +68,4 @@ Alguns problemas podem ocorrer.
 - [Collapsible](https://www.npmjs.com/package/react-native-collapsible)
 - [Icones compatíveis (material)](https://materialdesignicons.com/)
 - [Date Picker](https://github.com/react-native-datetimepicker/datetimepicker)
+- [Dialog (pop up)](https://reactnativeelements.com/docs/next/components/dialog)
