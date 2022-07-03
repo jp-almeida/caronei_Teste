@@ -174,6 +174,7 @@ app.post('/solicitar', async(request, response) =>{
     }
 })
 
+//adicionar um carro
 app.post('/adicionar-carro/', async(request,response) => {
     console.log(request)
     let user, created = await model.Carros.findOrCreate({
@@ -197,6 +198,7 @@ app.post('/adicionar-carro/', async(request,response) => {
     }
 
 })
+//carregar todos os carros do banco de dados de acordo com uma matricula
 app.get('/carros/:matricula', async(request,response) => {
     const {matricula} = request.params
     let carros = await model.Carros.findAll({
@@ -207,7 +209,26 @@ app.get('/carros/:matricula', async(request,response) => {
 
 })
 
+//alterar carro
+app.post('/alterar-carro/', async(request, response) => {
+    model.Carros.update(
+        { 
+            placa: request.body.placa,
+            cor: request.body.cor,
+            modelo: request.body.modelo,
+            updatedAt: new Date()
+    
+        },
+            { where: { matricula: request.body.matricula, placa: request.body.placa } }
+    )
+    .then(result =>
+        response.send(JSON.stringify(true))
+    )
+    .catch(err =>
+        response.send(JSON.stringify(false))
+    )
 
+})
 //configurando o servidor
 let port = config.backend_port //process.env.PORT || 3000
 

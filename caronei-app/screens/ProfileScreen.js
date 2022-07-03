@@ -15,9 +15,11 @@ import EditButton from "../components/EditButton"
 import VisibilityButton from "../components/VisibilityButton"
 import ExpandButton from "../components/ExpandButton"
 import { Dialog } from "react-native-elements"
+import CarProfileLine from "../components/CarProfileLine"
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], config.backend_port)
+var cars = []
 
 function getGenderName(gender) {
     switch (gender) {
@@ -193,7 +195,17 @@ const ProfileScreen = () => {
             },
         });
         const response = await reqs.json()
-        setCars(response)
+        let carros = []
+        response.forEach(car => {
+            carros.push( {
+                ...car,
+                isEditing: false,
+                changed: false
+            })
+        })
+        
+        setCars(carros)
+        
     }
     if (!name) { getUserData(); getCars()}
 
@@ -202,6 +214,7 @@ const ProfileScreen = () => {
     const [isAddingCar, setAddingCar] = useState(false)
 
     let placa, modelo, cor
+    
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -323,7 +336,6 @@ const ProfileScreen = () => {
                         
                             <Dialog
                                 visible={isAddingCar}
-                                dialogTitle={<Text>TESTE</Text>}
                                 onTouchOutside={() => setAddingCar(false)}
                             >
                                 <Dialog.Title title="Adicionar um carro"/>
@@ -342,17 +354,21 @@ const ProfileScreen = () => {
                                     style={{}}
                                     onChangeText={(text) => {cor = text}}
                                 />
-                                <Dialog.Button title="Adicionar" onPress = {() => {setAddingCar(false); addCar(placa,cor,modelo)}}/>
+                                <Dialog.Button title="Adicionar" onPress = {() => {setAddingCar(false); addCar(placa,modelo,cor)}}/>
                                 <Dialog.Button title="Cancelar" onPress = {() => setAddingCar(false)}/>
                             </Dialog>
-
+                            <Text>Placa | Modelo | Cor</Text>
                             {cars.map(c => (
-                                <View>
-                                    <Text>{c.cor}</Text>
-                                    <Text>{c.placa}</Text>
-                                    <Text>{c.modelo}</Text>
-                                </View>
-                                ))}
+                                <CarProfileLine carro={c} editFunction={(value) => 
+                                    {
+                                        let cars_copia = [...cars] //copia do array (para poder modificar)
+                                        let idx = cars.map(car => {return car.placa}).indexOf(c.placa) //indice do carro no array
+                                        cars_copia[idx] = value
+                                        setCars(cars_copia)
+                                    
+                                    }}
+                                />
+                            ))}
 
                         </Collapsible>
 
