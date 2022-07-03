@@ -5,6 +5,9 @@ npx sequelize-cli model:generate --name Pedidos --attributes matricula:string,no
 
 npx sequelize-cli model:generate --name Matches --attributes matriculaMotorista:string,matriculaPassageiro:string,nomeDestino:string,latitudeDestino:float,longitudeDestino:float
 
+
+npx sequelize-cli model:generate --name Carros --attributes placa:string,matricula:integer,modelo:string,cor:string
+
 #################
 
 npx sequelize-cli model:generate --name Carona_Oferecida --attributes matriculaMotorista:integer,origem:string,destino:string,ativa:boolean

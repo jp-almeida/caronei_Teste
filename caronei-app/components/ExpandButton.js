@@ -7,7 +7,7 @@ const ExpandButton = (props) => {
     <TouchableOpacity style={{}} onPress={() => { //botão de expandir e colapsar
         props.collapseFunction(!props.isCollapsed)
     }}>
-        <Icon name={!props.isCollapsed ? "expand-more" : "expand-less"} type="material" size={15}></Icon>
+        <Icon name={!props.isCollapsed ? "expand-more" : "keyboard-arrow-right"} type="material" size={15}></Icon>
     </TouchableOpacity>
   )
 }

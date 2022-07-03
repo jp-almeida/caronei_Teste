@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, TextInput } from "react-native"
 import React, { useState } from "react"
 import { Image, Keyboard } from "react-native"
 import tw from "twrnc"
@@ -14,6 +14,10 @@ import RNDateTimePicker from "@react-native-community/datetimepicker"
 import EditButton from "../components/EditButton"
 import VisibilityButton from "../components/VisibilityButton"
 import ExpandButton from "../components/ExpandButton"
+import { Dialog } from "react-native-elements"
+
+//gambiarra porque as portas não estavam batendo
+const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], config.backend_port)
 
 function getGenderName(gender) {
     switch (gender) {
@@ -23,8 +27,10 @@ function getGenderName(gender) {
             return "Feminino"
         case "O":
             return "Outro"
-        default:
+        case "N":
             return "Não quero informar"
+        default:
+            return null
     }
 }
 
@@ -58,11 +64,9 @@ const ProfileScreen = () => {
         isEditing: false,
         changed: false
     })
+    const [cars, setCars] = useState([])
 
     async function getUserData() { //pega os dados do banco de dados e preenche as variaveis
-        //gambiarra porque as portas não estavam batendo
-        let original_port = config.urlRootNode.split(":")[2]
-        let url = config.urlRootNode.replace(original_port, config.backend_port)
 
         let reqs = await fetch(url + '/data/' + store.getState().auth.matricula, {
             method: 'GET',
@@ -97,7 +101,7 @@ const ProfileScreen = () => {
         setBirth({
             ...birth,
             visibility: response.birthVisibility,
-            data: new Date(response.birth), //converte para objeto de data (chega do back em string)
+            data: response.birth ? new Date(response.birth) : response.birth, //converte para objeto de data (chega do back em string)
         })
 
     }
@@ -162,15 +166,46 @@ const ProfileScreen = () => {
         setChanged(false)
     }
 
+    async function addCar(placaCarro, modeloCarro, corCarro){
+        let reqs = await fetch(url + "/adicionar-carro/", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                matricula: store.getState().auth.matricula,
+                placa: placaCarro,
+                modelo: modeloCarro,
+                cor: corCarro
+            }),
+        })
+        let resp = await reqs.json()
+        getCars() //atualiza os carros
+    }
 
-    if (!name) { getUserData() }
+    async function getCars(){ //carrega os carros do banco de dados
+        let reqs = await fetch(url + '/carros/' + store.getState().auth.matricula, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        });
+        const response = await reqs.json()
+        setCars(response)
+    }
+    if (!name) { getUserData(); getCars()}
 
     const [isCollapsedProfile, setCollapsedProfile] = useState(false)
+    const [isCollapsedCars, setCollapsedCars] = useState(false)
+    const [isAddingCar, setAddingCar] = useState(false)
 
+    let placa, modelo, cor
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={{marginTop:40, marginLeft:30}}>
+                <View style={{ marginTop: 40, marginLeft: 30 }}>
                     <Image
                         style={{
                             width: 80,
@@ -180,51 +215,51 @@ const ProfileScreen = () => {
                         source={require("../images/profile_picture.png")}
                     />
                     <Text>{name}</Text>
-                    
+
                     {!rating && //caso ainda não tenha avaliações
-                    <Text>Você ainda não foi avaliado</Text>}
-                    
+                        <Text>Você ainda não foi avaliado</Text>}
+
                     {rating &&
-                        <View style={{width:100}}>
+                        <View style={{ width: 100 }}>
                             <Text>{rating}</Text>
                             <StarRating
-                                disabled = {true}
+                                disabled={true}
                                 rating={rating}
-                                starSize = {30}
-                                fullStarColor = "#4D4C7D"
-                                starStyle = {{}}
+                                starSize={30}
+                                fullStarColor="#4D4C7D"
+                                starStyle={{}}
                             />
                         </View>
                     }
 
                     <View style={{}}>
 
-                        <ExpandButton isCollapsed = {isCollapsedProfile} collapseFunction = {setCollapsedProfile} />
+                        <ExpandButton isCollapsed={isCollapsedProfile} collapseFunction={setCollapsedProfile} />
 
-                        <Text>MEU PERFIL</Text>
+                        <Text>Meus dados</Text>
 
                         <Collapsible collapsed={isCollapsedProfile}>
-                            <ProfileData title="Email" element={email} editFunction={setEmail} changeFunction={setChanged}></ProfileData>
+                            <ProfileData title="Email" element={email} editFunction={setEmail} changeFunction={setChanged} />
 
                             <Text>Matrícula: {store.getState().auth.matricula}</Text>
 
-                            <ProfileData title="Número" element={phone} editFunction={setPhone} changeFunction={setChanged}></ProfileData>
+                            <ProfileData title="Número" element={phone} editFunction={setPhone} changeFunction={setChanged} />
 
                             <Text>Data de nascimento</Text>
                             <Text>
                                 {birth.data ?
-                                birth.data.getDate() + "/" + (birth.data.getMonth()+1) + "/" + birth.data.getFullYear() :
-                                "(Informe sua data de nascimento)"}
+                                    birth.data.getDate() + "/" + (birth.data.getMonth() + 1) + "/" + birth.data.getFullYear() :
+                                    "(Informe sua data de nascimento)"}
                             </Text>
-                            
-                            <EditButton element={birth} editFunction={setBirth}/>
-                            
+
+                            <EditButton element={birth} editFunction={setBirth} />
+
                             {birth.isEditing &&
-                                <RNDateTimePicker 
+                                <RNDateTimePicker
                                     mode="date"
-                                    
+
                                     value={birth.data ? birth.data : new Date()}
-                                    maximumDate= {new Date()}
+                                    maximumDate={new Date()}
                                     onChange={(event, date) => {
                                         setBirth({
                                             ...birth,
@@ -236,17 +271,17 @@ const ProfileScreen = () => {
                                     }}
                                 />
                             }
-                            
+
 
                             <Text>Gênero</Text>
 
-                            <EditButton element ={gender} editFunction = {setGender} changeFunction={setChanged} />
+                            <EditButton element={gender} editFunction={setGender} changeFunction={setChanged} />
 
                             {!gender.isEditing && //se não tiver editando, mostra o genero como texto
                                 <Text>{gender.data ? gender.data : "(Informe seu gênero)"}</Text>}
 
-                            <VisibilityButton element = {gender} changeFunction = {setChanged} editFunction = {setGender} />
-                           
+                            <VisibilityButton element={gender} changeFunction={setChanged} editFunction={setGender} />
+
                             {gender.isEditing && //se tiver editando, mostra o genero como o picker select
                                 <Picker
                                     selectedValue={gender.value}
@@ -265,19 +300,64 @@ const ProfileScreen = () => {
                                     <Picker.Item label="Feminino" value="F" />
                                     <Picker.Item label="Masculino" value="M" />
                                     <Picker.Item label="Outro" value="O" />
-                                    <Picker.Item label="Não quero informar" value={null} />
+                                    <Picker.Item label="Não quero informar" value="N" />
                                 </Picker>
+                            }
+                            {
+                                changed && //caso tenha alterações, mostrar o botão de salvar alterações
+                                <TouchableOpacity style={{}} onPress={updateUserData}>
+                                    <Text style={{}}>Salvar alterações</Text>
+                                </TouchableOpacity>
                             }
                         </Collapsible>
 
+                        <ExpandButton isCollapsed={isCollapsedCars} collapseFunction={setCollapsedCars} />
+
+                        <Text>Meus carros</Text>
+                        <TouchableOpacity style={{}} onPress={() => {setAddingCar(!isAddingCar)}}>
+                            <Icon name="add" type="material" size={15}/>
+                        </TouchableOpacity>
+                            
+
+                        <Collapsible collapsed={isCollapsedCars}>
+                        
+                            <Dialog
+                                visible={isAddingCar}
+                                dialogTitle={<Text>TESTE</Text>}
+                                onTouchOutside={() => setAddingCar(false)}
+                            >
+                                <Dialog.Title title="Adicionar um carro"/>
+                                <Text>Placa</Text>
+                                <TextInput
+                                    style={{}}
+                                    onChangeText={(text) => {placa = text}}
+                                />
+                                <Text>Modelo</Text>
+                                <TextInput
+                                    style={{}}
+                                    onChangeText={(text) => {modelo = text}}
+                                />
+                                <Text>Cor</Text>
+                                <TextInput
+                                    style={{}}
+                                    onChangeText={(text) => {cor = text}}
+                                />
+                                <Dialog.Button title="Adicionar" onPress = {() => {setAddingCar(false); addCar(placa,cor,modelo)}}/>
+                                <Dialog.Button title="Cancelar" onPress = {() => setAddingCar(false)}/>
+                            </Dialog>
+
+                            {cars.map(c => (
+                                <View>
+                                    <Text>{c.cor}</Text>
+                                    <Text>{c.placa}</Text>
+                                    <Text>{c.modelo}</Text>
+                                </View>
+                                ))}
+
+                        </Collapsible>
 
                     </View>
-                    {
-                        changed && //caso tenha alterações, mostrar o botão de salvar alterações
-                        <TouchableOpacity style={{}} onPress={updateUserData}>
-                            <Text style={{}}>Salvar alterações</Text>
-                        </TouchableOpacity>
-                    }
+
 
                 </View>
             </TouchableWithoutFeedback>

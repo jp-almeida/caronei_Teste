@@ -178,10 +178,11 @@ app.post('/adicionar-carro/', async(request,response) => {
     console.log(request)
     let user, created = await model.Carros.findOrCreate({
         where: {
-            matricula: request.body.userMatricula, 
+            matricula: request.body.matricula, 
             placa: request.body.placa},
         defaults:
-        {'cor': request.body.cor,
+        {
+        'cor': request.body.cor,
         'modelo': request.body.modelo,
         'createdAt': new Date(),
         'updatedAt': new Date(),}})
@@ -196,6 +197,17 @@ app.post('/adicionar-carro/', async(request,response) => {
     }
 
 })
+app.get('/carros/:matricula', async(request,response) => {
+    const {matricula} = request.params
+    let carros = await model.Carros.findAll({
+        where: {matricula: matricula, },
+        attributes: ["placa", "modelo", "cor"]})
+    
+    return response.send(JSON.stringify(carros))
+
+})
+
+
 //configurando o servidor
 let port = config.backend_port //process.env.PORT || 3000
 
