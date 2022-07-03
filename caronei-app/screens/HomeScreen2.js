@@ -21,19 +21,17 @@ const HomeScreen2 = () => {
   }, [])
 
   function renderOptions(item) {
-    console.log("item", item)
-    // console.log("originalData", originalData)
     return (
       <View style={styles.card}>
         <TouchableHighlight
-          style={styles.itemm}
+          style={styles.item}
           onPress={() => {
             setTitle(item.nome)
             setData([])
           }}
         >
           <Text style={{ color: "black" }} numberOfLines={1}>
-            {item.nome} AAAAAAAAAAAA
+            {item.item.nome}
           </Text>
         </TouchableHighlight>
       </View>
