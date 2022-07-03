@@ -1,52 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
 import { Dialog, Icon } from "react-native-elements"
 import React from 'react'
-import EditButton from './EditButton'
+import EditButton from './buttons/EditButton'
 import { store } from '../store'
 import config from '../config/config.json'
+import { updateCar } from '../requestsFunctions'
 
 
 
 const CarProfileLine = (props) => {
-    
-
-    async function updateCar(cor, placa, modelo) {
-        //gambiarra porque as portas não estavam batendo
-        let original_port = config.urlRootNode.split(":")[2]
-        let url = config.urlRootNode.replace(original_port, config.backend_port)
-    
-        let reqs = await fetch(url + "/alterar-carro/", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                matricula: store.getState().auth.matricula,
-                cor: cor,
-                placa: placa,
-                modelo: modelo
-            }),
-        })
-        let resp = await reqs.json()
-        if(resp){
-            props.editFunction({
-                ...props.carro,
-                placa: placa,
-                modelo: modelo,
-                cor: cor,
-                isEditing: false,
-                changed: true
-            })
-        }
-    }
 
     let placa = props.carro.placa
     let modelo = props.carro.placa
     let cor = props.carro.cor
 
-    
-    
     return (
         <View>
             <Text>{props.carro.placa} {props.carro.modelo} {props.carro.cor}</Text>
@@ -76,7 +43,18 @@ const CarProfileLine = (props) => {
                         onChangeText={(text) => {cor = text}}
                     />
                     <Dialog.Button title="Adicionar" onPress = {() => {
-                        updateCar(cor,placa,modelo)
+                        let resp = updateCar(cor,placa,modelo)
+                        if(resp){
+                            props.editFunction({
+                                ...props.carro,
+                                placa: placa,
+                                modelo: modelo,
+                                cor: cor,
+                                isEditing: false,
+                                changed: true
+                            })
+                        }
+                        
                     }}/>
                     <Dialog.Button title="Cancelar" onPress = {() => 
                         props.editFunction({

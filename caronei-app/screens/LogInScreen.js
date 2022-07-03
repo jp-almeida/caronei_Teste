@@ -114,14 +114,14 @@ const LogInScreen = () => {
                     backgroundColor: '#e6e6e6',
                     borderRadius: 5
                   }}
-                  onChangeText={text => setMatricula(text)}
+                  onChangeText={text => setPassword(text)}
                 />
               </View>
             </View>
 
             <View>
               <View style={{ marginBottom: 15 }}>
-                <DefaultButton title="Enviar" onPress={() => {}} />
+                <DefaultButton title="Enviar" onPress={login} />
               </View>
 
               <View style={{}}>
@@ -137,7 +137,8 @@ const LogInScreen = () => {
 
               <TouchableOpacity
                 style={{}}
-                onPress={() => navigation.navigate('HomeScreen')}
+                onPress={() => {
+                  navigation.navigate('HomeScreen')}}
               >
                 <Text style={{}}>Pular login</Text>
               </TouchableOpacity>
