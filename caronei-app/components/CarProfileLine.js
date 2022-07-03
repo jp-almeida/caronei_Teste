@@ -43,7 +43,18 @@ const CarProfileLine = (props) => {
                         onChangeText={(text) => {cor = text}}
                     />
                     <Dialog.Button title="Adicionar" onPress = {() => {
-                        updateCar(cor,placa,modelo)
+                        let resp = updateCar(cor,placa,modelo)
+                        if(resp){
+                            props.editFunction({
+                                ...props.carro,
+                                placa: placa,
+                                modelo: modelo,
+                                cor: cor,
+                                isEditing: false,
+                                changed: true
+                            })
+                        }
+                        
                     }}/>
                     <Dialog.Button title="Cancelar" onPress = {() => 
                         props.editFunction({
