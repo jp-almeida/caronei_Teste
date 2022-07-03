@@ -1,8 +1,8 @@
 import { Text, View, TouchableOpacity, TouchableWithoutFeedback, TextInput } from "react-native"
 import React, { useState } from "react"
 import { Icon } from "react-native-elements"
-import EditButton from "./EditButton"
-import VisibilityButton from "./VisibilityButton"
+import EditButton from "./buttons/EditButton"
+import VisibilityButton from "./buttons/VisibilityButton"
 
 const ProfileData = (props) => {
     
