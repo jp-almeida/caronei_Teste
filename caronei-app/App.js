@@ -16,6 +16,7 @@ import DriverScreen from "./screens/DriverScreen"
 import ProfileScreen from "./screens/ProfileScreen"
 import RecoverPswdScreen from "./screens/RecoverPswdScreen"
 import PswdRecoveredScreen from "./screens/PswdRecoveredScreen"
+import InitialScreen from "./screens/InitialScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -24,6 +25,14 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
+            <Stack.Screen
+              name="InitialScreen"
+              component={InitialScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            
             <Stack.Screen
               name="SignUpScreen"
               component={SignUpScreen}
@@ -39,6 +48,8 @@ export default function App() {
                 headerShown: false,
               }}
             />
+
+            
 
             <Stack.Screen
               name="PswdRecoveredScreen"

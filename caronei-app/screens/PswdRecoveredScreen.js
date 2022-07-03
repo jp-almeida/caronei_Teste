@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
     TextInput,
     SafeAreaView,
-    
+    Keyboard
 } from "react-native"
 import React, { useState } from "react"
 import tw from "twrnc"
@@ -57,11 +57,11 @@ const PswdRecoveredScreen = () => {
                   {message && (
                       <Text>{message}</Text>)}
                   
-                  <Text style={{}}>Senha recebida pelo email</Text>
+                  <Text style={{}}>Código recebido pelo email</Text>
 
                   <TextInput
                       style={{}}
-                      placeholder="Senha provisória"
+                      placeholder="Código recebido pelo email"
                       secureTextEntry={true}
                   />
 
