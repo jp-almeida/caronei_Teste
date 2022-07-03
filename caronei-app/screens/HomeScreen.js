@@ -18,6 +18,7 @@ import { logoutAuth } from '../slices/userAuth'
 import { store } from '../store'
 import { useNavigation } from '@react-navigation/native'
 import config from '../config/config.json'
+import paradas from '../paradas/paradas.json'
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -53,14 +54,10 @@ const HomeScreen = () => {
       <View style={tw`p-5`}>
         <Image
           style={{
-            width: 370,
-            height: 310,
-            resizeMode: 'center'
+            width: 150,
+            height: 200,
+            resizeMode: 'contain'
           }}
-          // source={{
-          //   uri: "./images/logo.png",
-          //   uri: "https://links.papareact.com/gzs",
-          // }}
           source={require('../images/logo.png')}
         />
 
@@ -82,7 +79,7 @@ const HomeScreen = () => {
               flex: 0
             },
             textInput: {
-              fontSize: 20
+              fontSize: 18
             }
           }}
           onPress={(data, details = null) => {
@@ -95,6 +92,7 @@ const HomeScreen = () => {
             dispatch(setDestination(null))
           }}
           fetchDetails={true}
+          returnKeyType={'search'}
           enablePoweredByContainer={false}
           minLength={2}
           query={{
@@ -102,7 +100,7 @@ const HomeScreen = () => {
             language: 'en'
           }}
           nearbyPlacesAPI="GooglePlacesSearch"
-          debouce={400}
+          debounce={400}
         />
         <NavOptions />
       </View>

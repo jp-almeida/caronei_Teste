@@ -1,27 +1,36 @@
-import { Text, View, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
-import React from "react"
+import { Text, View, TouchableOpacity, TouchableWithoutFeedback, TextInput } from "react-native"
+import React, { useState } from "react"
 import { Icon } from "react-native-elements"
+import EditButton from "./EditButton"
+import VisibilityButton from "./VisibilityButton"
 
 const ProfileData = (props) => {
-    function func(){
-        props.setFunc({
-            data: props.element.data,
-            visibility: !props.element.visibility,
-            changed: true}
-        )
-        props.changeFunc(true)
-    }
+    
     return (
         <View>
-            <Text>{props.title}:</Text>
-            <Text>{props.element.data}</Text>
-            <TouchableOpacity style={{}} onPress={() => console.log("ui")}>
-                <Icon name="pencil" type="entypo" size={15}></Icon>
-            </TouchableOpacity>
+            <Text>{props.title}:</Text> 
+            <VisibilityButton element={props.element} changeFunction={props.changeFunction} editFunction={props.editFunction} />
 
-            <TouchableOpacity style={{}} onPress={func}>
-                <Icon name={props.element.visibility ? "public" : "public_off"} type="material" size={15} color={props.element.changed ? '#FF2D00': '#000000'}></Icon>
-            </TouchableOpacity>
+            {props.element.isEditing ? 
+            //se não tiver editando, irá aparecer um texto normal
+                <TextInput
+                    style={{}}
+                    defaultValue= {props.element.data}
+                    onChangeText={(text) => {
+                        props.editFunction({
+                        ...props.element,
+                        data: text,
+                        changed: true
+                        })
+                        props.changeFunction(true)
+                    }
+                }
+                />
+                : //se tiver editando, irá aparecer a caixa para escrever
+                    <Text>{props.element.data}</Text>
+            }
+
+            <EditButton element={props.element} editFunction = {props.editFunction} changeFunction = {props.changeFunc} />
             
         </View>
 

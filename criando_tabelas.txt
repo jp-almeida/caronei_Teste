@@ -1,5 +1,15 @@
 npx sequelize-cli model:generate --name Usuarios --attributes nomeCompleto:string,email:string,emailVisib:boolean,senha:string,matricula:integer,validado:date,nascimento:string,nascimentoVisib:boolean,genero:string,generoVisib:boolean,telefone:string,telefoneVisib:boolean,avaliacao:float,experiencia:integer
 
+
+npx sequelize-cli model:generate --name Pedidos --attributes matricula:string,nomeDestino:string,nomePartida:string,latitudeDestino:float,longitudeDestino:float,latitudePartida:float,latitudeDestino:float
+
+npx sequelize-cli model:generate --name Matches --attributes matriculaMotorista:string,matriculaPassageiro:string,nomeDestino:string,latitudeDestino:float,longitudeDestino:float
+
+
+npx sequelize-cli model:generate --name Carros --attributes placa:string,matricula:integer,modelo:string,cor:string
+
+#################
+
 npx sequelize-cli model:generate --name Carona_Oferecida --attributes matriculaMotorista:integer,origem:string,destino:string,ativa:boolean
 npx sequelize-cli model:generate --name Carona_Solicitada --attributes matriculaPassageiro:integer,origem:string,destino:string,ativa:boolean
 npx sequelize-cli model:generate --name Viagem --attributes matriculaMotorista:integer,matriculaPassageiro:integer,origem:string,destino:string,ativa:boolean

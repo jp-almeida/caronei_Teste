@@ -2,10 +2,10 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
   TextInput,
-  SafeAreaView
+  SafeAreaView,
+  Keyboard
 } from 'react-native'
 import React, { useState } from 'react'
 import tw from 'twrnc'
@@ -47,7 +47,7 @@ const LogInScreen = () => {
     let response = await reqs.json()
     setMessage(response.message)
 
-    if (response.token) {
+    if (typeof response.token === 'number') {
       //muda o estado para logado caso tenha recebido o token
       dispatch(loginAuth(response.token))
 
@@ -127,6 +127,13 @@ const LogInScreen = () => {
               <View style={{}}>
                 <DefaultButton title="Voltar" onPress={() => {}} />
               </View>
+
+              <TouchableOpacity
+                style={{}}
+                onPress={() => navigation.navigate('RecoverPswdScreen')}
+              >
+                <Text style={{}}>Esqueci minha senha</Text>
+              </TouchableOpacity>
 
               <TouchableOpacity
                 style={{}}

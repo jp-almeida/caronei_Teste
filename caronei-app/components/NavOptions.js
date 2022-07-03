@@ -12,13 +12,13 @@ const data = [
   {
     id: "123",
     title: "Solicitar carona",
-    image: "https://links.papareact.com/3pn",
+    image: require("../images/car.png"),
     screen: "MapScreen",
   },
   {
     id: "456",
-    title: "Restaurantes",
-    image: "https://links.papareact.com/28w",
+    title: "Oferecer carona",
+    image: require("../images/ride.png"),
     screen: "DriverScreen",
   },
 ]
@@ -38,15 +38,10 @@ const NavOptions = () => {
           style={tw`p-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40`}
           disabled={!origin}
         >
-          <View
-            style={tw`${
-              // @ts-ignore
-              !origin && "opacity-20"
-            }`}
-          >
+          <View>
             <Image
               style={{ width: 120, height: 120, resizeMode: "contain" }}
-              source={{ uri: item.image }}
+              source={item.image}
             />
             <Text style={tw`mt-2 text-lg font-semibold`}>{item.title}</Text>
             <Icon
