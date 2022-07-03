@@ -1,44 +1,50 @@
 // @ts-nocheck
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from "react-native"
-import React, { useState } from "react"
-import { Image } from "react-native"
-import tw from "twrnc"
-import NavOptions from "../components/NavOptions"
-import { GOOGLE_MAPS_APIKEY } from "@env"
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
-import { useDispatch } from "react-redux"
-import { setDestination, setOrigin } from "../slices/navSlice"
-import { logoutAuth } from "../slices/userAuth"
-import { store } from "../store"
-import { useNavigation } from "@react-navigation/native"
-import config from "../config/config.json"
-
-
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity
+} from 'react-native'
+import React, { useState } from 'react'
+import { Image } from 'react-native'
+import tw from 'twrnc'
+import NavOptions from '../components/NavOptions'
+import { GOOGLE_MAPS_APIKEY } from '@env'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import { useDispatch } from 'react-redux'
+import { setDestination, setOrigin } from '../slices/navSlice'
+import { logoutAuth } from '../slices/userAuth'
+import { store } from '../store'
+import { useNavigation } from '@react-navigation/native'
+import config from '../config/config.json'
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [name, setName] = useState(null)
 
-  function exitAccount(){
+  function exitAccount() {
     dispatch(logoutAuth())
-    navigation.navigate("LogInScreen")
+    navigation.navigate('LogInScreen')
   }
-  async function getUserName(){
+  async function getUserName() {
     //gambiarra porque as portas não estavam batendo
-    let original_port = config.urlRootNode.split(":")[2]
+    let original_port = config.urlRootNode.split(':')[2]
     let url = config.urlRootNode.replace(original_port, config.backend_port)
-    
-    let reqs = await fetch(url + '/username/'+store.getState().auth.matricula, {
+
+    let reqs = await fetch(
+      url + '/username/' + store.getState().auth.matricula,
+      {
         method: 'GET',
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-    });
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
     const response = await reqs.json()
     setName(response)
-    
   }
   getUserName()
 
@@ -47,41 +53,43 @@ const HomeScreen = () => {
       <View style={tw`p-5`}>
         <Image
           style={{
-            width: 150,
-            height: 200,
-            resizeMode: "contain",
+            width: 370,
+            height: 310,
+            resizeMode: 'center'
           }}
           // source={{
           //   uri: "./images/logo.png",
           //   uri: "https://links.papareact.com/gzs",
           // }}
-          source={require("../images/logo.png")}
+          source={require('../images/logo.png')}
         />
 
         <Text>Olá, {name}</Text>
         <TouchableOpacity style={{}} onPress={exitAccount}>
           <Text style={{}}>Sair</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{}} onPress={() => navigation.navigate("ProfileScreen") }>
+        <TouchableOpacity
+          style={{}}
+          onPress={() => navigation.navigate('ProfileScreen')}
+        >
           <Text style={{}}>Perfil</Text>
         </TouchableOpacity>
-
 
         <GooglePlacesAutocomplete
           placeholder="Local de partida"
           styles={{
             container: {
-              flex: 0,
+              flex: 0
             },
             textInput: {
-              fontSize: 18,
-            },
+              fontSize: 20
+            }
           }}
           onPress={(data, details = null) => {
             dispatch(
               setOrigin({
                 location: details.geometry.location,
-                description: data.description,
+                description: data.description
               })
             )
             dispatch(setDestination(null))
@@ -91,7 +99,7 @@ const HomeScreen = () => {
           minLength={2}
           query={{
             key: GOOGLE_MAPS_APIKEY,
-            language: "en",
+            language: 'en'
           }}
           nearbyPlacesAPI="GooglePlacesSearch"
           debouce={400}
@@ -106,6 +114,6 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   text: {
-    color: "blue",
-  },
+    color: 'blue'
+  }
 })

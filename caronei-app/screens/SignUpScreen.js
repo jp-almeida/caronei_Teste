@@ -4,12 +4,13 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   TextInput,
-  SafeAreaView,
-} from "react-native"
-import React, { useState } from "react"
-import tw from "twrnc"
-import config from "../config/config.json"
-import { useNavigation } from "@react-navigation/native"
+  Keyboard,
+  SafeAreaView
+} from 'react-native'
+import React, { useState } from 'react'
+import tw from 'twrnc'
+import config from '../config/config.json'
+import { useNavigation } from '@react-navigation/native'
 
 //codigo adaptado de https://webdesignemfoco.com/cursos/react-js/integracoes-com-react-native-3-frontend
 
@@ -26,7 +27,7 @@ const SignUpScreen = () => {
   function checkPassword(text) {
     //verifica se os dois campos de senha são iguais
     if (text != password) {
-      setPasswordMessage("As senhas não são iguais")
+      setPasswordMessage('As senhas não são iguais')
     } else {
       setPasswordMessage(null)
     }
@@ -35,27 +36,27 @@ const SignUpScreen = () => {
   async function registerUser() {
     if (passwordMessage) {
       //caso algo tenha dado errado no preenchimento do formulario de cadastro
-      setMessage("Verifique os campos")
+      setMessage('Verifique os campos')
       return
     }
 
     //gambiarra porque as portas não estavam batendo
-    let original_port = config.urlRootNode.split(":")[2]
+    let original_port = config.urlRootNode.split(':')[2]
     let url = config.urlRootNode.replace(original_port, config.backend_port)
     // console.log(original_port, url)
 
-    let reqs = await fetch(url + "/create", {
-      method: "POST",
+    let reqs = await fetch(url + '/create', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         userName: name,
         userEmail: email,
         userMatricula: matricula,
-        userPassword: password,
-      }),
+        userPassword: password
+      })
     })
     let resp = await reqs.json()
     setMessage(resp)
@@ -72,33 +73,33 @@ const SignUpScreen = () => {
             <TextInput
               style={{}}
               placeholder="Nome completo"
-              onChangeText={(text) => setName(text)}
+              onChangeText={text => setName(text)}
             />
             {/* podemos verificar se o email é válido usando aquelas formatações */}
             <TextInput
               style={{}}
               placeholder="Email"
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={text => setEmail(text)}
             />
 
             <TextInput
               style={{}}
               placeholder="Matricula"
-              onChangeText={(text) => setMatricula(text)}
+              onChangeText={text => setMatricula(text)}
             />
 
             <TextInput
               style={{}}
               placeholder="Digite a senha"
               secureTextEntry={true}
-              onChangeText={(text) => setPassword(text)}
+              onChangeText={text => setPassword(text)}
             />
 
             <TextInput
               style={{}}
               placeholder="Confirmar senha"
               secureTextEntry={true}
-              onChangeText={(text) => checkPassword(text)}
+              onChangeText={text => checkPassword(text)}
             />
             {passwordMessage && <Text>{passwordMessage}</Text>}
 
@@ -108,14 +109,14 @@ const SignUpScreen = () => {
 
             <TouchableOpacity
               style={{}}
-              onPress={() => navigation.navigate("LogInScreen")}
+              onPress={() => navigation.navigate('LogInScreen')}
             >
               <Text style={{}}>Já tenho uma conta</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={{}}
-              onPress={() => navigation.navigate("HomeScreen")}
+              onPress={() => navigation.navigate('HomeScreen')}
             >
               <Text style={{}}>Pular cadastro</Text>
             </TouchableOpacity>

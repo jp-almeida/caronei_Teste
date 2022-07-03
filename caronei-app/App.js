@@ -1,19 +1,19 @@
-import React from "react"
-import { StyleSheet, Text, View } from "react-native"
-import { Provider } from "react-redux"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import "react-native-gesture-handler"
-import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { Provider } from 'react-redux'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import 'react-native-gesture-handler'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
-import { store } from "./store"
-import HomeScreen from "./screens/HomeScreen"
-import MapScreen from "./screens/MapScreen"
-import SignUpScreen from "./screens/SignUpScreen"
-import LogInScreen from "./screens/LogInScreen"
-import DriverScreen from "./screens/DriverScreen"
-import ProfileScreen from "./screens/ProfileScreen"
+import { store } from './store'
+import HomeScreen from './screens/HomeScreen'
+import MapScreen from './screens/MapScreen'
+import SignUpScreen from './screens/SignUpScreen'
+import LogInScreen from './screens/LogInScreen'
+import DriverScreen from './screens/DriverScreen'
+import ProfileScreen from './screens/ProfileScreen'
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -26,7 +26,7 @@ export default function App() {
               name="SignUpScreen"
               component={SignUpScreen}
               options={{
-                headerShown: false,
+                headerShown: false
               }}
             />
 
@@ -34,7 +34,7 @@ export default function App() {
               name="LogInScreen"
               component={LogInScreen}
               options={{
-                headerShown: false,
+                headerShown: false
               }}
             />
 
@@ -42,14 +42,14 @@ export default function App() {
               name="HomeScreen"
               component={HomeScreen}
               options={{
-                headerShown: false,
+                headerShown: false
               }}
             />
             <Stack.Screen
               name="ProfileScreen"
               component={ProfileScreen}
               options={{
-                headerShown: false,
+                headerShown: false
               }}
             />
 
@@ -57,7 +57,7 @@ export default function App() {
               name="MapScreen"
               component={MapScreen}
               options={{
-                headerShown: false,
+                headerShown: false
               }}
             />
 
@@ -65,7 +65,7 @@ export default function App() {
               name="DriverScreen"
               component={DriverScreen}
               options={{
-                headerShown: false,
+                headerShown: false
               }}
             />
 
@@ -80,8 +80,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 })
