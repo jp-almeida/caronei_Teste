@@ -53,6 +53,7 @@ const ProfileScreen = () => {
   const [changed, setChanged] = useState(false)
   const [rating, setRating] = useState(null)
   const [experience, setExperience] = useState(null)
+  
 
   const [email, setEmail] = useState({
     data: null,
@@ -79,6 +80,7 @@ const ProfileScreen = () => {
     changed: false
   })
   const [cars, setCars] = useState([])
+  const [selectedGender, setSelectedGender] = useState()
 
   async function getUserData() {
     //pega os dados do banco de dados e preenche as variaveis
@@ -117,6 +119,7 @@ const ProfileScreen = () => {
       visibility: response.birthVisibility,
       data: response.birth ? new Date(response.birth) : response.birth //converte para objeto de data (chega do back em string)
     })
+    setSelectedGender(response.gender)
   }
   async function updateUserData() {
     //gambiarra porque as portas não estavam batendo
@@ -200,7 +203,8 @@ const ProfileScreen = () => {
   const [isCollapsedCars, setCollapsedCars] = useState(false)
   const [isAddingCar, setAddingCar] = useState(false)
 
-  let placa, modelo, cor, selectedGender = gender.value
+  let placa, modelo, cor
+  
   
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
@@ -314,7 +318,8 @@ const ProfileScreen = () => {
                         selectedValue={selectedGender}
                         style={{ height: 50, width: 100 }}
                         onValueChange={(itemValue, itemIndex) => {
-                            selectedGender = itemValue
+                          setSelectedGender(itemValue)
+                          console.log(selectedGender)
                         }}
                     >
                         <Picker.Item label="Feminino" value="F" />
@@ -333,7 +338,7 @@ const ProfileScreen = () => {
                         setChanged(true)
                     }}/>
                     <Dialog.Button title="Cancelar" onPress={() => {
-                        selectedGender = gender.data
+                        setSelectedGender(gender.data)
                         setGender({
                             ...gender,
                             isEditing: false
