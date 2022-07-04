@@ -54,6 +54,14 @@ export default function App() {
             />
 
             <Stack.Screen
+              name="RateUserScreen"
+              component={RateUserScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
               name="ReportScreen"
               component={ReportScreen}
               options={{
@@ -61,13 +69,7 @@ export default function App() {
               }}
             />
 
-            <Stack.Screen
-              name="RateUserScreen"
-              component={RateUserScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
+
 
             <Stack.Screen
               name="SignUpScreen"
