@@ -49,7 +49,11 @@ function getGenderName(gender) {
 }
 
 const ProfileScreen = () => {
-  const [name, setName] = useState(null)
+  const [name, setName] = useState({
+    data: null,
+    isEditing: false,
+    changed: false
+  })
   const [changed, setChanged] = useState(false)
   const [rating, setRating] = useState(null)
   const [experience, setExperience] = useState(null)
@@ -87,7 +91,10 @@ const ProfileScreen = () => {
 
     const response = await getUserData()
 
-    setName(response.name)
+    setName({
+      ...name,
+      data: response.name
+    })
     setRating(response.rating)
     setExperience(response.experience)
     setEmail({
@@ -185,7 +192,7 @@ const ProfileScreen = () => {
     await addCar(placa, modelo, cor)
     updateCars() //atualiza os carros
   }
-  if (!name) {
+  if (!name.data) {
     getData()
     updateCars()
   }
@@ -194,13 +201,13 @@ const ProfileScreen = () => {
   const [isCollapsedCars, setCollapsedCars] = useState(false)
   const [isAddingCar, setAddingCar] = useState(false)
 
-  let placa, modelo, cor
+  let placa, modelo, cor, currentName
 
 
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{backgroundColor: '#EFE9E5', flex: 1}}>
+        <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
           <View style={{ marginTop: 40, marginLeft: 30 }}>
             <Image
               style={{
@@ -210,14 +217,44 @@ const ProfileScreen = () => {
               }}
               source={require('../images/profile_picture.png')}
             />
-            <Text style = {{color: '#46458D'}}>{name}</Text>
+            <Text style={{ color: '#46458D' }}>{name.data}</Text>
 
+            <EditButton element={name} editFunction={setName} />
+            <Dialog visible={name.isEditing}>
+              <Dialog.Title title="Editar nome" />
+              <TextInput
+                style={{}}
+                onChangeText={text => {
+                  currentName = text
+                }}
+              />
+              <Dialog.Button title="Salvar" onPress={() => {
+                if (currentName) {
+                  setName({
+                    ...name,
+                    data: currentName,
+                    isEditing: false,
+                    changed: true
+                  })
+                  setChanged(true)
+                }
+                currentName = null
+
+              }} />
+              <Dialog.Button title="Cancelar" onPress={() => {
+                setName({
+                  ...name,
+                  isEditing: false,
+                })
+                currentName = null
+              }} />
+            </Dialog>
             {!rating && <Text>Você ainda não foi avaliado</Text> //caso ainda não tenha avaliações
             }
 
             {rating && (
               <View style={{ width: 100 }}>
-                <Text style = {{color: '#46458D'}}>{rating}</Text>
+                <Text style={{ color: '#46458D' }}>{rating}</Text>
                 <StarRating
                   disabled={true}
                   rating={rating}
@@ -234,7 +271,7 @@ const ProfileScreen = () => {
                 collapseFunction={setCollapsedProfile}
               />
 
-              <Text style = {{color: '#46458D'}}>Meus dados</Text>
+              <Text style={{ color: '#46458D' }}>Meus dados</Text>
 
               <Collapsible collapsed={isCollapsedProfile}>
                 <ProfileData
@@ -244,7 +281,7 @@ const ProfileScreen = () => {
                   changeFunction={setChanged}
                 />
 
-                <Text style = {{color: '#46458D'}}>Matrícula: {store.getState().auth.matricula}</Text>
+                <Text style={{ color: '#46458D' }}>Matrícula: {store.getState().auth.matricula}</Text>
 
                 <ProfileData
                   title="Número"
@@ -253,8 +290,8 @@ const ProfileScreen = () => {
                   changeFunction={setChanged}
                 />
 
-                <Text style = {{color: '#46458D'}}>Data de nascimento</Text>
-                <Text style = {{color: '#46458D'}}>
+                <Text style={{ color: '#46458D' }}>Data de nascimento</Text>
+                <Text style={{ color: '#46458D' }}>
                   {birth.data
                     ? birth.data.getDate() +
                     '/' +
@@ -283,7 +320,7 @@ const ProfileScreen = () => {
                   />
                 )}
 
-                <Text style = {{color: '#46458D'}}>Gênero</Text>
+                <Text style={{ color: '#46458D' }}>Gênero</Text>
 
                 <EditButton
                   element={gender}
@@ -292,7 +329,7 @@ const ProfileScreen = () => {
                 />
 
                 {!gender.isEditing && ( //se não tiver editando, mostra o genero como texto
-                  <Text style = {{color: '#46458D'}}>
+                  <Text style={{ color: '#46458D' }}>
                     {gender.data ? gender.data : '(Informe seu gênero)'}
                   </Text>
                 )}
@@ -340,7 +377,7 @@ const ProfileScreen = () => {
                 )}
                 {changed && ( //caso tenha alterações, mostrar o botão de salvar alterações
                   <TouchableOpacity style={{}} onPress={updateUserData}>
-                    <Text style = {{color: '#46458D'}}>Salvar alterações</Text>
+                    <Text style={{ color: '#46458D' }}>Salvar alterações</Text>
                   </TouchableOpacity>
                 )}
               </Collapsible>
@@ -350,7 +387,7 @@ const ProfileScreen = () => {
                 collapseFunction={setCollapsedCars}
               />
 
-              <Text style = {{color: '#46458D'}}>Meus carros</Text>
+              <Text style={{ color: '#46458D' }}>Meus carros</Text>
               <TouchableOpacity
                 style={{}}
                 onPress={() => {
@@ -399,7 +436,7 @@ const ProfileScreen = () => {
                     onPress={() => setAddingCar(false)}
                   />
                 </Dialog>
-                <Text style = {{color: '#46458D'}}>Placa | Modelo | Cor</Text>
+                <Text style={{ color: '#46458D' }}>Placa | Modelo | Cor</Text>
                 {cars.map(c => (
                   <CarProfileLine
                     key={c.placa}

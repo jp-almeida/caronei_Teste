@@ -15,8 +15,7 @@ import { useDispatch } from 'react-redux'
 import { loginAuth } from '../slices/userAuth'
 import { useNavigation } from '@react-navigation/native'
 import { DefaultButton } from '../components/Button'
-
-//codigo adaptado de https://webdesignemfoco.com/cursos/react-js/integracoes-com-react-native-3-frontend
+import { url } from '../requestsFunctions'
 
 const LogInScreen = () => {
   const dispatch = useDispatch()
@@ -28,10 +27,6 @@ const LogInScreen = () => {
   const [message, setMessage] = useState(null) //mensagem de resposta do back-end (se o cadastro foi realizado com sucesso ou nao) ou de preenchimento do formulario
 
   async function login() {
-    //gambiarra porque as portas não estavam batendo
-    let original_port = config.urlRootNode.split(':')[2]
-    let url = config.urlRootNode.replace(original_port, config.backend_port)
-    //console.log(url)
     let reqs = await fetch(url + '/login', {
       method: 'POST',
       headers: {

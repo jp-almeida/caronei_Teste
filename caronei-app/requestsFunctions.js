@@ -2,7 +2,7 @@ import { store } from './store'
 import config from './config/config.json'
 
 //gambiarra porque as portas não estavam batendo
-const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], config.backend_port)
+export const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], config.backend_port)
 
 export async function updateCar(placaNova,placaAntiga, modelo, cor) {
     let reqs = await fetch(url + "/alterar-carro/", {
