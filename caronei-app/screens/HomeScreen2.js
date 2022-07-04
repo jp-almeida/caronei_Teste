@@ -80,11 +80,12 @@ const HomeScreen2 = () => {
                   dispatch(
                     setOrigin({
                       location: {
-                        latitude: item.item.lat,
-                        longitude: item.item.lng,
+                        lat: item.item.lat,
+                        lng: item.item.lng,
                       },
                     })
                   )
+                  dispatch(setDestination(null))
                 }}
               >
                 <Text style={styles.rowText} numberOfLines={1}>
@@ -115,8 +116,8 @@ const HomeScreen2 = () => {
                   dispatch(
                     setDestination({
                       location: {
-                        latitude: item.item.lat,
-                        longitude: item.item.lng,
+                        lat: item.item.lat,
+                        lng: item.item.lng,
                       },
                     })
                   )
