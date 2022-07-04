@@ -14,16 +14,18 @@ const ProfileData = (props) => {
             <Text style= {{color: '#46458D'}}>{props.element.data}</Text>
             <EditButton element={props.element} editFunction = {props.editFunction} changeFunction = {props.changeFunc} />
             
-            <Dialog visible={props.element.isEditing} style={styles.dialog}>
-                <Dialog.Title title={"Editar "+props.title} titleStyle={styles.dialogTitle}/>
+            <Dialog visible={props.element.isEditing} overlayStyle={styles.dialog}>
+                <Dialog.Title title={"Editar "+ props.title.toLowerCase()} titleStyle={styles.dialogTitle}/>
                 <TextInput
-                    style={{}}
+                    style={styles.textInput}
                     defaultValue= {props.element.data}
                     onChangeText={(text) => {
                         currentData = text
                     }
                 }/>
-                <Dialog.Button title="Salvar" onPress={() => {
+                <Dialog.Button title="Salvar" 
+                buttonStyle={{}}
+                onPress={() => {
                     props.editFunction({
                         ...props.element,
                         data: currentData,
@@ -32,7 +34,9 @@ const ProfileData = (props) => {
                         })
                     props.changeFunction(true)
                 }}/>
-                <Dialog.Button title="Cancelar" onPress={() => {
+                <Dialog.Button title="Cancelar"
+                buttonStyle={{}}
+                onPress={() => {
                     props.editFunction({
                         ...props.element,
                         isEditing: false

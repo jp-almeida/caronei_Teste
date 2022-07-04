@@ -277,7 +277,7 @@ const ProfileScreen = () => {
 
               <Collapsible collapsed={isCollapsedProfile}>
                 <ProfileData
-                  title="Email"
+                  title="E-mail"
                   element={email}
                   editFunction={setEmail}
                   changeFunction={setChanged}
@@ -343,8 +343,8 @@ const ProfileScreen = () => {
                 />
 
                 {gender.isEditing && ( //se tiver editando, mostra o genero como o picker select
-                  <Dialog>
-                    <Dialog.Title title="Editar gênero" />
+                  <Dialog overlayStyle={styles.dialog}>
+                    <Dialog.Title title="Editar gênero" titleStyle={styles.dialogTitle}/>
                     <Picker
                       selectedValue={selectedGender}
                       style={{ height: 50, width: 100 }}
@@ -404,24 +404,24 @@ const ProfileScreen = () => {
                   visible={isAddingCar}
                   onTouchOutside={() => setAddingCar(false)}
                 >
-                  <Dialog.Title title="Adicionar um carro" />
+                  <Dialog.Title title="Adicionar um carro" titleStyle={styles.dialogTitle}/>
                   <Text>Placa</Text>
                   <TextInput
-                    style={{}}
+                    style={styles.textInput}
                     onChangeText={text => {
                       placa = text
                     }}
                   />
                   <Text>Modelo</Text>
                   <TextInput
-                    style={{}}
+                    style={styles.textInput}
                     onChangeText={text => {
                       modelo = text
                     }}
                   />
                   <Text>Cor</Text>
                   <TextInput
-                    style={{}}
+                    style={styles.textInput}
                     onChangeText={text => {
                       cor = text
                     }}

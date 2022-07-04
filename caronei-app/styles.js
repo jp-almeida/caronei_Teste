@@ -34,5 +34,19 @@ export const styles = StyleSheet.create({
     color:"#46458D",
     fontSize: 25,
     marginTop:10
+  },
+  dialogButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 8,
+    elevation: 3,
+    backgroundColor: '#4D4C7D',
+    fontSize: 18,
+    lineHeight: 21,
+    fontWeight: 'normal',
+    letterSpacing: 0.25,
+    color: 'white'
   }
 })
