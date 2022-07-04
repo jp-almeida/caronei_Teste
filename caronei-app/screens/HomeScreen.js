@@ -71,7 +71,7 @@ const HomeScreen = () => {
           <Text style={{}}>Perfil</Text>
         </TouchableOpacity>
 
-        <GooglePlacesAutocomplete
+        {/* <GooglePlacesAutocomplete
           placeholder="Local de partida"
           styles={{
             container: {
@@ -100,7 +100,7 @@ const HomeScreen = () => {
           }}
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
-        />
+        /> */}
         <NavOptions />
       </View>
     </SafeAreaView>

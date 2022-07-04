@@ -24,7 +24,7 @@ import VisibilityButton from '../components/buttons/VisibilityButton'
 import ExpandButton from '../components/buttons/ExpandButton'
 import { Dialog } from 'react-native-elements'
 import CarProfileLine from '../components/CarProfileLine'
-import { getCars, addCar } from '../requestsFunctions'
+import { getCars, addCar, getUserData } from '../requestsFunctions'
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode.replace(
@@ -82,17 +82,10 @@ const ProfileScreen = () => {
   const [cars, setCars] = useState([])
   const [selectedGender, setSelectedGender] = useState()
 
-  async function getUserData() {
+  async function getData() {
     //pega os dados do banco de dados e preenche as variaveis
 
-    let reqs = await fetch(url + '/data/' + store.getState().auth.matricula, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    const response = await reqs.json()
+    const response = await getUserData()
 
     setName(response.name)
     setRating(response.rating)
@@ -123,8 +116,6 @@ const ProfileScreen = () => {
   }
   async function updateUserData() {
     //gambiarra porque as portas não estavam batendo
-    let original_port = config.urlRootNode.split(':')[2]
-    let url = config.urlRootNode.replace(original_port, config.backend_port)
     let jsonBody = { matricula: store.getState().auth.matricula.toString() }
 
     if (email.changed) {
@@ -195,7 +186,7 @@ const ProfileScreen = () => {
     updateCars() //atualiza os carros
   }
   if (!name) {
-    getUserData()
+    getData()
     updateCars()
   }
 

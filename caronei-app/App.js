@@ -29,13 +29,13 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
-            <Stack.Screen
+            {/* <Stack.Screen
               name="HomeScreen2"
               component={HomeScreen2}
               options={{
                 headerShown: false,
               }}
-            />
+            /> */}
             <Stack.Screen
               name="InitialScreen"
               component={InitialScreen}

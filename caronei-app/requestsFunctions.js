@@ -54,3 +54,16 @@ export async function addCar(placaCarro, modeloCarro, corCarro) {
   return await reqs.json()
   
 }
+
+export async function getUserData() {
+  //pega os dados do banco de dados e preenche as variaveis
+
+  let reqs = await fetch(url + '/data/' + store.getState().auth.matricula, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+  return await reqs.json()
+}
