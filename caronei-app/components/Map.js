@@ -13,14 +13,6 @@ const Map = () => {
   const destination = useSelector(selectDestination)
   const mapRef = useRef(null)
 
-  useEffect(() => {
-    if (!origin || !destination) return
-    //zoom out para mostrar marcadores
-    // @ts-ignore
-    mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
-      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-    })
-  })
   return (
     <MapView
       ref={mapRef}
@@ -33,13 +25,24 @@ const Map = () => {
         longitudeDelta: 0.005,
       }}
     >
-      {origin && destination && (
+      {origin.location && destination.location && (
         <MapViewDirections
-          origin={origin.description}
-          destination={destination.description}
+          origin={{
+            latitude: origin.location.lat,
+            longitude: origin.location.lng,
+          }}
+          destination={{
+            latitude: destination.location.lat,
+            longitude: destination.location.lng,
+          }}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={3}
           strokeColor="hotpink"
+          onReady={() =>
+            mapRef.current?.fitToSuppliedMarkers(["origin", "destination"], {
+              edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+            })
+          }
         />
       )}
       {origin?.location && (

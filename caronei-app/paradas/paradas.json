@@ -1,6 +1,7 @@
 [
   {
     "nome": "Entrada Humberto Monte",
+    "ponto": "a",
     "id": 1,
     "lat": -3.738719,
     "lng": -38.569744,
@@ -17,6 +18,7 @@
 
   {
     "nome": "Parada do Açude",
+    "ponto": "b",
     "id": 2,
     "lat": -3.739447,
     "lng": -38.572383,
@@ -33,6 +35,7 @@
 
   {
     "nome": "Biblioteca Central",
+    "ponto": "c",
     "id": 3,
     "lat": -3.742522,
     "lng": -38.574836,
@@ -49,6 +52,7 @@
 
   {
     "nome": "Bloco 713",
+    "ponto": "d",
     "id": 4,
     "lat": -3.745086,
     "lng": -38.576397,
@@ -65,6 +69,7 @@
 
   {
     "nome": "GREat",
+    "ponto": "e",
     "id": 5,
     "lat": -3.746481,
     "lng": -38.577836,
@@ -81,6 +86,7 @@
 
   {
     "nome": "Bloco 914",
+    "ponto": "f",
     "id": 6,
     "lat": -3.747119,
     "lng": -38.573683,
@@ -97,6 +103,7 @@
 
   {
     "nome": "Restaurante Universitário Antigo",
+    "ponto": "g",
     "id": 7,
     "lat": -3.745217,
     "lng": -38.573019,
@@ -113,6 +120,7 @@
 
   {
     "nome": "Entrada Rua Pernambuco",
+    "ponto": "h",
     "id": 8,
     "lat": -3.754728,
     "lng": -38.574475,

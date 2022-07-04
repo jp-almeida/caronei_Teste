@@ -12,11 +12,14 @@ import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
 import { useDispatch } from "react-redux"
 import { setDestination, setOrigin } from "../slices/navSlice"
+import { addRoute } from '../requestsFunctions'
 
 const HomeScreen2 = () => {
   const dispatch = useDispatch()
   const [partida, setPartida] = useState("")
   const [destino, setDestino] = useState("")
+  const [orig, setOrig] = useState([{}])
+  const [rota, setRota] = useState("")
   const [data, setData] = useState([{}])
   const [data2, setData2] = useState([{}])
   const [originalData, setOriginalData] = useState([{}])
@@ -76,15 +79,17 @@ const HomeScreen2 = () => {
               <TouchableHighlight
                 onPress={() => {
                   setPartida(item.item.nome)
+                  setOrig(item.item.para)
                   setData([])
                   dispatch(
                     setOrigin({
                       location: {
-                        latitude: item.item.lat,
-                        longitude: item.item.lng,
+                        lat: item.item.lat,
+                        lng: item.item.lng,
                       },
                     })
                   )
+                  dispatch(setDestination(null))
                 }}
               >
                 <Text style={styles.rowText} numberOfLines={1}>
@@ -111,12 +116,19 @@ const HomeScreen2 = () => {
               <TouchableHighlight
                 onPress={() => {
                   setDestino(item.item.nome)
+                  orig.forEach((element) => {
+                    if(element[item.item.ponto] != undefined){
+                      setRota(element[item.item.ponto])
+                      console.log(element[item.item.ponto])
+                      addRoute(element[item.item.ponto])
+                    }
+                  })
                   setData2([])
                   dispatch(
                     setDestination({
                       location: {
-                        latitude: item.item.lat,
-                        longitude: item.item.lng,
+                        lat: item.item.lat,
+                        lng: item.item.lng,
                       },
                     })
                   )
