@@ -11,7 +11,7 @@ import { updateCar } from '../requestsFunctions'
 const CarProfileLine = (props) => {
 
     let placa = props.carro.placa
-    let modelo = props.carro.placa
+    let modelo = props.carro.modelo
     let cor = props.carro.cor
 
     return (
@@ -43,7 +43,7 @@ const CarProfileLine = (props) => {
                         onChangeText={(text) => {cor = text}}
                     />
                     <Dialog.Button title="Adicionar" onPress = {() => {
-                        let resp = updateCar(cor,placa,modelo)
+                        let resp = updateCar(placa,props.carro.placa, modelo,cor)
                         if(resp){
                             props.editFunction({
                                 ...props.carro,

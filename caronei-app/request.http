@@ -65,3 +65,15 @@ Content-Type: application/json
     "matricula": "1",
     "emailVisibility": false
 }
+
+
+###
+PUT http://192.168.1.7:3000/alterar-carro/
+
+{
+    "matricula": 1,
+    "placa": "abc-",
+    "cor": request.body.cor,
+    "modelo": request.body.modelo,
+
+}

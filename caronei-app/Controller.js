@@ -210,19 +210,22 @@ app.get('/carros/:matricula', async(request,response) => {
 })
 
 //alterar carro
-app.post('/alterar-carro/', async(request, response) => {
+app.put('/alterar-carro/', async(request, response) => {
+    console.log(request.body)
     model.Carros.update(
         { 
-            placa: request.body.placa,
+            placa: request.body.placaNova,
             cor: request.body.cor,
             modelo: request.body.modelo,
             updatedAt: new Date()
     
         },
-            { where: { matricula: request.body.matricula, placa: request.body.placa } }
+            { where: { matricula: request.body.matricula, placa: request.body.placaAntiga } }
     )
-    .then(result =>
+    .then(result =>{
+        console.log(result)
         response.send(JSON.stringify(true))
+    }
     )
     .catch(err =>
         response.send(JSON.stringify(false))

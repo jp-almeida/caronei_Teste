@@ -24,6 +24,7 @@ import VisibilityButton from '../components/buttons/VisibilityButton'
 import ExpandButton from '../components/buttons/ExpandButton'
 import { Dialog } from 'react-native-elements'
 import CarProfileLine from '../components/CarProfileLine'
+import { getCars, addCar } from '../requestsFunctions'
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode.replace(
@@ -52,6 +53,7 @@ const ProfileScreen = () => {
   const [changed, setChanged] = useState(false)
   const [rating, setRating] = useState(null)
   const [experience, setExperience] = useState(null)
+  
 
   const [email, setEmail] = useState({
     data: null,
@@ -78,6 +80,7 @@ const ProfileScreen = () => {
     changed: false
   })
   const [cars, setCars] = useState([])
+  const [selectedGender, setSelectedGender] = useState()
 
   async function getUserData() {
     //pega os dados do banco de dados e preenche as variaveis
@@ -116,6 +119,7 @@ const ProfileScreen = () => {
       visibility: response.birthVisibility,
       data: response.birth ? new Date(response.birth) : response.birth //converte para objeto de data (chega do back em string)
     })
+    setSelectedGender(response.gender)
   }
   async function updateUserData() {
     //gambiarra porque as portas não estavam batendo
@@ -170,53 +174,29 @@ const ProfileScreen = () => {
     })
     let resp = await reqs.json()
 
-    console.log(resp)
-
     setChanged(false)
   }
 
-  async function addCar(placaCarro, modeloCarro, corCarro) {
-    let reqs = await fetch(url + '/adicionar-carro/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        matricula: store.getState().auth.matricula,
-        placa: placaCarro,
-        modelo: modeloCarro,
-        cor: corCarro
-      })
-    })
-    let resp = await reqs.json()
-    getCars() //atualiza os carros
-  }
-
-  async function getCars() {
-    //carrega os carros do banco de dados
-    let reqs = await fetch(url + '/carros/' + store.getState().auth.matricula, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    const response = await reqs.json()
-    let carros = []
-    response.forEach(car => {
-      carros.push({
+  async function updateCars(){
+    let carros = await getCars()
+    let carros2 = []
+    await carros.forEach(car => {
+      carros2.push( {
         ...car,
         isEditing: false,
         changed: false
       })
     })
-
-    setCars(carros)
+    setCars(await carros2)
+    
+  }
+  async function addACar(placa, modelo, cor){
+    await addCar(placa, modelo, cor)
+    updateCars() //atualiza os carros
   }
   if (!name) {
     getUserData()
-    getCars()
+    updateCars()
   }
 
   const [isCollapsedProfile, setCollapsedProfile] = useState(false)
@@ -224,7 +204,8 @@ const ProfileScreen = () => {
   const [isAddingCar, setAddingCar] = useState(false)
 
   let placa, modelo, cor
-
+  
+  
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -306,7 +287,6 @@ const ProfileScreen = () => {
                       isEditing: false
                     })
                     setChanged(true)
-                    console.log(changed)
                   }}
                 />
               )}
@@ -332,25 +312,39 @@ const ProfileScreen = () => {
               />
 
               {gender.isEditing && ( //se tiver editando, mostra o genero como o picker select
-                <Picker
-                  selectedValue={gender.value}
-                  style={{ height: 50, width: 100 }}
-                  onValueChange={(itemValue, itemIndex) => {
-                    setGender({
-                      value: itemValue,
-                      data: getGenderName(itemValue),
-                      visibility: gender.visibility,
-                      isEditing: true,
-                      changed: true
-                    })
-                    setChanged(true)
-                  }}
-                >
-                  <Picker.Item label="Feminino" value="F" />
-                  <Picker.Item label="Masculino" value="M" />
-                  <Picker.Item label="Outro" value="O" />
-                  <Picker.Item label="Não quero informar" value="N" />
-                </Picker>
+                <Dialog>
+                    <Dialog.Title title="Editar gênero"/>
+                    <Picker
+                        selectedValue={selectedGender}
+                        style={{ height: 50, width: 100 }}
+                        onValueChange={(itemValue, itemIndex) => {
+                          setSelectedGender(itemValue)
+                          console.log(selectedGender)
+                        }}
+                    >
+                        <Picker.Item label="Feminino" value="F" />
+                        <Picker.Item label="Masculino" value="M" />
+                        <Picker.Item label="Outro" value="O" />
+                        <Picker.Item label="Não quero informar" value="N" />
+                    </Picker>
+                    <Dialog.Button title="Salvar" onPress={() => {
+                        setGender({
+                            ...gender,
+                            value: selectedGender,
+                            data: getGenderName(selectedGender),
+                            isEditing: false,
+                            changed: true
+                        })
+                        setChanged(true)
+                    }}/>
+                    <Dialog.Button title="Cancelar" onPress={() => {
+                        setSelectedGender(gender.data)
+                        setGender({
+                            ...gender,
+                            isEditing: false
+                        })
+                    }}/>
+                </Dialog>
               )}
               {changed && ( //caso tenha alterações, mostrar o botão de salvar alterações
                 <TouchableOpacity style={{}} onPress={updateUserData}>
@@ -405,7 +399,7 @@ const ProfileScreen = () => {
                   title="Adicionar"
                   onPress={() => {
                     setAddingCar(false)
-                    addCar(placa, modelo, cor)
+                    addACar(placa, modelo, cor)
                   }}
                 />
                 <Dialog.Button
@@ -416,8 +410,9 @@ const ProfileScreen = () => {
               <Text>Placa | Modelo | Cor</Text>
               {cars.map(c => (
                 <CarProfileLine
+                    key={c.placa}
                   carro={c}
-                  editFunction={value => {
+                  editFunction={(value) => {
                     let cars_copia = [...cars] //copia do array (para poder modificar)
                     let idx = cars
                       .map(car => {
