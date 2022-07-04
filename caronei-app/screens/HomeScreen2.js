@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import paradas from "../paradas/paradas.json"
+import tw from "twrnc"
 
 const HomeScreen2 = () => {
   const [title, setTitle] = useState("")
@@ -24,13 +25,12 @@ const HomeScreen2 = () => {
     return (
       <View style={styles.card}>
         <TouchableHighlight
-          style={styles.item}
           onPress={() => {
-            setTitle(item.nome)
+            setTitle(item.item.nome)
             setData([])
           }}
         >
-          <Text style={{ color: "black" }} numberOfLines={1}>
+          <Text style={styles.rowText} numberOfLines={1}>
             {item.item.nome}
           </Text>
         </TouchableHighlight>
@@ -46,18 +46,34 @@ const HomeScreen2 = () => {
 
   return (
     <SafeAreaView>
-      <TextInput
-        style={styles.input}
-        placeholder={"Local de Partida..."}
-        onChangeText={(s) => search(s)}
-        autoCapitalize="none"
-      />
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
-        renderItem={(item) => renderOptions(item)}
-      />
-      <Text>HomeScreen2</Text>
+      <View style={tw`h-1/2`}>
+        <TextInput
+          value={title}
+          style={styles.input}
+          placeholder={"Local de Partida..."}
+          onChangeText={(s) => search(s)}
+          autoCapitalize="none"
+        />
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={(item) => renderOptions(item)}
+        />
+      </View>
+      <View style={tw`h-1/2`}>
+        <TextInput
+          value={title}
+          style={styles.input}
+          placeholder={"Local de Destino..."}
+          onChangeText={(s) => search(s)}
+          autoCapitalize="none"
+        />
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={(item) => renderOptions(item)}
+        />
+      </View>
     </SafeAreaView>
   )
 }
