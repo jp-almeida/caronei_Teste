@@ -27,7 +27,8 @@ export const styles = StyleSheet.create({
   dialog:{
     backgroundColor: "#EFE9E5",
     borderColor: "#363062",
-    borderRadius: 50
+    borderRadius: 40,
+    borderWidth:4
   },
   dialogTitle:{
     color:"#46458D",
