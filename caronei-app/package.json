@@ -10,7 +10,8 @@
     "eject": "expo eject",
     "back": "nodemon Controller.js",
     "all": "npm-run-all --parallel android back",
-    "migrate": "npx sequelize db:migrate"
+    "migrate": "npx sequelize db:migrate",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
