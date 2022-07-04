@@ -36,3 +36,21 @@ export async function getCars() {
     return await reqs.json()
     
   }
+
+export async function addCar(placaCarro, modeloCarro, corCarro) {
+  let reqs = await fetch(url + '/adicionar-carro/', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      matricula: store.getState().auth.matricula,
+      placa: placaCarro,
+      modelo: modeloCarro,
+      cor: corCarro
+    })
+  })
+  return await reqs.json()
+  
+}

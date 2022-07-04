@@ -24,7 +24,7 @@ import VisibilityButton from '../components/buttons/VisibilityButton'
 import ExpandButton from '../components/buttons/ExpandButton'
 import { Dialog } from 'react-native-elements'
 import CarProfileLine from '../components/CarProfileLine'
-import { getCars } from '../requestsFunctions'
+import { getCars, addCar } from '../requestsFunctions'
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode.replace(
@@ -174,24 +174,6 @@ const ProfileScreen = () => {
     setChanged(false)
   }
 
-  async function addCar(placaCarro, modeloCarro, corCarro) {
-    let reqs = await fetch(url + '/adicionar-carro/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        matricula: store.getState().auth.matricula,
-        placa: placaCarro,
-        modelo: modeloCarro,
-        cor: corCarro
-      })
-    })
-    let resp = await reqs.json()
-    updateCars() //atualiza os carros
-  }
-
   async function updateCars(){
     let carros = await getCars()
     let carros2 = []
@@ -205,11 +187,13 @@ const ProfileScreen = () => {
     setCars(await carros2)
     
   }
-
+  async function addACar(placa, modelo, cor){
+    await addCar(placa, modelo, cor)
+    updateCars() //atualiza os carros
+  }
   if (!name) {
     getUserData()
     updateCars()
-    
   }
 
   const [isCollapsedProfile, setCollapsedProfile] = useState(false)
@@ -410,7 +394,7 @@ const ProfileScreen = () => {
                   title="Adicionar"
                   onPress={() => {
                     setAddingCar(false)
-                    addCar(placa, modelo, cor)
+                    addACar(placa, modelo, cor)
                   }}
                 />
                 <Dialog.Button
