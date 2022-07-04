@@ -42,7 +42,9 @@ export const styles = StyleSheet.create({
     marginTop: 5,
   },
   profileLineDataTitle:{
-    color: "#46458D", fontSize: 15
+    color: "#46458D",
+    fontSize: 15,
+    marginRight: 10
   },
   profileLineData:{
     color: "rgba(70, 69, 141, 0.8)", 

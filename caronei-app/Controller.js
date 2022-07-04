@@ -118,6 +118,7 @@ app.get("/data/:matricula", async (request, response) => {
 app.post("/update", async (request, response) => {
   model.Usuarios.update(
     {
+      nomeCompleto: request.body.name,
       email: request.body.email,
       emailVisib: request.body.emailVisibility,
       telefone: request.body.phone,

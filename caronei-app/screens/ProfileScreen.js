@@ -125,7 +125,13 @@ const ProfileScreen = () => {
   async function updateUserData() {
     //gambiarra porque as portas não estavam batendo
     let jsonBody = { matricula: store.getState().auth.matricula.toString() }
-
+    if (name.changed) {
+      jsonBody.name = name.data
+      setName({
+        ...name,
+        changed: false
+      })
+    }
     if (email.changed) {
       jsonBody.email = email.data
       jsonBody.emailVisibility = email.visibility
@@ -344,7 +350,7 @@ const ProfileScreen = () => {
 
                 {/* GENERO */}
                 <View style={styles.profileLine}>
-                  <Text style={styles.profileLineDataTitle}>Gênero</Text>
+                  <Text style={styles.profileLineDataTitle}>Gênero: </Text>
                   
                   {!gender.isEditing && ( //se não tiver editando, mostra o genero como texto
                     <Text style={styles.profileLineData}>

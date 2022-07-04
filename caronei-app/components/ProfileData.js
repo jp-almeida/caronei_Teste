@@ -49,7 +49,6 @@ const ProfileData = (props) => {
                         ...props.element,
                         isEditing: false
                         })
-                    props.changeFunction(true)
                     currentData = props.element.data
                 }}/>
 
