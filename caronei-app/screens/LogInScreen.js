@@ -74,7 +74,6 @@ const LogInScreen = () => {
               </Text>
               {message && <Text>{message}</Text>}
             </View>
-
             <View>
               <View style={{ marginBottom: 30 }}>
                 <Text
@@ -110,29 +109,36 @@ const LogInScreen = () => {
                   }}
                   onChangeText={text => setPassword(text)}
                 />
+
+                <TouchableOpacity
+                  style={{}}
+                  onPress={() => navigation.navigate('RecoverPswdScreen')}
+                >
+                  <Text
+                    style={{ fontSize: 13, marginBottom: 15, color: '#46458D' }}
+                  >
+                    Esqueci minha senha
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
-
             <View>
               <View style={{ marginBottom: 15 }}>
                 <DefaultButton title="Enviar" onPress={login} />
               </View>
 
               <View style={{}}>
-                <DefaultButton title="Voltar" onPress={() => navigation.navigate('InitialScreen')} />
+                <DefaultButton
+                  title="Voltar"
+                  onPress={() => navigation.navigate('InitialScreen')}
+                />
               </View>
 
               <TouchableOpacity
                 style={{}}
-                onPress={() => navigation.navigate('RecoverPswdScreen')}
-              >
-                <Text style={{}}>Esqueci minha senha</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{}}
                 onPress={() => {
-                  navigation.navigate('HomeScreen')}}
+                  navigation.navigate('HomeScreen')
+                }}
               >
                 <Text style={{}}>Pular login</Text>
               </TouchableOpacity>
