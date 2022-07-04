@@ -4,21 +4,20 @@ import {
   Text,
   View,
   SafeAreaView,
-  TouchableOpacity
-} from 'react-native'
-import React, { useState } from 'react'
-import { Image } from 'react-native'
-import tw from 'twrnc'
-import NavOptions from '../components/NavOptions'
-import { GOOGLE_MAPS_APIKEY } from '@env'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-import { useDispatch } from 'react-redux'
-import { setDestination, setOrigin } from '../slices/navSlice'
-import { logoutAuth } from '../slices/userAuth'
-import { store } from '../store'
-import { useNavigation } from '@react-navigation/native'
-import config from '../config/config.json'
-import paradas from '../paradas/paradas.json'
+  TouchableOpacity,
+} from "react-native"
+import React, { useState } from "react"
+import { Image } from "react-native"
+import tw from "twrnc"
+import NavOptions from "../components/NavOptions"
+import { GOOGLE_MAPS_APIKEY } from "@env"
+import { useDispatch } from "react-redux"
+import { setDestination, setOrigin } from "../slices/navSlice"
+import { logoutAuth } from "../slices/userAuth"
+import { store } from "../store"
+import { useNavigation } from "@react-navigation/native"
+import config from "../config/config.json"
+import paradas from "../paradas/paradas.json"
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -27,21 +26,21 @@ const HomeScreen = () => {
 
   function exitAccount() {
     dispatch(logoutAuth())
-    navigation.navigate('LogInScreen')
+    navigation.navigate("LogInScreen")
   }
   async function getUserName() {
     //gambiarra porque as portas não estavam batendo
-    let original_port = config.urlRootNode.split(':')[2]
+    let original_port = config.urlRootNode.split(":")[2]
     let url = config.urlRootNode.replace(original_port, config.backend_port)
 
     let reqs = await fetch(
-      url + '/username/' + store.getState().auth.matricula,
+      url + "/username/" + store.getState().auth.matricula,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       }
     )
     const response = await reqs.json()
@@ -56,9 +55,9 @@ const HomeScreen = () => {
           style={{
             width: 150,
             height: 200,
-            resizeMode: 'contain'
+            resizeMode: "contain",
           }}
-          source={require('../images/logo.png')}
+          source={require("../images/logo.png")}
         />
 
         <Text>Olá, {name}</Text>
@@ -67,7 +66,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{}}
-          onPress={() => navigation.navigate('ProfileScreen')}
+          onPress={() => navigation.navigate("ProfileScreen")}
         >
           <Text style={{}}>Perfil</Text>
         </TouchableOpacity>
@@ -76,28 +75,28 @@ const HomeScreen = () => {
           placeholder="Local de partida"
           styles={{
             container: {
-              flex: 0
+              flex: 0,
             },
             textInput: {
-              fontSize: 18
-            }
+              fontSize: 18,
+            },
           }}
           onPress={(data, details = null) => {
             dispatch(
               setOrigin({
                 location: details.geometry.location,
-                description: data.description
+                description: data.description,
               })
             )
             dispatch(setDestination(null))
           }}
           fetchDetails={true}
-          returnKeyType={'search'}
+          returnKeyType={"search"}
           enablePoweredByContainer={false}
           minLength={2}
           query={{
             key: GOOGLE_MAPS_APIKEY,
-            language: 'en'
+            language: "en",
           }}
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
@@ -112,6 +111,6 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   text: {
-    color: 'blue'
-  }
+    color: "blue",
+  },
 })

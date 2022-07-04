@@ -5,14 +5,12 @@ import { SafeAreaProvider } from "react-native-safe-area-context"
 import "react-native-gesture-handler"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 
 import { store } from "./store"
 import HomeScreen from "./screens/HomeScreen"
 import MapScreen from "./screens/MapScreen"
 import SignUpScreen from "./screens/SignUpScreen"
 import LogInScreen from "./screens/LogInScreen"
-import DriverScreen from "./screens/DriverScreen"
 import ProfileScreen from "./screens/ProfileScreen"
 import RecoverPswdScreen from "./screens/RecoverPswdScreen"
 import PswdRecoveredScreen from "./screens/PswdRecoveredScreen"
@@ -31,13 +29,13 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
-            {/* <Stack.Screen
+            <Stack.Screen
               name="HomeScreen2"
               component={HomeScreen2}
               options={{
                 headerShown: false,
               }}
-            /> */}
+            />
             <Stack.Screen
               name="InitialScreen"
               component={InitialScreen}
@@ -69,8 +67,6 @@ export default function App() {
                 headerShown: false,
               }}
             />
-
-
 
             <Stack.Screen
               name="SignUpScreen"
@@ -126,15 +122,6 @@ export default function App() {
                 headerShown: false,
               }}
             />
-
-            <Stack.Screen
-              name="DriverScreen"
-              component={DriverScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-
             {/* <HomeScreen /> */}
           </Stack.Navigator>
         </SafeAreaProvider>

@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native"
 import React, { useEffect } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import tw from "twrnc"
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 // @ts-ignore
 import { GOOGLE_MAPS_APIKEY } from "@env"
 import { useDispatch } from "react-redux"
