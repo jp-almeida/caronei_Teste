@@ -282,7 +282,7 @@ const ProfileScreen = () => {
               </View>
             )}
 
-            <TouchableOpacity style={{}} onPress={()=>{}}>
+            <TouchableOpacity style={{}} onPress={()=>{navigation.navigate("UserScreen", {matricula: store.getState().auth.matricula})}}>
                     <Text style={{}}>Como os outros vêem o meu perfil?</Text>
             </TouchableOpacity>
 

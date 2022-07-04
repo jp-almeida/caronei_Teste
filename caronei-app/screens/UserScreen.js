@@ -4,16 +4,21 @@ import tw from 'twrnc'
 import { getPublicData, getUserData } from '../requestsFunctions'
 import { styles } from '../styles'
 import StarRating from 'react-native-star-rating'
+import ExpandButton from '../components/buttons/ExpandButton'
+import Collapsible from 'react-native-collapsible'
 
-const UserScreen = () => {
+
+const UserScreen = ({ route }) => {
     const [user, setUser] = useState({})
-
+    const { matricula } = route.params
+    const [isCollapsedProfile, setCollapsedProfile] = useState(false)
+    
     async function loadData(matricula) {
         let response = await getPublicData(matricula)
         setUser(response)
     }
     if (!user.name) {
-        loadData(1)
+        loadData(matricula)
     }
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
@@ -32,22 +37,30 @@ const UserScreen = () => {
                         />
                         <Text style={styles.userHeaderName}>{user.name}</Text>
                     </View>
-                        {/* AVALIAÇÃO */}
+                    {/* AVALIAÇÃO */}
 
-                        {user.avaliacao ?
-                            <View style={{ width: 100 }}>
-                                <Text style={{ color: '#46458D' }}>{user.avaliacao}</Text>
-                                <StarRating
-                                    disabled={true}
-                                    rating={user.avaliacao}
-                                    starSize={30}
-                                    fullStarColor="#4D4C7D"
-                                    starStyle={{}}
-                                />
-                            </View>
-                            : <Text>Usuário ainda não avaliado</Text>
-                        }
+                    {user.avaliacao ?
+                        <View style={{ width: 100 }}>
+                            <Text style={{ color: '#46458D' }}>{user.avaliacao}</Text>
+                            <StarRating
+                                disabled={true}
+                                rating={user.avaliacao}
+                                starSize={30}
+                                fullStarColor="#4D4C7D"
+                                starStyle={{}}
+                            />
+                        </View>
+                        : <Text>Usuário ainda não avaliado</Text>
+                    }
+                    <View style={styles.profileSectionHeader}>
+                        <ExpandButton
+                            isCollapsed={isCollapsedProfile}
+                            collapseFunction={setCollapsedProfile}
+                        />
+                        <Text style={styles.profileSectionTitle}>Dados</Text>
+                    </View>
 
+                    <Collapsible collapsed={isCollapsedProfile}>
                         {user.matricula &&
                             <View style={styles.profileLine}>
                                 <Text style={styles.profileLineDataTitle}>Matrícula: </Text>
@@ -72,9 +85,9 @@ const UserScreen = () => {
                                 <Text style={styles.profileLineData}>{user.birth}</Text>
                             </View>
                         }
-
-                    </View>
+                    </Collapsible>
                 </View>
+            </View>
         </SafeAreaView>
     )
 }
