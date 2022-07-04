@@ -25,6 +25,7 @@ import ExpandButton from '../components/buttons/ExpandButton'
 import { Dialog } from 'react-native-elements'
 import CarProfileLine from '../components/CarProfileLine'
 import { getCars, addCar, getUserData } from '../requestsFunctions'
+import { styles } from '../styles'
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode.replace(
@@ -220,10 +221,11 @@ const ProfileScreen = () => {
             <Text style={{ color: '#46458D' }}>{name.data}</Text>
 
             <EditButton element={name} editFunction={setName} />
-            <Dialog visible={name.isEditing}>
-              <Dialog.Title title="Editar nome" />
+            <Dialog visible={name.isEditing} overlayStyle={styles.dialog}>
+              <Dialog.Title title="Editar nome" titleStyle={styles.dialogTitle}/>
               <TextInput
-                style={{}}
+                style={styles.textInput}
+                defaultValue={name.data}
                 onChangeText={text => {
                   currentName = text
                 }}
