@@ -11,7 +11,8 @@
     "back": "nodemon Controller.js",
     "all": "npm-run-all --parallel android back",
     "migrate": "npx sequelize db:migrate",
-    "seed": "npx sequelize-cli db:seed:all"
+    "seed": "npx sequelize-cli db:seed:all",
+    "undo-migrate": "npx sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
@@ -47,6 +48,7 @@
     "react-native-maps-directions": "^1.8.0",
     "react-native-safe-area-context": "4.2.4",
     "react-native-screens": "~3.11.1",
+    "react-native-simple-select-button": "^0.0.6",
     "react-native-star-rating": "^1.1.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.17.7",

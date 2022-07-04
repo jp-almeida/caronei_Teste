@@ -4,9 +4,9 @@ import config from './config/config.json'
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], config.backend_port)
 
-export async function updateCar(cor, placa, modelo) {
+export async function updateCar(placaNova,placaAntiga, modelo, cor) {
     let reqs = await fetch(url + "/alterar-carro/", {
-        method: "POST",
+        method: "PUT",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -14,10 +14,25 @@ export async function updateCar(cor, placa, modelo) {
         body: JSON.stringify({
             matricula: store.getState().auth.matricula,
             cor: cor,
-            placa: placa,
+            placaNova: placaNova,
+            placaAntiga: placaAntiga,
             modelo: modelo
         }),
     })
     return await reqs.json()
     
 }
+
+
+export async function getCars() {
+    //carrega os carros do banco de dados
+    let reqs = await fetch(url + '/carros/' + store.getState().auth.matricula, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    return await reqs.json()
+    
+  }

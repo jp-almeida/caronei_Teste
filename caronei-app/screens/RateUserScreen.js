@@ -9,25 +9,24 @@ import {
   TextInput
 } from 'react-native'
 import React, { useState } from 'react'
-import { Image } from 'react-native'
+
 import tw from 'twrnc'
-import NavOptions from '../components/NavOptions'
-import { GOOGLE_MAPS_APIKEY } from '@env'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import { useDispatch } from 'react-redux'
-import { setDestination, setOrigin } from '../slices/navSlice'
-import { logoutAuth } from '../slices/userAuth'
+
 import { store } from '../store'
 import { useNavigation } from '@react-navigation/native'
-import config from '../config/config.json'
-import paradas from '../paradas/paradas.json'
 import { DefaultButton } from '../components/Button'
+import StarRating from 'react-native-star-rating'
+import { Icon } from 'react-native-elements'
 
 const RateUserScreen = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [name, setName] = useState(null)
   const [comment, setComment] = useState(null)
+  const [rating, setRating] = useState(null)
+  const [parada, setParada] = useState(null)
+  const [destino, setDestino] = useState(null)
 
   async function getUserData() {
     //pega os dados do banco de dados e preenche as variaveis
@@ -100,12 +99,36 @@ const RateUserScreen = () => {
               maxWidth: 200,
               color: '#46458D'
             }}>{name}</Text>
+            <View style={{flexDirection: "row", alignItems: "center", jusifyContent: "center" }}>
+              <Icon name="room" type="material" size={15} color='gray' />
+              <Text style={{textAlign: 'center', color: '#4D4C7D'}}>Parada A</Text>
+              <Icon name="east" type="material" size={15} color='gray' />
+              <Text style={{textAlign: 'center', color: '#4D4C7D'}}>Parada B</Text>
+
+
+            </View>
+
+
 
             <Text style={{
               fontSize: 20,
               color: '#46458D',
+              marginTop: 15,
               textAlign: "center"
             }}>Avaliar</Text>
+
+            <View style={{ jusifyContent: "center", alignItems: "center" }}>
+              <StarRating
+                disabled={false}
+                rating={rating}
+                maxStars={5}
+                starSize={30}
+                fullStarColor="#4D4C7D"
+                starStyle={{}}
+                selectedStar={(rating) => setRating(rating)}
+
+              />
+            </View>
 
 
             <Text style={{
@@ -139,7 +162,7 @@ const RateUserScreen = () => {
               <DefaultButton title="Enviar" onChangeText={text => setComment(text)} />
             </View>
 
-            <View style={{}}>
+            <View style={{ marginBottom: 300 }}>
               <DefaultButton title="Lembrar mais tarde" onPress={() => navigation.navigate('HomeScreen')} />
             </View>
 

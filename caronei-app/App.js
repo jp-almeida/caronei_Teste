@@ -21,6 +21,8 @@ import HomeScreen2 from "./screens/HomeScreen2"
 import RateUserScreen from "./screens/RateUserScreen"
 //import MainScreen from "./screens/MainScreen"
 import AcceptRideScreen from "./screens/AcceptRideScreen"
+import ReportScreen from "./screens/ReportScreen"
+import MainScreen from "./screens/MainScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -36,16 +38,17 @@ export default function App() {
                 headerShown: false,
               }}
             /> */}
-             <Stack.Screen
-              name="AcceptRideScreen"
-              component={AcceptRideScreen}
-              options={{
-                headerShown: false,
-              }}
-              />
             <Stack.Screen
               name="InitialScreen"
               component={InitialScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
+              name="MainScreen"
+              component={MainScreen}
               options={{
                 headerShown: false,
               }}
@@ -58,6 +61,16 @@ export default function App() {
                 headerShown: false,
               }}
             />
+
+            <Stack.Screen
+              name="ReportScreen"
+              component={ReportScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+
 
             <Stack.Screen
               name="SignUpScreen"
