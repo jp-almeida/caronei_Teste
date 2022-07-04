@@ -33,6 +33,39 @@ export const styles = StyleSheet.create({
   dialogTitle:{
     color:"#46458D",
     fontSize: 25,
-    marginTop:10
+    marginTop: 10
+  },
+  profileLine:{
+    display: "flex", 
+    flexDirection: "row", 
+    alignItems: "center",
+    marginTop: 5,
+  },
+  profileLineDataTitle:{
+    color: "#46458D",
+    fontSize: 15,
+    marginRight: 10
+  },
+  profileLineData:{
+    color: "rgba(70, 69, 141, 0.8)", 
+    fontSize: 12, 
+  },
+  profileIconButton:{
+
+  },
+  profileSectionTitle:{
+    color: "#46458D", fontSize: 20
+  },
+  userHeaderView:{
+    display: "flex", flexDirection:"row"
+  },
+  userHeaderName:{
+    color: "#46458D", fontSize: 40
+  },
+  profileSectionHeader:{
+    display: "flex", 
+    flexDirection: "row", 
+    alignItems:"center",
+    marginTop: 15
   }
 })
