@@ -8,7 +8,7 @@ const ProfileData = (props) => {
     
     return (
         <View>
-            <Text>{props.title}:</Text> 
+            <Text style= {{color: '#46458D'}}>{props.title}:</Text> 
             <VisibilityButton element={props.element} changeFunction={props.changeFunction} editFunction={props.editFunction} />
 
             {props.element.isEditing ? 
@@ -27,7 +27,7 @@ const ProfileData = (props) => {
                 }
                 />
                 : //se tiver editando, irá aparecer a caixa para escrever
-                    <Text>{props.element.data}</Text>
+                    <Text style= {{color: '#46458D'}}>{props.element.data}</Text>
             }
 
             <EditButton element={props.element} editFunction = {props.editFunction} changeFunction = {props.changeFunc} />

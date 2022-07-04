@@ -53,7 +53,7 @@ const ProfileScreen = () => {
   const [changed, setChanged] = useState(false)
   const [rating, setRating] = useState(null)
   const [experience, setExperience] = useState(null)
-  
+
 
   const [email, setEmail] = useState({
     data: null,
@@ -168,20 +168,20 @@ const ProfileScreen = () => {
     setChanged(false)
   }
 
-  async function updateCars(){
+  async function updateCars() {
     let carros = await getCars()
     let carros2 = []
     await carros.forEach(car => {
-      carros2.push( {
+      carros2.push({
         ...car,
         isEditing: false,
         changed: false
       })
     })
     setCars(await carros2)
-    
+
   }
-  async function addACar(placa, modelo, cor){
+  async function addACar(placa, modelo, cor) {
     await addCar(placa, modelo, cor)
     updateCars() //atualiza os carros
   }
@@ -195,227 +195,229 @@ const ProfileScreen = () => {
   const [isAddingCar, setAddingCar] = useState(false)
 
   let placa, modelo, cor
-  
-  
+
+
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{ marginTop: 40, marginLeft: 30 }}>
-          <Image
-            style={{
-              width: 80,
-              height: 80,
-              resizeMode: 'contain'
-            }}
-            source={require('../images/profile_picture.png')}
-          />
-          <Text>{name}</Text>
-
-          {!rating && <Text>Você ainda não foi avaliado</Text> //caso ainda não tenha avaliações
-          }
-
-          {rating && (
-            <View style={{ width: 100 }}>
-              <Text>{rating}</Text>
-              <StarRating
-                disabled={true}
-                rating={rating}
-                starSize={30}
-                fullStarColor="#4D4C7D"
-                starStyle={{}}
-              />
-            </View>
-          )}
-
-          <View style={{}}>
-            <ExpandButton
-              isCollapsed={isCollapsedProfile}
-              collapseFunction={setCollapsedProfile}
+        <View style={{backgroundColor: '#EFE9E5', flex: 1}}>
+          <View style={{ marginTop: 40, marginLeft: 30 }}>
+            <Image
+              style={{
+                width: 80,
+                height: 80,
+                resizeMode: 'contain'
+              }}
+              source={require('../images/profile_picture.png')}
             />
+            <Text style = {{color: '#46458D'}}>{name}</Text>
 
-            <Text>Meus dados</Text>
+            {!rating && <Text>Você ainda não foi avaliado</Text> //caso ainda não tenha avaliações
+            }
 
-            <Collapsible collapsed={isCollapsedProfile}>
-              <ProfileData
-                title="Email"
-                element={email}
-                editFunction={setEmail}
-                changeFunction={setChanged}
+            {rating && (
+              <View style={{ width: 100 }}>
+                <Text style = {{color: '#46458D'}}>{rating}</Text>
+                <StarRating
+                  disabled={true}
+                  rating={rating}
+                  starSize={30}
+                  fullStarColor="#4D4C7D"
+                  starStyle={{}}
+                />
+              </View>
+            )}
+
+            <View style={{}}>
+              <ExpandButton
+                isCollapsed={isCollapsedProfile}
+                collapseFunction={setCollapsedProfile}
               />
 
-              <Text>Matrícula: {store.getState().auth.matricula}</Text>
+              <Text style = {{color: '#46458D'}}>Meus dados</Text>
 
-              <ProfileData
-                title="Número"
-                element={phone}
-                editFunction={setPhone}
-                changeFunction={setChanged}
-              />
+              <Collapsible collapsed={isCollapsedProfile}>
+                <ProfileData
+                  title="Email"
+                  element={email}
+                  editFunction={setEmail}
+                  changeFunction={setChanged}
+                />
 
-              <Text>Data de nascimento</Text>
-              <Text>
-                {birth.data
-                  ? birth.data.getDate() +
+                <Text style = {{color: '#46458D'}}>Matrícula: {store.getState().auth.matricula}</Text>
+
+                <ProfileData
+                  title="Número"
+                  element={phone}
+                  editFunction={setPhone}
+                  changeFunction={setChanged}
+                />
+
+                <Text style = {{color: '#46458D'}}>Data de nascimento</Text>
+                <Text style = {{color: '#46458D'}}>
+                  {birth.data
+                    ? birth.data.getDate() +
                     '/' +
                     (birth.data.getMonth() + 1) +
                     '/' +
                     birth.data.getFullYear()
-                  : '(Informe sua data de nascimento)'}
-              </Text>
-
-              <EditButton element={birth} editFunction={setBirth} />
-
-              {birth.isEditing && (
-                <RNDateTimePicker
-                  mode="date"
-                  value={birth.data ? birth.data : new Date()}
-                  maximumDate={new Date()}
-                  onChange={(event, date) => {
-                    setBirth({
-                      ...birth,
-                      data: date,
-                      changed: true,
-                      isEditing: false
-                    })
-                    setChanged(true)
-                  }}
-                />
-              )}
-
-              <Text>Gênero</Text>
-
-              <EditButton
-                element={gender}
-                editFunction={setGender}
-                changeFunction={setChanged}
-              />
-
-              {!gender.isEditing && ( //se não tiver editando, mostra o genero como texto
-                <Text>
-                  {gender.data ? gender.data : '(Informe seu gênero)'}
+                    : '(Informe sua data de nascimento)'}
                 </Text>
-              )}
 
-              <VisibilityButton
-                element={gender}
-                changeFunction={setChanged}
-                editFunction={setGender}
-              />
+                <EditButton element={birth} editFunction={setBirth} />
 
-              {gender.isEditing && ( //se tiver editando, mostra o genero como o picker select
-                <Dialog>
-                    <Dialog.Title title="Editar gênero"/>
+                {birth.isEditing && (
+                  <RNDateTimePicker
+                    mode="date"
+                    value={birth.data ? birth.data : new Date()}
+                    maximumDate={new Date()}
+                    onChange={(event, date) => {
+                      setBirth({
+                        ...birth,
+                        data: date,
+                        changed: true,
+                        isEditing: false
+                      })
+                      setChanged(true)
+                    }}
+                  />
+                )}
+
+                <Text style = {{color: '#46458D'}}>Gênero</Text>
+
+                <EditButton
+                  element={gender}
+                  editFunction={setGender}
+                  changeFunction={setChanged}
+                />
+
+                {!gender.isEditing && ( //se não tiver editando, mostra o genero como texto
+                  <Text style = {{color: '#46458D'}}>
+                    {gender.data ? gender.data : '(Informe seu gênero)'}
+                  </Text>
+                )}
+
+                <VisibilityButton
+                  element={gender}
+                  changeFunction={setChanged}
+                  editFunction={setGender}
+                />
+
+                {gender.isEditing && ( //se tiver editando, mostra o genero como o picker select
+                  <Dialog>
+                    <Dialog.Title title="Editar gênero" />
                     <Picker
-                        selectedValue={selectedGender}
-                        style={{ height: 50, width: 100 }}
-                        onValueChange={(itemValue, itemIndex) => {
-                          setSelectedGender(itemValue)
-                          console.log(selectedGender)
-                        }}
+                      selectedValue={selectedGender}
+                      style={{ height: 50, width: 100 }}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setSelectedGender(itemValue)
+                        console.log(selectedGender)
+                      }}
                     >
-                        <Picker.Item label="Feminino" value="F" />
-                        <Picker.Item label="Masculino" value="M" />
-                        <Picker.Item label="Outro" value="O" />
-                        <Picker.Item label="Não quero informar" value="N" />
+                      <Picker.Item label="Feminino" value="F" />
+                      <Picker.Item label="Masculino" value="M" />
+                      <Picker.Item label="Outro" value="O" />
+                      <Picker.Item label="Não quero informar" value="N" />
                     </Picker>
                     <Dialog.Button title="Salvar" onPress={() => {
-                        setGender({
-                            ...gender,
-                            value: selectedGender,
-                            data: getGenderName(selectedGender),
-                            isEditing: false,
-                            changed: true
-                        })
-                        setChanged(true)
-                    }}/>
-                    <Dialog.Button title="Cancelar" onPress={() => {
-                        setSelectedGender(gender.data)
-                        setGender({
-                            ...gender,
-                            isEditing: false
-                        })
-                    }}/>
-                </Dialog>
-              )}
-              {changed && ( //caso tenha alterações, mostrar o botão de salvar alterações
-                <TouchableOpacity style={{}} onPress={updateUserData}>
-                  <Text style={{}}>Salvar alterações</Text>
-                </TouchableOpacity>
-              )}
-            </Collapsible>
-
-            <ExpandButton
-              isCollapsed={isCollapsedCars}
-              collapseFunction={setCollapsedCars}
-            />
-
-            <Text>Meus carros</Text>
-            <TouchableOpacity
-              style={{}}
-              onPress={() => {
-                setAddingCar(!isAddingCar)
-              }}
-            >
-              <Icon name="add" type="material" size={15} />
-            </TouchableOpacity>
-
-            <Collapsible collapsed={isCollapsedCars}>
-              <Dialog
-                visible={isAddingCar}
-                onTouchOutside={() => setAddingCar(false)}
-              >
-                <Dialog.Title title="Adicionar um carro" />
-                <Text>Placa</Text>
-                <TextInput
-                  style={{}}
-                  onChangeText={text => {
-                    placa = text
-                  }}
-                />
-                <Text>Modelo</Text>
-                <TextInput
-                  style={{}}
-                  onChangeText={text => {
-                    modelo = text
-                  }}
-                />
-                <Text>Cor</Text>
-                <TextInput
-                  style={{}}
-                  onChangeText={text => {
-                    cor = text
-                  }}
-                />
-                <Dialog.Button
-                  title="Adicionar"
-                  onPress={() => {
-                    setAddingCar(false)
-                    addACar(placa, modelo, cor)
-                  }}
-                />
-                <Dialog.Button
-                  title="Cancelar"
-                  onPress={() => setAddingCar(false)}
-                />
-              </Dialog>
-              <Text>Placa | Modelo | Cor</Text>
-              {cars.map(c => (
-                <CarProfileLine
-                    key={c.placa}
-                  carro={c}
-                  editFunction={(value) => {
-                    let cars_copia = [...cars] //copia do array (para poder modificar)
-                    let idx = cars
-                      .map(car => {
-                        return car.placa
+                      setGender({
+                        ...gender,
+                        value: selectedGender,
+                        data: getGenderName(selectedGender),
+                        isEditing: false,
+                        changed: true
                       })
-                      .indexOf(c.placa) //indice do carro no array
-                    cars_copia[idx] = value
-                    setCars(cars_copia)
-                  }}
-                />
-              ))}
-            </Collapsible>
+                      setChanged(true)
+                    }} />
+                    <Dialog.Button title="Cancelar" onPress={() => {
+                      setSelectedGender(gender.data)
+                      setGender({
+                        ...gender,
+                        isEditing: false
+                      })
+                    }} />
+                  </Dialog>
+                )}
+                {changed && ( //caso tenha alterações, mostrar o botão de salvar alterações
+                  <TouchableOpacity style={{}} onPress={updateUserData}>
+                    <Text style = {{color: '#46458D'}}>Salvar alterações</Text>
+                  </TouchableOpacity>
+                )}
+              </Collapsible>
+
+              <ExpandButton
+                isCollapsed={isCollapsedCars}
+                collapseFunction={setCollapsedCars}
+              />
+
+              <Text style = {{color: '#46458D'}}>Meus carros</Text>
+              <TouchableOpacity
+                style={{}}
+                onPress={() => {
+                  setAddingCar(!isAddingCar)
+                }}
+              >
+                <Icon name="add" type="material" size={15} />
+              </TouchableOpacity>
+
+              <Collapsible collapsed={isCollapsedCars}>
+                <Dialog
+                  visible={isAddingCar}
+                  onTouchOutside={() => setAddingCar(false)}
+                >
+                  <Dialog.Title title="Adicionar um carro" />
+                  <Text>Placa</Text>
+                  <TextInput
+                    style={{}}
+                    onChangeText={text => {
+                      placa = text
+                    }}
+                  />
+                  <Text>Modelo</Text>
+                  <TextInput
+                    style={{}}
+                    onChangeText={text => {
+                      modelo = text
+                    }}
+                  />
+                  <Text>Cor</Text>
+                  <TextInput
+                    style={{}}
+                    onChangeText={text => {
+                      cor = text
+                    }}
+                  />
+                  <Dialog.Button
+                    title="Adicionar"
+                    onPress={() => {
+                      setAddingCar(false)
+                      addACar(placa, modelo, cor)
+                    }}
+                  />
+                  <Dialog.Button
+                    title="Cancelar"
+                    onPress={() => setAddingCar(false)}
+                  />
+                </Dialog>
+                <Text style = {{color: '#46458D'}}>Placa | Modelo | Cor</Text>
+                {cars.map(c => (
+                  <CarProfileLine
+                    key={c.placa}
+                    carro={c}
+                    editFunction={(value) => {
+                      let cars_copia = [...cars] //copia do array (para poder modificar)
+                      let idx = cars
+                        .map(car => {
+                          return car.placa
+                        })
+                        .indexOf(c.placa) //indice do carro no array
+                      cars_copia[idx] = value
+                      setCars(cars_copia)
+                    }}
+                  />
+                ))}
+              </Collapsible>
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
