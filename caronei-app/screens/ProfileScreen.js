@@ -451,6 +451,20 @@ const ProfileScreen = () => {
                       cars_copia[idx] = value
                       setCars(cars_copia)
                     }}
+                    deleteFunction={(placa) => {
+                      let cars_copia = [...cars] //copia do array (para poder modificar)
+                      let idx = cars
+                        .map(car => {
+                          return car.placa
+                        })
+                        .indexOf(c.placa) //indice do carro no array
+                      //remover o carro do array
+                      if (idx > -1) { 
+                        cars_copia.splice(idx, 1);
+                      }
+                      //atualiza o array de carros
+                      setCars(cars_copia)
+                    }}
                   />
                 ))}
               </Collapsible>

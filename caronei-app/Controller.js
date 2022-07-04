@@ -232,11 +232,21 @@ app.put("/alterar-carro/", async (request, response) => {
     }
   )
     .then((result) => {
-      console.log(result)
       response.send(JSON.stringify(true))
     })
     .catch((err) => response.send(JSON.stringify(false)))
 })
+
+app.delete("/deletar-carro/", async (request, response) => {
+  model.Carros.destroy({
+    where: {matricula: request.body.matricula, placa: request.body.placa}})
+  .then((result) => response.send(JSON.stringify(true)))
+  .catch((err) => response.send(JSON.stringify(false)))
+})
+
+
+
+
 //configurando o servidor
 let port = config.backend_port //process.env.PORT || 3000
 

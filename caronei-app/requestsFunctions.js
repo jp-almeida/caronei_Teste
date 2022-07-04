@@ -67,3 +67,19 @@ export async function getUserData() {
   })
   return await reqs.json()
 }
+
+export async function deleteCar(placa) {
+  
+  let reqs = await fetch(url + '/deletar-carro/', {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      matricula: store.getState().auth.matricula,
+      placa: placa,
+    })
+  })
+  return await reqs.json()
+}

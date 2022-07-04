@@ -4,7 +4,8 @@ import React from 'react'
 import EditButton from './buttons/EditButton'
 import { store } from '../store'
 import config from '../config/config.json'
-import { updateCar } from '../requestsFunctions'
+import { updateCar, deleteCar } from '../requestsFunctions'
+import DeleteButton from './buttons/DeleteButton'
 
 
 
@@ -19,6 +20,10 @@ const CarProfileLine = (props) => {
             <Text>{props.carro.placa} {props.carro.modelo} {props.carro.cor}</Text>
         
             <EditButton element = {props.carro} editFunction = {props.editFunction}/>
+            <DeleteButton deleteFunction = {()=>{
+                deleteCar(props.carro.placa)
+                props.deleteFunction()}
+                }/>
             <Dialog 
                 visible={props.carro.isEditing}
                 onTouchOutside={props.editFunction}
