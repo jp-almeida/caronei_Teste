@@ -254,3 +254,38 @@ let port = config.backend_port //process.env.PORT || 3000
 app.listen(port, (request, response) => {
   console.log("Servidor rodando")
 })
+
+
+//cadastrando uma rota no bd
+app.post(
+  "/createroute",
+  async (request, response) => {
+    //caso não exista um usuário, ele irá criar
+    //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
+    let user,
+      created = await model.Pedidos.findOrCreate({
+        where: { 
+          matriculaPedido: request.body.passengerMatricula,
+          rota: request.body.passengerRoute,
+        },
+        defaults: {
+          matriculaPedido: request.body.passengerMatricula,
+          rota: request.body.passengerRoute,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      })
+    if (user) {
+      return response.send(JSON.stringify("Rota já cadastrada"))
+    }
+    if (created) {
+      return response.send(
+        JSON.stringify("A rota foi cadastrada com sucesso!")
+      )
+    } else {
+      return response.send(
+        JSON.stringify("Ocorreu algum problema. Tente novamente")
+      )
+    }
+  }
+)

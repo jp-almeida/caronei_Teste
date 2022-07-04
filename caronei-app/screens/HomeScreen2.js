@@ -12,6 +12,7 @@ import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
 import { useDispatch } from "react-redux"
 import { setDestination, setOrigin } from "../slices/navSlice"
+import { addRoute } from '../requestsFunctions'
 
 const HomeScreen2 = () => {
   const dispatch = useDispatch()
@@ -119,6 +120,7 @@ const HomeScreen2 = () => {
                     if(element[item.item.ponto] != undefined){
                       setRota(element[item.item.ponto])
                       console.log(element[item.item.ponto])
+                      addRoute(element[item.item.ponto])
                     }
                   })
                   setData2([])
