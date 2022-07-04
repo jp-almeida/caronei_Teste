@@ -17,7 +17,7 @@ const NavigateCard = () => {
       <Text style={tw`text-center py-5 text-xl`}>Para onde?</Text>
       <View style={tw`border-t border-gray-200 flex-shrink`}>
         <View>
-          <GooglePlacesAutocomplete
+          {/* <GooglePlacesAutocomplete
             placeholder="Para onde?"
             styles={toInputBoxStyles}
             fetchDetails={true}
@@ -41,7 +41,7 @@ const NavigateCard = () => {
             }}
             nearbyPlacesAPI="GooglePlacesSearch"
             debounce={400}
-          />
+          /> */}
         </View>
       </View>
     </SafeAreaView>

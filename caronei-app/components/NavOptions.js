@@ -19,7 +19,7 @@ const data = [
     id: "456",
     title: "Oferecer carona",
     image: require("../images/ride.png"),
-    screen: "DriverScreen",
+    screen: "HomeScreen2",
   },
 ]
 
@@ -36,7 +36,6 @@ const NavOptions = () => {
           // @ts-ignore
           onPress={() => navigation.navigate(item.screen)}
           style={tw`p-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40`}
-          disabled={!origin}
         >
           <View>
             <Image

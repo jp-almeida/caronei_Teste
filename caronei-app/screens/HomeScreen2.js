@@ -10,68 +10,124 @@ import React, { useEffect, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
+import { useDispatch } from "react-redux"
+import { setDestination, setOrigin } from "../slices/navSlice"
 
 const HomeScreen2 = () => {
-  const [title, setTitle] = useState("")
+  const dispatch = useDispatch()
+  const [partida, setPartida] = useState("")
+  const [destino, setDestino] = useState("")
   const [data, setData] = useState([{}])
+  const [data2, setData2] = useState([{}])
   const [originalData, setOriginalData] = useState([{}])
+  const [originalData2, setOriginalData2] = useState([{}])
 
   useEffect(() => {
     setData(paradas)
     setOriginalData(paradas)
+    setData2(paradas)
+    setOriginalData2(paradas)
   }, [])
 
-  function renderOptions(item) {
-    return (
-      <View style={styles.card}>
-        <TouchableHighlight
-          onPress={() => {
-            setTitle(item.item.nome)
-            setData([])
-          }}
-        >
-          <Text style={styles.rowText} numberOfLines={1}>
-            {item.item.nome}
-          </Text>
-        </TouchableHighlight>
-      </View>
-    )
-  }
+  // function renderOptions(item) {
+  //   return (
+  //     <View style={styles.card}>
+  //       <TouchableHighlight
+  //         onPress={() => {
+  //           setPartida(item.item.nome)
+  //           setData([])
+  //         }}
+  //       >
+  //         <Text style={styles.rowText} numberOfLines={1}>
+  //           {item.item.nome}
+  //         </Text>
+  //       </TouchableHighlight>
+  //     </View>
+  //   )
+  // }
 
-  function search(s) {
+  function searchP(s) {
     let arr = [...originalData]
     setData(arr.filter((d) => d.nome.toLowerCase().includes(s.toLowerCase())))
-    setTitle(s)
+    setPartida(s)
+  }
+
+  function searchD(s) {
+    let arr = [...originalData2]
+    setData2(arr.filter((d) => d.nome.toLowerCase().includes(s.toLowerCase())))
+    setDestino(s)
   }
 
   return (
     <SafeAreaView>
       <View style={tw`h-1/2`}>
         <TextInput
-          value={title}
+          value={partida}
           style={styles.input}
           placeholder={"Local de Partida..."}
-          onChangeText={(s) => search(s)}
+          onChangeText={(s) => searchP(s)}
           autoCapitalize="none"
         />
         <FlatList
           data={data}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={(item) => renderOptions(item)}
+          renderItem={(item) => (
+            <View style={styles.card}>
+              <TouchableHighlight
+                onPress={() => {
+                  setPartida(item.item.nome)
+                  setData([])
+                  dispatch(
+                    setOrigin({
+                      location: {
+                        latitude: item.item.lat,
+                        longitude: item.item.lng,
+                      },
+                    })
+                  )
+                }}
+              >
+                <Text style={styles.rowText} numberOfLines={1}>
+                  {item.item.nome}
+                </Text>
+              </TouchableHighlight>
+            </View>
+          )}
         />
       </View>
       <View style={tw`h-1/2`}>
         <TextInput
-          value={title}
+          value={destino}
           style={styles.input}
           placeholder={"Local de Destino..."}
-          onChangeText={(s) => search(s)}
+          onChangeText={(s) => searchD(s)}
           autoCapitalize="none"
         />
         <FlatList
-          data={data}
+          data={data2}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={(item) => renderOptions(item)}
+          renderItem={(item) => (
+            <View style={styles.card}>
+              <TouchableHighlight
+                onPress={() => {
+                  setDestino(item.item.nome)
+                  setData2([])
+                  dispatch(
+                    setDestination({
+                      location: {
+                        latitude: item.item.lat,
+                        longitude: item.item.lng,
+                      },
+                    })
+                  )
+                }}
+              >
+                <Text style={styles.rowText} numberOfLines={1}>
+                  {item.item.nome}
+                </Text>
+              </TouchableHighlight>
+            </View>
+          )}
         />
       </View>
     </SafeAreaView>
