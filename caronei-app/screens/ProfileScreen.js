@@ -210,47 +210,55 @@ const ProfileScreen = () => {
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
           <View style={{ marginTop: 40, marginLeft: 30 }}>
-            <Image
-              style={{
-                width: 80,
-                height: 80,
-                resizeMode: 'contain'
-              }}
-              source={require('../images/profile_picture.png')}
-            />
-            <Text style={{ color: '#46458D' }}>{name.data}</Text>
 
-            <EditButton element={name} editFunction={setName} />
-            <Dialog visible={name.isEditing} overlayStyle={styles.dialog}>
-              <Dialog.Title title="Editar nome" titleStyle={styles.dialogTitle}/>
-              <TextInput
-                style={styles.textInput}
-                defaultValue={name.data}
-                onChangeText={text => {
-                  currentName = text
+
+            {/* HEADER DO PERFIL */}
+            <View style={styles.userHeaderView}>
+              <Image
+                style={{
+                  width: 80,
+                  height: 80,
+                  resizeMode: 'contain'
                 }}
+                source={require('../images/profile_picture.png')}
               />
-              <Dialog.Button title="Salvar" onPress={() => {
-                if (currentName) {
+              <Text style={styles.userHeaderName}>{name.data}</Text>
+
+              <EditButton element={name} editFunction={setName} />
+
+              <Dialog visible={name.isEditing} overlayStyle={styles.dialog}>
+                <Dialog.Title title="Editar nome" titleStyle={styles.dialogTitle} />
+                <TextInput
+                  style={styles.textInput}
+                  defaultValue={name.data}
+                  onChangeText={text => {
+                    currentName = text
+                  }}
+                />
+                <Dialog.Button title="Salvar" onPress={() => {
+                  if (currentName) {
+                    setName({
+                      ...name,
+                      data: currentName,
+                      isEditing: false,
+                      changed: true
+                    })
+                    setChanged(true)
+                  }
+                  currentName = null
+
+                }} />
+                <Dialog.Button title="Cancelar" onPress={() => {
                   setName({
                     ...name,
-                    data: currentName,
                     isEditing: false,
-                    changed: true
                   })
-                  setChanged(true)
-                }
-                currentName = null
+                  currentName = null
+                }} />
+              </Dialog>
+            </View>
 
-              }} />
-              <Dialog.Button title="Cancelar" onPress={() => {
-                setName({
-                  ...name,
-                  isEditing: false,
-                })
-                currentName = null
-              }} />
-            </Dialog>
+            {/* AVALIAÇÃO */}
             {!rating && <Text>Você ainda não foi avaliado</Text> //caso ainda não tenha avaliações
             }
 
@@ -268,12 +276,15 @@ const ProfileScreen = () => {
             )}
 
             <View style={{}}>
-              <ExpandButton
-                isCollapsed={isCollapsedProfile}
-                collapseFunction={setCollapsedProfile}
-              />
 
-              <Text style={{ color: '#46458D' }}>Meus dados</Text>
+              {/* MEUS DADOS */}
+              <View style={styles.profileSectionHeader}>
+                <ExpandButton
+                  isCollapsed={isCollapsedProfile}
+                  collapseFunction={setCollapsedProfile}
+                />
+                <Text style={styles.profileSectionTitle}>Meus dados</Text>
+              </View>
 
               <Collapsible collapsed={isCollapsedProfile}>
                 <ProfileData
@@ -283,8 +294,13 @@ const ProfileScreen = () => {
                   changeFunction={setChanged}
                 />
 
-                <Text style={{ color: '#46458D' }}>Matrícula: {store.getState().auth.matricula}</Text>
+                {/* MATRÍCULA */}
+                <View style={styles.profileLine}>
+                  <Text style={styles.profileLineDataTitle}>Matrícula: {store.getState().auth.matricula}</Text>
+                </View>
 
+
+                {/* NÚMERO  */}
                 <ProfileData
                   title="Número"
                   element={phone}
@@ -292,119 +308,127 @@ const ProfileScreen = () => {
                   changeFunction={setChanged}
                 />
 
-                <Text style={{ color: '#46458D' }}>Data de nascimento</Text>
-                <Text style={{ color: '#46458D' }}>
-                  {birth.data
-                    ? birth.data.getDate() +
-                    '/' +
-                    (birth.data.getMonth() + 1) +
-                    '/' +
-                    birth.data.getFullYear()
-                    : '(Informe sua data de nascimento)'}
-                </Text>
+                {/* NASCIMENTO */}
 
-                <EditButton element={birth} editFunction={setBirth} />
-
-                {birth.isEditing && (
-                  <RNDateTimePicker
-                    mode="date"
-                    value={birth.data ? birth.data : new Date()}
-                    maximumDate={new Date()}
-                    onChange={(event, date) => {
-                      setBirth({
-                        ...birth,
-                        data: date,
-                        changed: true,
-                        isEditing: false
-                      })
-                      setChanged(true)
-                    }}
-                  />
-                )}
-
-                <Text style={{ color: '#46458D' }}>Gênero</Text>
-
-                <EditButton
-                  element={gender}
-                  editFunction={setGender}
-                  changeFunction={setChanged}
-                />
-
-                {!gender.isEditing && ( //se não tiver editando, mostra o genero como texto
-                  <Text style={{ color: '#46458D' }}>
-                    {gender.data ? gender.data : '(Informe seu gênero)'}
+                <View style={styles.profileLine}>
+                  <Text style={styles.profileLineDataTitle}>Data de nascimento: </Text>
+                  <Text style={styles.profileLineData}>
+                    {birth.data
+                      ? birth.data.getDate() +
+                      '/' +
+                      (birth.data.getMonth() + 1) +
+                      '/' +
+                      birth.data.getFullYear()
+                      : '(Informe sua data de nascimento)'}
                   </Text>
-                )}
 
-                <VisibilityButton
-                  element={gender}
-                  changeFunction={setChanged}
-                  editFunction={setGender}
-                />
+                  <EditButton element={birth} editFunction={setBirth} />
 
-                {gender.isEditing && ( //se tiver editando, mostra o genero como o picker select
-                  <Dialog overlayStyle={styles.dialog}>
-                    <Dialog.Title title="Editar gênero" titleStyle={styles.dialogTitle}/>
-                    <Picker
-                      selectedValue={selectedGender}
-                      style={{ height: 50, width: 100 }}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setSelectedGender(itemValue)
-                        console.log(selectedGender)
+                  {birth.isEditing && (
+                    <RNDateTimePicker
+                      mode="date"
+                      value={birth.data ? birth.data : new Date()}
+                      maximumDate={new Date()}
+                      onChange={(event, date) => {
+                        setBirth({
+                          ...birth,
+                          data: date,
+                          changed: true,
+                          isEditing: false
+                        })
+                        setChanged(true)
                       }}
-                    >
-                      <Picker.Item label="Feminino" value="F" />
-                      <Picker.Item label="Masculino" value="M" />
-                      <Picker.Item label="Outro" value="O" />
-                      <Picker.Item label="Não quero informar" value="N" />
-                    </Picker>
-                    <Dialog.Button title="Salvar" onPress={() => {
-                      setGender({
-                        ...gender,
-                        value: selectedGender,
-                        data: getGenderName(selectedGender),
-                        isEditing: false,
-                        changed: true
-                      })
-                      setChanged(true)
-                    }} />
-                    <Dialog.Button title="Cancelar" onPress={() => {
-                      setSelectedGender(gender.data)
-                      setGender({
-                        ...gender,
-                        isEditing: false
-                      })
-                    }} />
-                  </Dialog>
-                )}
+                    />
+                  )}
+                </View>
+
+                {/* GENERO */}
+                <View style={styles.profileLine}>
+                  <Text style={styles.profileLineDataTitle}>Gênero</Text>
+                  
+                  {!gender.isEditing && ( //se não tiver editando, mostra o genero como texto
+                    <Text style={styles.profileLineData}>
+                      {gender.data ? gender.data : '(Informe seu gênero)'}
+                    </Text>
+                  )}
+
+                  <EditButton
+                    element={gender}
+                    editFunction={setGender}
+                    changeFunction={setChanged}
+                  />
+                  <VisibilityButton
+                    element={gender}
+                    changeFunction={setChanged}
+                    editFunction={setGender}
+                  />
+                </View>
+
+                <Dialog visible={gender.isEditing} overlayStyle={styles.dialog}>
+                  <Dialog.Title title="Editar gênero" titleStyle={styles.dialogTitle} />
+                  <Picker
+                    selectedValue={selectedGender}
+                    style={{ height: 50, width: 100 }}
+                    onValueChange={(itemValue, itemIndex) => {
+                      setSelectedGender(itemValue)
+                      console.log(selectedGender)
+                    }}
+                  >
+                    <Picker.Item label="Feminino" value="F" />
+                    <Picker.Item label="Masculino" value="M" />
+                    <Picker.Item label="Outro" value="O" />
+                    <Picker.Item label="Não quero informar" value="N" />
+                  </Picker>
+                  <Dialog.Button title="Salvar" onPress={() => {
+                    setGender({
+                      ...gender,
+                      value: selectedGender,
+                      data: getGenderName(selectedGender),
+                      isEditing: false,
+                      changed: true
+                    })
+                    setChanged(true)
+                  }} />
+                  <Dialog.Button title="Cancelar" onPress={() => {
+                    setSelectedGender(gender.data)
+                    setGender({
+                      ...gender,
+                      isEditing: false
+                    })
+                  }} />
+                </Dialog>
+
                 {changed && ( //caso tenha alterações, mostrar o botão de salvar alterações
-                  <TouchableOpacity style={{}} onPress={updateUserData}>
-                    <Text style={{ color: '#46458D' }}>Salvar alterações</Text>
+                  <TouchableOpacity style={styles.button} onPress={updateUserData}>
+                    <Text style={styles.text}>Salvar alterações</Text>
                   </TouchableOpacity>
                 )}
               </Collapsible>
 
-              <ExpandButton
-                isCollapsed={isCollapsedCars}
-                collapseFunction={setCollapsedCars}
-              />
+              {/* MEUS CARROS */}
+              <View style={styles.profileSectionHeader}>
+                <ExpandButton
+                  isCollapsed={isCollapsedCars}
+                  collapseFunction={setCollapsedCars}
+                />
 
-              <Text style={{ color: '#46458D' }}>Meus carros</Text>
-              <TouchableOpacity
-                style={{}}
-                onPress={() => {
-                  setAddingCar(!isAddingCar)
-                }}
-              >
-                <Icon name="add" type="material" size={15} />
-              </TouchableOpacity>
+                <Text style={styles.profileSectionTitle}>Meus carros</Text>
+                <TouchableOpacity
+                  style={{}}
+                  onPress={() => {
+                    setAddingCar(!isAddingCar)
+                  }}
+                >
+                  <Icon name="add" type="material" size={15} />
+                </TouchableOpacity>
+              </View>
 
               <Collapsible collapsed={isCollapsedCars}>
                 <Dialog
                   visible={isAddingCar}
                   onTouchOutside={() => setAddingCar(false)}
                 >
-                  <Dialog.Title title="Adicionar um carro" titleStyle={styles.dialogTitle}/>
+                  <Dialog.Title title="Adicionar um carro" titleStyle={styles.dialogTitle} />
                   <Text>Placa</Text>
                   <TextInput
                     style={styles.textInput}
@@ -461,7 +485,7 @@ const ProfileScreen = () => {
                         })
                         .indexOf(c.placa) //indice do carro no array
                       //remover o carro do array
-                      if (idx > -1) { 
+                      if (idx > -1) {
                         cars_copia.splice(idx, 1);
                       }
                       //atualiza o array de carros

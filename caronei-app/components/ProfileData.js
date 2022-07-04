@@ -8,11 +8,19 @@ import { styles } from "../styles"
 const ProfileData = (props) => {
     let currentData = props.element.data 
     return (
-        <View>
-            <Text style= {{color: '#46458D'}}>{props.title}:</Text> 
-            <VisibilityButton element={props.element} changeFunction={props.changeFunction} editFunction={props.editFunction} />
-            <Text style= {{color: '#46458D'}}>{props.element.data}</Text>
+        <View style={styles.profileLine}>
+            <Text style= {styles.profileLineDataTitle}>{props.title}:</Text> 
+            
+            {props.element.data ?
+                <Text style= {styles.profileLineData}>{props.element.data}</Text>
+            :
+            <Text style= {styles.profileLineData}>{"(Sem " + props.title.toLowerCase() + ")"}</Text>
+            }
+            
+
+            {/* botões */}
             <EditButton element={props.element} editFunction = {props.editFunction} changeFunction = {props.changeFunc} />
+            <VisibilityButton element={props.element} changeFunction={props.changeFunction} editFunction={props.editFunction} />
             
             <Dialog visible={props.element.isEditing} overlayStyle={styles.dialog}>
                 <Dialog.Title title={"Editar "+ props.title.toLowerCase()} titleStyle={styles.dialogTitle}/>
