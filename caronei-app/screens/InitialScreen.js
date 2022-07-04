@@ -61,31 +61,36 @@ const InitialScreen = () => {
                             padding: 45
                         }}
                     >
-                        <Image
-                            style={{
-                                width: 150,
-                                height: 200,
-                                resizeMode: "contain",
-                            }}
-                            source={require("../images/logo.png")}
-                        />
+                        <View style = {{justifyContent: 'center', alignItems: 'center'}}>
+                            <Image
+                                style={{
+                                    width: 255,
+                                    height: 320,
+                                    resizeMode: "contain",
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }}
+                                source={require("../images/logo.png")}
+                            />
 
-                        <Text style={{textAlign: 'center', color: '#4D4C7D'}}>Olá, seja bem vindo</Text>
+                        </View>
+
+
+                        <Text style={{ textAlign: 'center', color: '#4D4C7D' }}>Olá, seja bem vindo</Text>
 
                         <View>
-                            <View style={{ marginBottom: 15 }}>
+                            <View style={{ marginBottom: 30 }}>
                                 <DefaultButton title="Criar uma conta" onPress={() => navigation.navigate('SignUpScreen')} />
                             </View>
-    
-                            <Text style={{color: '#4D4C7D'}}>Já tem conta?</Text>
+
+                            <Text style={{ color: '#4D4C7D' }}>Já tem conta?</Text>
 
                             <View style={{}}>
                                 <DefaultButton title="Entrar" onPress={() => navigation.navigate('LogInScreen')} />
                             </View>
-                            
 
-                           
-                            <Image
+
+                            <View style={{ flexDirection: "row", marginTop: 100 }}><Image
                                 style={{
                                     width: 150,
                                     height: 200,
@@ -93,14 +98,15 @@ const InitialScreen = () => {
                                 }}
                                 source={require("../images/ufc_logo.png")}
                             />
-                            <Image
-                                style={{
-                                    width: 150,
-                                    height: 200,
-                                    resizeMode: "contain",
-                                }}
-                                source={require("../images/cc_logo.png")}
-                            />
+                                <Image
+                                    style={{
+                                        width: 150,
+                                        height: 200,
+                                        resizeMode: "contain",
+                                    }}
+                                    source={require("../images/cc_logo.png")}
+                                /></View>
+
                         </View>
                     </View>
                 </View>
