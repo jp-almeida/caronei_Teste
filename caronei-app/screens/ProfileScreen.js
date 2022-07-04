@@ -306,6 +306,7 @@ const ProfileScreen = () => {
                       isEditing: false
                     })
                     setChanged(true)
+                    console.log(changed)
                   }}
                 />
               )}
