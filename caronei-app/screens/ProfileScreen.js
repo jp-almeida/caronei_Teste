@@ -216,7 +216,7 @@ const ProfileScreen = () => {
   const [isCollapsedCars, setCollapsedCars] = useState(false)
   const [isAddingCar, setAddingCar] = useState(false)
 
-  let placa, modelo, cor
+  let placa, modelo, cor, selectedGender = gender.value
   
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
@@ -324,25 +324,38 @@ const ProfileScreen = () => {
               />
 
               {gender.isEditing && ( //se tiver editando, mostra o genero como o picker select
-                <Picker
-                  selectedValue={gender.value}
-                  style={{ height: 50, width: 100 }}
-                  onValueChange={(itemValue, itemIndex) => {
-                    setGender({
-                      value: itemValue,
-                      data: getGenderName(itemValue),
-                      visibility: gender.visibility,
-                      isEditing: true,
-                      changed: true
-                    })
-                    setChanged(true)
-                  }}
-                >
-                  <Picker.Item label="Feminino" value="F" />
-                  <Picker.Item label="Masculino" value="M" />
-                  <Picker.Item label="Outro" value="O" />
-                  <Picker.Item label="Não quero informar" value="N" />
-                </Picker>
+                <Dialog>
+                    <Dialog.Title title="Editar gênero"/>
+                    <Picker
+                        selectedValue={selectedGender}
+                        style={{ height: 50, width: 100 }}
+                        onValueChange={(itemValue, itemIndex) => {
+                            selectedGender = itemValue
+                        }}
+                    >
+                        <Picker.Item label="Feminino" value="F" />
+                        <Picker.Item label="Masculino" value="M" />
+                        <Picker.Item label="Outro" value="O" />
+                        <Picker.Item label="Não quero informar" value="N" />
+                    </Picker>
+                    <Dialog.Button title="Salvar" onPress={() => {
+                        setGender({
+                            ...gender,
+                            value: selectedGender,
+                            data: getGenderName(selectedGender),
+                            isEditing: false,
+                            changed: true
+                        })
+                        setChanged(true)
+                    }}/>
+                    <Dialog.Button title="Cancelar" onPress={() => {
+                        selectedGender = gender.data
+                        setGender({
+                            ...gender,
+                            isEditing: false
+                        })
+                    }}/>
+                </Dialog>
               )}
               {changed && ( //caso tenha alterações, mostrar o botão de salvar alterações
                 <TouchableOpacity style={{}} onPress={updateUserData}>
