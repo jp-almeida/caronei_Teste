@@ -18,6 +18,7 @@ import RecoverPswdScreen from "./screens/RecoverPswdScreen"
 import PswdRecoveredScreen from "./screens/PswdRecoveredScreen"
 import InitialScreen from "./screens/InitialScreen"
 import HomeScreen2 from "./screens/HomeScreen2"
+import RateUserScreen from "./screens/RateUserScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -36,6 +37,14 @@ export default function App() {
             <Stack.Screen
               name="InitialScreen"
               component={InitialScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
+              name="RateUserScreen"
+              component={RateUserScreen}
               options={{
                 headerShown: false,
               }}
