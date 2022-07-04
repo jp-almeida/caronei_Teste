@@ -68,6 +68,18 @@ export async function getUserData() {
   return await reqs.json()
 }
 
+export async function getPublicData(matricula) {
+  //pega os dados do banco de dados e preenche as variaveis
+  let reqs = await fetch(url + '/dados-publicos/' + matricula, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+  return await reqs.json()
+}
+
 export async function deleteCar(placa) {
   
   let reqs = await fetch(url + '/deletar-carro/', {
