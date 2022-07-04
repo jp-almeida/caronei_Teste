@@ -11,7 +11,8 @@
     "back": "nodemon Controller.js",
     "all": "npm-run-all --parallel android back",
     "migrate": "npx sequelize db:migrate",
-    "seed": "npx sequelize-cli db:seed:all"
+    "seed": "npx sequelize-cli db:seed:all",
+    "undo-migrate": "npx sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",

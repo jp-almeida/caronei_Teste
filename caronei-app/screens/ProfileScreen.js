@@ -24,6 +24,7 @@ import VisibilityButton from '../components/buttons/VisibilityButton'
 import ExpandButton from '../components/buttons/ExpandButton'
 import { Dialog } from 'react-native-elements'
 import CarProfileLine from '../components/CarProfileLine'
+import { getCars } from '../requestsFunctions'
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode.replace(
@@ -170,8 +171,6 @@ const ProfileScreen = () => {
     })
     let resp = await reqs.json()
 
-    console.log(resp)
-
     setChanged(false)
   }
 
@@ -190,33 +189,27 @@ const ProfileScreen = () => {
       })
     })
     let resp = await reqs.json()
-    getCars() //atualiza os carros
+    updateCars() //atualiza os carros
   }
 
-  async function getCars() {
-    //carrega os carros do banco de dados
-    let reqs = await fetch(url + '/carros/' + store.getState().auth.matricula, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    const response = await reqs.json()
-    let carros = []
-    response.forEach(car => {
-      carros.push({
+  async function updateCars(){
+    let carros = await getCars()
+    let carros2 = []
+    await carros.forEach(car => {
+      carros2.push( {
         ...car,
         isEditing: false,
         changed: false
       })
     })
-
-    setCars(carros)
+    setCars(await carros2)
+    
   }
+
   if (!name) {
     getUserData()
-    getCars()
+    updateCars()
+    
   }
 
   const [isCollapsedProfile, setCollapsedProfile] = useState(false)
@@ -224,7 +217,7 @@ const ProfileScreen = () => {
   const [isAddingCar, setAddingCar] = useState(false)
 
   let placa, modelo, cor
-
+  
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -306,7 +299,6 @@ const ProfileScreen = () => {
                       isEditing: false
                     })
                     setChanged(true)
-                    console.log(changed)
                   }}
                 />
               )}
@@ -416,8 +408,9 @@ const ProfileScreen = () => {
               <Text>Placa | Modelo | Cor</Text>
               {cars.map(c => (
                 <CarProfileLine
+                    key={c.placa}
                   carro={c}
-                  editFunction={value => {
+                  editFunction={(value) => {
                     let cars_copia = [...cars] //copia do array (para poder modificar)
                     let idx = cars
                       .map(car => {
