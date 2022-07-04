@@ -15,8 +15,8 @@ import { setDestination, setOrigin } from "../slices/navSlice"
 
 const HomeScreen2 = () => {
   const dispatch = useDispatch()
-  const [partida, setPartida] = useState("")
-  const [destino, setDestino] = useState("")
+  const [partida, setPartida] = useState(null)
+  const [destino, setDestino] = useState(null)
   const [data, setData] = useState([{}])
   const [data2, setData2] = useState([{}])
   const [originalData, setOriginalData] = useState([{}])
@@ -63,7 +63,13 @@ const HomeScreen2 = () => {
       <View style={tw`h-1/2`}>
         <TextInput
           value={partida}
-          style={styles.input}
+          style={{
+            borderWidth: 2,
+            borderColor: "#949494",
+            padding: 5,
+            backgroundColor: "#e6e6e6",
+            borderRadius: 5,
+          }}
           placeholder={"Local de Partida..."}
           onChangeText={(s) => searchP(s)}
           autoCapitalize="none"
@@ -99,7 +105,13 @@ const HomeScreen2 = () => {
       <View style={tw`h-1/2`}>
         <TextInput
           value={destino}
-          style={styles.input}
+          style={{
+            borderWidth: 2,
+            borderColor: "#949494",
+            padding: 5,
+            backgroundColor: "#e6e6e6",
+            borderRadius: 5,
+          }}
           placeholder={"Local de Destino..."}
           onChangeText={(s) => searchD(s)}
           autoCapitalize="none"
