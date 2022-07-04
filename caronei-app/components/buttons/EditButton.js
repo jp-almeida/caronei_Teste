@@ -13,6 +13,9 @@ const EditButton = (props) => {
             ...props.element,
             isEditing: !props.element.isEditing
         })
+        if (props.changeFunction){
+          props.changeFunction(true)
+        }
         
     }}>
         <Icon name={props.element.isEditing ? "done" : "edit"} type="material" size={15}></Icon>

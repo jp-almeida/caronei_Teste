@@ -14,21 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Pedidos.init({
-    matriculaPedido: {
-      primaryKey: true,
-      autoIncrement:false,
-      type: DataTypes.INTEGER,
-      references:{
-        model:"usuarios",
-        key:"matricula"
-      }
-    },
-    nomeDestino: DataTypes.STRING,
-    nomePartida: DataTypes.STRING,
-    latitudeDestino: DataTypes.FLOAT,
-    longitudeDestino: DataTypes.FLOAT,
-    latitudePartida: DataTypes.FLOAT,
-    longitudePartida: DataTypes.FLOAT
+    matriculaPedido: {type: DataTypes.INTEGER, allowNull: false},
+    rota: {type: DataTypes.STRING, allowNull: false}
   }, {
     sequelize,
     modelName: 'Pedidos',

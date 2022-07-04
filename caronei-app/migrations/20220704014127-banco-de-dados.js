@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Usuarios', {
@@ -52,6 +53,11 @@ module.exports = {
       avaliacao: {
         type: Sequelize.FLOAT
       },
+      numAvaliacoes: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        default: 0
+      },
       experiencia: {
         type: Sequelize.INTEGER,
         defaultValue: 0
@@ -65,8 +71,69 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+
+    await queryInterface.createTable('Pedidos', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      matriculaPedido: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      rota: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
+    await queryInterface.createTable('Carros', {
+      placa: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        autoIncrement: false,
+        allowNull: false
+      },
+      matricula: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "usuarios",
+          key: "matricula"
+        }
+      },
+      modelo: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      cor: {
+        type: Sequelize.STRING
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      }
+    });
+
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Usuarios');
+    await queryInterface.dropTable('usuarios');
+    await queryInterface.dropTable('pedidos');
+    await queryInterface.dropTable('carros');
   }
 };
