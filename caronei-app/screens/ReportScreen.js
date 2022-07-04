@@ -5,6 +5,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  FlatList,
   Keyboard,
   TextInput
 } from 'react-native'
@@ -22,52 +23,42 @@ import { useNavigation } from '@react-navigation/native'
 import config from '../config/config.json'
 import paradas from '../paradas/paradas.json'
 import { DefaultButton } from '../components/Button'
+import { AntDesign } from '@expo/vector-icons'
+import SimpleSelectButton from 'react-native-simple-select-button';
 
-const RateUserScreen = () => {
+const ReportScreen = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [name, setName] = useState(null)
-  const [comment, setComment] = useState(null)
+  const [reportComment, setReportComment] = useState(null)
+  const [choice, setChoice] = useState('');
 
-  async function getUserData() {
-    //pega os dados do banco de dados e preenche as variaveis
+  async function getUserName() {
+    //gambiarra porque as portas não estavam batendo
+    let original_port = config.urlRootNode.split(':')[2]
+    let url = config.urlRootNode.replace(original_port, config.backend_port)
 
-    let reqs = await fetch(url + '/data/' + store.getState().auth.matricula, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+    let reqs = await fetch(
+      url + '/username/' + store.getState().auth.matricula,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
       }
-    })
+    )
     const response = await reqs.json()
-
-    setName(response.name)
-    setRating(response.rating)
-    setExperience(response.experience)
-    setEmail({
-      ...email,
-      data: response.email,
-      visibility: response.emailVisibility
-    })
-    setGender({
-      ...gender,
-      value: response.gender,
-      data: getGenderName(response.gender),
-      visibility: response.genderVisibility,
-      changed: false
-    })
-    setPhone({
-      ...phone,
-      visibility: response.phoneVisibility,
-      changed: false
-    })
-    setBirth({
-      ...birth,
-      visibility: response.birthVisibility,
-      data: response.birth ? new Date(response.birth) : response.birth //converte para objeto de data (chega do back em string)
-    })
+    setName(response)
   }
-  getUserData
+  getUserName()
+
+  const button_list = [
+    { label: "Usuário é diferente da foto", value: "1" },
+    { label: "Usuário foi grosso", value: "2" },
+    { label: "Direção perigosa", value: "3" },
+    { label: "Outros", value: "4" },
+  ];
 
 
 
@@ -91,35 +82,43 @@ const RateUserScreen = () => {
                 color: '#46458D'
               }}
             >
-              Avalie sua carona
+              {name}
             </Text>
-            {/* Esperando para saber como pegar o nome do motorista */}
-            <Text style={{
-              fontSize: 20,
-              marginBottom: 30,
-              maxWidth: 200,
-              color: '#46458D'
-            }}>{name}</Text>
 
             <Text style={{
-              fontSize: 20,
+              fontSize: 25,
               color: '#46458D',
               textAlign: "center"
-            }}>Avaliar</Text>
+            }}>Como podemos ajudar?</Text>
 
-
-            <Text style={{
-              fontSize: 15,
-              textAlign: "right",
-              color: '#46458D'
-            }}>Todos os comentários passarão por uma avaliação antes de publicados</Text>
+            <FlatList
+              data={button_list}
+              keyExtractor={item => item.value}
+              extraData={choice}
+              renderItem={
+                ({ item }) =>
+                  <SimpleSelectButton
+                    onPress={() => setChoice(item.value)}
+                    isChecked={choice === item.value}
+                    text={item.label}
+                    textSize={14}
+                    iconName="checkcircleo"
+                    iconColor="#fff"
+                    iconSize={14}
+                    buttonDefaultColor="#e5e5e5"
+                    buttonSelectedColor="#46458D"
+                    textDefaultColor="#333"
+                    textSelectedColor="#fff"
+                  />
+              }
+            />
 
             <Text style={{
               fontSize: 18,
               marginBottom: 30,
               maxWidth: 200,
               color: '#46458D'
-            }}>Comentário:</Text>
+            }}>Detalhes do ocorrido:</Text>
 
             <TextInput
               placeholder="Escreva seu comentário aqui"
@@ -136,16 +135,13 @@ const RateUserScreen = () => {
             />
 
             <View style={{ marginBottom: 15 }}>
-              <DefaultButton title="Enviar" onChangeText={text => setComment(text)} />
+              <DefaultButton title="Enviar" onChangeText={text => setReportComment(text)} />
             </View>
 
             <View style={{marginBottom: 15}}>
-              <DefaultButton title="Lembrar mais tarde" onPress={() => navigation.navigate('HomeScreen')} />
+              <DefaultButton title="Cancelar" onPress={() => navigation.navigate('HomeScreen')} />
             </View>
 
-            <View style={{}}>
-              <DefaultButton title="Denunciar usuário" onPress={() => navigation.navigate('ReportScreen')} />
-            </View>
           </View>
         </View>
       </View>
@@ -153,7 +149,7 @@ const RateUserScreen = () => {
   )
 }
 
-export default RateUserScreen
+export default ReportScreen
 
 const styles = StyleSheet.create({
   text: {
