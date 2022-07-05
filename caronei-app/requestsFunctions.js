@@ -4,38 +4,56 @@ import config from './config/config.json'
 //gambiarra porque as portas não estavam batendo
 export const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], config.backend_port)
 
-export async function updateCar(placaNova,placaAntiga, modelo, cor) {
-    let reqs = await fetch(url + "/alterar-carro/", {
-        method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            matricula: store.getState().auth.matricula,
-            cor: cor,
-            placaNova: placaNova,
-            placaAntiga: placaAntiga,
-            modelo: modelo
-        }),
-    })
-    return await reqs.json()
-    
+
+export async function searchPassageiro(matriculaMotorista, rotaMotorista) {
+  let reqs = await fetch(url + "/matchroute", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      driverMatricula: matriculaMotorista,
+      driverRoute: rotaMotorista
+    }),
+  })
+  return await reqs.json()
+}
+
+
+
+export async function updateCar(placaNova, placaAntiga, modelo, cor) {
+  let reqs = await fetch(url + "/alterar-carro/", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      matricula: store.getState().auth.matricula,
+      cor: cor,
+      placaNova: placaNova,
+      placaAntiga: placaAntiga,
+      modelo: modelo
+    }),
+  })
+  return await reqs.json()
+
 }
 
 
 export async function getCars() {
-    //carrega os carros do banco de dados
-    let reqs = await fetch(url + '/carros/' + store.getState().auth.matricula, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    return await reqs.json()
-    
-  }
+  //carrega os carros do banco de dados
+  let reqs = await fetch(url + '/carros/' + store.getState().auth.matricula, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+  return await reqs.json()
+
+}
 
 export async function addCar(placaCarro, modeloCarro, corCarro) {
   let reqs = await fetch(url + '/adicionar-carro/', {
@@ -52,7 +70,7 @@ export async function addCar(placaCarro, modeloCarro, corCarro) {
     })
   })
   return await reqs.json()
-  
+
 }
 
 export async function getUserData() {
@@ -81,7 +99,7 @@ export async function getPublicData(matricula) {
 }
 
 export async function deleteCar(placa) {
-  
+
   let reqs = await fetch(url + '/deletar-carro/', {
     method: 'DELETE',
     headers: {
@@ -113,10 +131,10 @@ export async function addRoute(route) {
     })
   })
   return await reqs.json()
-  
+
 }
 
-export async function rateUser(matricula, rating){
+export async function rateUser(matricula, rating) {
   let reqs = await fetch(url + '/avaliar', {
     method: 'POST',
     headers: {
