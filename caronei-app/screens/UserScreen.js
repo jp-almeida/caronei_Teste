@@ -15,7 +15,7 @@ const UserScreen = ({ route }) => {
     
     async function loadData(matricula) {
         let response = await getPublicData(matricula)
-        setUser(response)
+        setUser(await response)
     }
     if (!user.name) {
         loadData(matricula)
@@ -77,6 +77,12 @@ const UserScreen = ({ route }) => {
                             <View style={styles.profileLine}>
                                 <Text style={styles.profileLineDataTitle}>Gênero: </Text>
                                 <Text style={styles.profileLineData}>{user.gender}</Text>
+                            </View>
+                        }
+                        {user.phone &&
+                            <View style={styles.profileLine}>
+                                <Text style={styles.profileLineDataTitle}>Telefone: </Text>
+                                <Text style={styles.profileLineData}>{user.phone}</Text>
                             </View>
                         }
                         {user.birth &&
