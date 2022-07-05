@@ -68,8 +68,6 @@ const RateUserScreen = () => {
   }
   getUserData
 
-
-
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
@@ -93,31 +91,45 @@ const RateUserScreen = () => {
               Avalie sua carona
             </Text>
             {/* Esperando para saber como pegar o nome do motorista */}
-            <Text style={{
-              fontSize: 20,
-              marginBottom: 30,
-              maxWidth: 200,
-              color: '#46458D'
-            }}>{name}</Text>
-            <View style={{flexDirection: "row", alignItems: "center", jusifyContent: "center" }}>
-              <Icon name="room" type="material" size={15} color='gray' />
-              <Text style={{textAlign: 'center', color: '#4D4C7D'}}>Parada A</Text>
-              <Icon name="east" type="material" size={15} color='gray' />
-              <Text style={{textAlign: 'center', color: '#4D4C7D'}}>Parada B</Text>
-
-
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 30,
+                maxWidth: 200,
+                color: '#46458D'
+              }}
+            >
+              {name}
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                jusifyContent: 'center'
+              }}
+            >
+              <Icon name="room" type="material" size={15} color="gray" />
+              <Text style={{ textAlign: 'center', color: '#4D4C7D' }}>
+                Parada A
+              </Text>
+              <Icon name="east" type="material" size={15} color="gray" />
+              <Text style={{ textAlign: 'center', color: '#4D4C7D' }}>
+                Parada B
+              </Text>
             </View>
 
+            <Text
+              style={{
+                fontSize: 20,
+                color: '#46458D',
+                marginTop: 15,
+                textAlign: 'center'
+              }}
+            >
+              Avaliar
+            </Text>
 
-
-            <Text style={{
-              fontSize: 20,
-              color: '#46458D',
-              marginTop: 15,
-              textAlign: "center"
-            }}>Avaliar</Text>
-
-            <View style={{ jusifyContent: "center", alignItems: "center" }}>
+            <View style={{ jusifyContent: 'center', alignItems: 'center' }}>
               <StarRating
                 disabled={false}
                 rating={rating}
@@ -125,24 +137,31 @@ const RateUserScreen = () => {
                 starSize={30}
                 fullStarColor="#4D4C7D"
                 starStyle={{}}
-                selectedStar={(rating) => setRating(rating)}
-
+                selectedStar={rating => setRating(rating)}
               />
             </View>
 
+            <Text
+              style={{
+                fontSize: 15,
+                textAlign: 'right',
+                color: '#46458D'
+              }}
+            >
+              Todos os comentários passarão por uma avaliação antes de
+              publicados
+            </Text>
 
-            <Text style={{
-              fontSize: 15,
-              textAlign: "right",
-              color: '#46458D'
-            }}>Todos os comentários passarão por uma avaliação antes de publicados</Text>
-
-            <Text style={{
-              fontSize: 18,
-              marginBottom: 30,
-              maxWidth: 200,
-              color: '#46458D'
-            }}>Comentário:</Text>
+            <Text
+              style={{
+                fontSize: 18,
+                marginBottom: 30,
+                maxWidth: 200,
+                color: '#46458D'
+              }}
+            >
+              Comentário:
+            </Text>
 
             <TextInput
               placeholder="Escreva seu comentário aqui"
@@ -153,21 +172,29 @@ const RateUserScreen = () => {
                 textInput: {
                   fontSize: 18,
                   color: '#4D4C7D'
-                },
-
+                }
               }}
             />
 
             <View style={{ marginBottom: 15 }}>
-              <DefaultButton title="Enviar" onChangeText={text => setComment(text)} />
+              <DefaultButton
+                title="Enviar"
+                onChangeText={text => setComment(text)}
+              />
             </View>
 
             <View style={{ marginBottom: 300 }}>
-              <DefaultButton title="Lembrar mais tarde" onPress={() => navigation.navigate('HomeScreen')} />
+              <DefaultButton
+                title="Lembrar mais tarde"
+                onPress={() => navigation.navigate('HomeScreen')}
+              />
             </View>
 
             <View style={{}}>
-              <DefaultButton title="Denunciar usuário" onPress={() => navigation.navigate('ReportScreen')} />
+              <DefaultButton
+                title="Denunciar usuário"
+                onPress={() => navigation.navigate('ReportScreen')}
+              />
             </View>
           </View>
         </View>

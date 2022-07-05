@@ -16,6 +16,7 @@ import { loginAuth } from '../slices/userAuth'
 import { useNavigation } from '@react-navigation/native'
 import { DefaultButton } from '../components/Button'
 import { url } from '../requestsFunctions'
+import { ReportButton } from '../components/buttons/ReportButton'
 
 const LogInScreen = () => {
   const dispatch = useDispatch()
@@ -65,8 +66,9 @@ const LogInScreen = () => {
               <Text
                 style={{
                   fontSize: 38,
-                  marginBottom: 30,
+                  marginBottom: 15,
                   maxWidth: 200,
+                  flexDirection: 'row',
                   color: '#46458D'
                 }}
               >
@@ -77,36 +79,38 @@ const LogInScreen = () => {
             <View>
               <View style={{ marginBottom: 30 }}>
                 <Text
-                  style={{ fontSize: 18, marginBottom: 15, color: '#46458D' }}
+                  style={{ fontSize: 18, marginBottom: 5, color: '#46458D' }}
                 >
                   E-mail ou matrícula
                 </Text>
                 <TextInput
                   style={{
                     borderWidth: 2,
-                    borderColor: '#949494',
+                    borderColor: '#46458D',
                     padding: 5,
                     backgroundColor: '#e6e6e6',
                     borderRadius: 5
                   }}
+                  placeholder="Email ou matrícula"
                   onChangeText={text => setMatricula(text)}
                 />
               </View>
 
               <View style={{ marginBottom: 30 }}>
                 <Text
-                  style={{ fontSize: 18, marginBottom: 15, color: '#46458D' }}
+                  style={{ fontSize: 18, marginBottom: 5, color: '#46458D' }}
                 >
                   Senha
                 </Text>
                 <TextInput
                   style={{
                     borderWidth: 2,
-                    borderColor: '#949494',
+                    borderColor: '#46458D',
                     padding: 5,
                     backgroundColor: '#e6e6e6',
                     borderRadius: 5
                   }}
+                  placeholder="Senha"
                   onChangeText={text => setPassword(text)}
                 />
 
