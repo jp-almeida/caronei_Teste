@@ -61,7 +61,7 @@ const InitialScreen = () => {
                             padding: 45
                         }}
                     >
-                        <View style = {{justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Image
                                 style={{
                                     width: 255,
@@ -88,16 +88,20 @@ const InitialScreen = () => {
                             <View style={{}}>
                                 <DefaultButton title="Entrar" onPress={() => navigation.navigate('LogInScreen')} />
                             </View>
+                            <View style={{}}>
+                                <DefaultButton title="Avaliação" onPress={() => navigation.navigate('RateUserScreen', {matricula:1, name: "Teste"})} />
+                            </View>
 
 
-                            <View style={{ flexDirection: "row", marginTop: 100 }}><Image
-                                style={{
-                                    width: 150,
-                                    height: 200,
-                                    resizeMode: "contain",
-                                }}
-                                source={require("../images/ufc_logo.png")}
-                            />
+                            <View style={{ flexDirection: "row", marginTop: 100 }}>
+                                <Image
+                                    style={{
+                                        width: 150,
+                                        height: 200,
+                                        resizeMode: "contain",
+                                    }}
+                                    source={require("../images/ufc_logo.png")}
+                                />
                                 <Image
                                     style={{
                                         width: 150,

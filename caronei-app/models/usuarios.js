@@ -14,10 +14,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Usuarios.init({
-    nomeCompleto: DataTypes.STRING,
-    email: DataTypes.STRING,
-    emailVisib: DataTypes.BOOLEAN,
-    senha: DataTypes.STRING,
+    nomeCompleto: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email:  {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    emailVisib: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    senha:  {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     matricula: {
       type : DataTypes.INTEGER,
       primaryKey : true,
@@ -25,13 +37,25 @@ module.exports = (sequelize, DataTypes) => {
     },
     validado: DataTypes.DATE,
     nascimento: DataTypes.STRING,
-    nascimentoVisib: DataTypes.BOOLEAN,
+    nascimentoVisib: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     genero: DataTypes.STRING,
-    generoVisib: DataTypes.BOOLEAN,
+    generoVisib: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     telefone: DataTypes.STRING,
-    telefoneVisib: DataTypes.BOOLEAN,
+    telefoneVisib: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     avaliacao: DataTypes.FLOAT,
-    experiencia: DataTypes.INTEGER,
+    experiencia: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
     numAvaliacoes: {
       type: DataTypes.INTEGER,
       defaultValue: 0

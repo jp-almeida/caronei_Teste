@@ -115,3 +115,18 @@ export async function addRoute(route) {
   return await reqs.json()
   
 }
+
+export async function rateUser(matricula, rating){
+  let reqs = await fetch(url + '/avaliar', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      matricula: matricula,
+      avaliacao: rating
+    })
+  })
+  return await reqs.json()
+}
