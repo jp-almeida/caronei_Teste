@@ -79,9 +79,9 @@ const SearchRideScreen = () => {
                                     borderRadius: 25
                                 }}>
                                     {store.getState().ride.role == MOTORISTA ? 
-                                       <Text style={{ color: 'white' }}>       Procurando passageiro... </Text>
+                                       <Text style={{ color: 'white' }}>    Procurando passageiro... </Text>
                                     :
-                                      <Text style={{ color: 'white' }}>       Procurando motorista... </Text>
+                                      <Text style={{ color: 'white' }}>    Procurando motorista... </Text>
                                     }
 
 
@@ -93,13 +93,13 @@ const SearchRideScreen = () => {
 
                                 }}>
                                     <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25 }}>
-                                        <Text style={{ color: 'white' }}> <Icon name="alarm" type="material" size={15} /> Tempo para chegada </Text>
+                                        <Text style={{ color: 'white' }}> <Icon name="alarm" type="material" size={15} />   ?   </Text>
                                     </View>
                                     <View>
                                         <Text>  </Text>
                                     </View>
                                     <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25, }}>
-                                        <Text style={{ color: 'white' }}> <Icon name="stars" type="material" size={15} />  {avaliacao}  </Text>
+                                        <Text style={{ color: 'white' }}> <Icon name="stars" type="material" size={15} />   ?   </Text>
                                     </View>
 
                                 </View>
@@ -129,7 +129,9 @@ const SearchRideScreen = () => {
                             }}>
                             <DefaultButton 
                             title="Cancelar viagem" 
-                            onPress={() => navigation.navigate('HomeScreen')} />
+                            onPress={() => {
+                                dispatch(cancelar_corrida())
+                                navigation.navigate('HomeScreen')}} />
                     </View>
                 </View>
 

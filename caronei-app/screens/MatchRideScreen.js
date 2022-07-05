@@ -12,7 +12,7 @@ import {Icon} from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
 import { store } from '../store.js'
-import { EM_CORRIDA_MOTORISTA,EM_CORRIDA_PASSAGEIRO, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
+import { cancelar_corrida, EM_CORRIDA_MOTORISTA,EM_CORRIDA_PASSAGEIRO, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
 
 
 const MatchRideScreen = () => {
@@ -105,7 +105,9 @@ var avaliacao = 5
                             }}>
                             <DefaultButton 
                             title="Cancelar viagem" 
-                            onPress={() => navigation.navigate('HomeScreen')} />
+                            onPress={() =>{ 
+                            dispatch(cancelar_corrida())
+                            navigation.navigate('HomeScreen')}} />
                         </View>
                    </View>
                
