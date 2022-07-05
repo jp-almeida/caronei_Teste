@@ -13,7 +13,7 @@ import { Icon } from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
 import { store } from "../store"
-import { MOTORISTA, PASSAGEIRO } from "../slices/rideState"
+import { MOTORISTA, PASSAGEIRO, cancelar_corrida } from "../slices/rideState"
 import { searchPassageiro, searchDriver } from "../requestsFunctions"
 import { useDispatch } from "react-redux"
 
@@ -24,12 +24,12 @@ const SearchRideScreen = ({ route }) => {
     const [partida, setPartida] = useState(null)
     const [destino, setDestino] = useState(null)
     const [match, setMatch] = useState(null)
+    const { parametro } = route.params
     var avaliacao = 5
     let procurando = false
 
 
     async function procurarPassageiro() {
-        const { rota } = route.params
         const response = await searchPassageiro(rota)
 
         if (await response.response) {
@@ -76,31 +76,19 @@ const SearchRideScreen = ({ route }) => {
                         //'rgba(144,144, 144, 0.1)'
                         justifyContent: "center",
                         alignItems: "center",
-                        margin: 10,
-                    }}
-                        source={require("../images/mapapici.png")}
-                    />
-                    <View style={{
-                        //'rgba(144,144, 144, 0.1)'
-                        justifyContent: "center",
-                        alignItems: "center",
-                        margin: 10,
-                    }}
-                    >
+                        margin: 10}}>
                         <Text ></Text>
 
                         <View style={{
                             flexDirection: 'row',
-                            justifyContent: 'space-around',
-                        }}>
+                            justifyContent: 'space-around'}}>
                             <View>
                                 <Icon name="account-circle" type="material" size={100} />
                             </View>
                             <View>
                                 <View style={{
                                     backgroundColor: '#4D4C7D',
-                                    borderRadius: 25
-                                }}>
+                                    borderRadius: 25}}>
                                     {store.getState().ride.role == MOTORISTA ?
                                         <Text style={{ color: 'white' }}>    Procurando passageiro... </Text>
                                         :
@@ -112,15 +100,7 @@ const SearchRideScreen = ({ route }) => {
 
                                 <View style={{
                                     flexDirection: 'row',
-                                    padding: 10,
-
-                                }}>
-                                    <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25 }}>
-                                        <Text style={{ color: 'white' }}> <Icon name="alarm" type="material" size={15} />   ?   </Text>
-                                    </View>
-                                    <View>
-                                        <Text>  </Text>
-                                    </View>
+                                    padding: 10,}}>
                                     <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25, }}>
                                         <Text style={{ color: 'white' }}> <Icon name="stars" type="material" size={15} />   ?   </Text>
                                     </View>
@@ -131,18 +111,6 @@ const SearchRideScreen = ({ route }) => {
                         </View>
 
 
-                    </View>
-
-                    <View style={{
-                        marginTop: 100,
-                        padding: 5,
-
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                    }}>
-                        <DefaultButton
-                            title="Atualizar Busca"
-                            onPress={() => navigation.navigate('HomeScreen')} />
                     </View>
                     <View style={{
                         marginTop: 100,
@@ -157,7 +125,7 @@ const SearchRideScreen = ({ route }) => {
                                 if (store.getState().ride.role == PASSAGEIRO) {
                                     procurarMotorista()
                                 }
-                                navigation.navigate('HomeScreen')
+                                // navigation.navigate('HomeScreen')
                             }} />
                     </View>
                     <View style={{
@@ -174,15 +142,9 @@ const SearchRideScreen = ({ route }) => {
                             }} />
                     </View>
                 </View>
-                <DefaultButton
-                    title="Cancelar viagem"
-                    onPress={() => {
-                        dispatch(cancelar_corrida())
-                        navigation.navigate('HomeScreen')
-                    }} />
-                </TouchableWithoutFeedback >
-            </SafeAreaView >
-        )
+            </TouchableWithoutFeedback >
+        </SafeAreaView >
+    )
 }
 
 export default SearchRideScreen
