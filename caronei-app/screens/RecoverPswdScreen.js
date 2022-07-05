@@ -73,14 +73,14 @@ const RecoverPswdScreen = () => {
             <View>
               <View style={{ marginBottom: 30 }}>
                 <Text
-                  style={{ fontSize: 18, marginBottom: 15, color: '#46458D' }}
+                  style={{ fontSize: 18, marginBottom: 5, color: '#46458D' }}
                 >
                   Insira seu email
                 </Text>
                 <TextInput
                   style={{
                     borderWidth: 2,
-                    borderColor: '#949494',
+                    borderColor: '#46458D',
                     padding: 5,
                     backgroundColor: '#e6e6e6',
                     borderRadius: 5
