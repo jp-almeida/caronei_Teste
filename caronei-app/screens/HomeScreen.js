@@ -1,24 +1,24 @@
-// @ts-nocheck
 import {
   StyleSheet,
   Text,
   View,
   SafeAreaView,
   TouchableOpacity,
+  Image,
+  Dimensions,
 } from "react-native"
 import React, { useState } from "react"
-import { Image } from "react-native"
+import MapView, { Marker } from "react-native-maps"
+import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
 import NavOptions from "../components/NavOptions"
 import { useDispatch } from "react-redux"
-import { logoutAuth } from "../slices/userAuth"
-import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
+import { logoutAuth } from "../slices/userAuth"
 import config from "../config/config.json"
-import MapView, { Marker } from "react-native-maps"
-import paradas from "../paradas/paradas.json"
+import { store } from "../store"
 
-const HomeScreen = () => {
+export default function HomeScreen() {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [name, setName] = useState(null)
@@ -48,75 +48,92 @@ const HomeScreen = () => {
   getUserName()
 
   return (
-    <SafeAreaView style={tw`bg-white h-full`}>
-      <View style={{ padding: 5 }}>
+    <View>
+      <View
+        style={{
+          justifyContent: "space-around",
+          height: "20%",
+          flexDirection: "row",
+          padding: 10,
+          backgroundColor: "#EFE9E5",
+        }}
+      >
         <View
           style={{
-            justifyContent: "center",
-            alignItems: "center",
+            width: "50%",
+            paddingTop: 40,
+          }}
+        >
+          <Text>Olá, {name}</Text>
+          <TouchableOpacity style={{}} onPress={exitAccount}>
+            <Text style={{}}>Sair</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{}}
+            onPress={() => navigation.navigate("ProfileScreen")}
+          >
+            <Text style={{}}>Perfil</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            width: "50%",
+            paddingTop: 30,
+            paddingLeft: 50,
           }}
         >
           <Image
             style={{
-              width: 150,
-              height: 200,
-              resizeMode: "contain",
+              width: 140,
+              height: 100,
             }}
             source={require("../images/logo.png")}
           />
         </View>
-
-        <Text>Olá, {name}</Text>
-        <TouchableOpacity style={{}} onPress={exitAccount}>
-          <Text style={{}}>Sair</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{}}
-          onPress={() => navigation.navigate("ProfileScreen")}
+      </View>
+      <View style={tw`h-40%`}>
+        <MapView
+          style={styles.mapStyle}
+          region={{
+            latitude: -3.742522,
+            longitude: -38.574836,
+            latitudeDelta: 0.013,
+            longitudeDelta: 0.013,
+          }}
         >
-          <Text style={{}}>Perfil</Text>
-        </TouchableOpacity>
-
-        {/* <GooglePlacesAutocomplete
-          placeholder="Local de partida"
-          styles={{
-            container: {
-              flex: 0,
-            },
-            textInput: {
-              fontSize: 18,
-            },
-          }}
-          onPress={(data, details = null) => {
-            dispatch(
-              setOrigin({
-                location: details.geometry.location,
-                description: data.description,
-              })
-            )
-            dispatch(setDestination(null))
-          }}
-          fetchDetails={true}
-          returnKeyType={"search"}
-          enablePoweredByContainer={false}
-          minLength={2}
-          query={{
-            key: GOOGLE_MAPS_APIKEY,
-            language: "en",
-          }}
-          nearbyPlacesAPI="GooglePlacesSearch"
-          debounce={400}
-        /> */}
+          {paradas.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: marker.lat,
+                longitude: marker.lng,
+              }}
+              title={marker.nome}
+            />
+          ))}
+        </MapView>
+      </View>
+      <View
+        style={{
+          height: "40%",
+          backgroundColor: "#EFE9E5",
+        }}
+      >
         <NavOptions />
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
-export default HomeScreen
-
 const styles = StyleSheet.create({
-  text: {
-    color: "blue",
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  mapStyle: {
+    width: Dimensions.get("window").width,
+    height: "100%",
   },
 })

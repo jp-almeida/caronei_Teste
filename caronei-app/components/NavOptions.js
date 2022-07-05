@@ -7,6 +7,7 @@ import "@react-navigation/native"
 import { useNavigation } from "@react-navigation/native"
 import { useSelector } from "react-redux"
 import { selectOrigin } from "../slices/navSlice"
+import { FullWindowOverlay } from "react-native-screens"
 
 const data = [
   {
@@ -35,7 +36,7 @@ const NavOptions = () => {
         <TouchableOpacity
           // @ts-ignore
           onPress={() => navigation.navigate(item.screen)}
-          style={tw`p-2 pl-7 pb-5 bg-gray-200 m-2 w-40`}
+          style={tw`p-2 pl-7 pb-5 bg-gray-200 m-5 w-40 h-80%`}
         >
           <View>
             <Image
@@ -44,9 +45,17 @@ const NavOptions = () => {
             />
             <Text style={tw`mt-2 text-lg font-semibold`}>{item.title}</Text>
             <Icon
-              style={tw`p-2 bg-black rounded-full w-10 mt-4`}
+              style={{
+                padding: 12,
+                backgroundColor: "#4D4C7D",
+                width: 50,
+                height: 50,
+                marginTop: 4,
+                borderRadius: 100,
+              }}
+              // style={tw`p-2 bg-black rounded-full w-10 mt-4`}
               name="arrowright"
-              color="white"
+              color="#EFE9E5"
               type="antdesign"
             />
           </View>
