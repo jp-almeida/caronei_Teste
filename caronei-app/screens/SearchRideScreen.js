@@ -138,7 +138,7 @@ const SearchRideScreen = ({ route }) => {
                             title="Cancelar viagem"
                             onPress={() => {
                                 dispatch(cancelar_corrida())
-                                navigation.navigate('MatchRideScreen')
+                                navigation.navigate('HomeScreen')
                             }} />
                     </View>
                 </View>
