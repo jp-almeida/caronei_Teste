@@ -3,12 +3,14 @@ npx sequelize-cli model:generate --name Usuarios --attributes nomeCompleto:strin
 
 npx sequelize-cli model:generate --name Pedidos --attributes matriculaPedido:integer,rota:string
 
-npx sequelize-cli model:generate --name Matches --attributes matriculaMotorista:string,matriculaPassageiro:string,nomeDestino:string,latitudeDestino:float,longitudeDestino:float
+npx sequelize-cli model:generate --name Matches --attributes matriculaMotorista:integer,matriculaPassageiro:integer,nomeDestino:string,nomeOrigem:string,idRota:integer
 
 
 npx sequelize-cli model:generate --name Carros --attributes placa:string,matricula:integer,modelo:string,cor:string
 
 #################
+npx sequelize-cli db:migrate
+npx sequelize-cli migration:generate --name migration-skeleton
 
 npx sequelize-cli model:generate --name Carona_Oferecida --attributes matriculaMotorista:integer,origem:string,destino:string,ativa:boolean
 npx sequelize-cli model:generate --name Carona_Solicitada --attributes matriculaPassageiro:integer,origem:string,destino:string,ativa:boolean

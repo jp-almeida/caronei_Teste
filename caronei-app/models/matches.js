@@ -19,18 +19,31 @@ module.exports = (sequelize, DataTypes) => {
       references:{
         model:"usuarios",
         key:"matricula"
-      }
+      },
+      allowNull: false
     },
     matriculaPassageiro: {
       type: DataTypes.INTEGER,
       references:{
         model:"usuarios",
         key:"matricula"
-      }
+      },
+      allowNull: false
     },
-    nomeDestino: DataTypes.STRING,
-    latitudeDestino: DataTypes.FLOAT,
-    longitudeDestino: DataTypes.FLOAT
+    nomeDestino: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    nomeOrigem:  {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    idRota: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: false,
+    }
   }, {
     sequelize,
     modelName: 'Matches',
