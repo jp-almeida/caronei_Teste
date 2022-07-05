@@ -103,3 +103,11 @@ Content-Type: application/json
     "passengerMatricula": 497493,
     "passengerRoute": "['c', 'd', 'e', 'f']"
 }
+
+###
+POST http://192.168.15.36:3000/matchroute
+Content-Type: application/json
+
+{
+    "driverRoute": "['c', 'd']"
+}

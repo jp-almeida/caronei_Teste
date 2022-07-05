@@ -318,6 +318,42 @@ app.post(
   }
 )
 
+// PROBLEEEMAAAAAAA
+app.post(
+  "/matchroute",
+  async (request, response) => {
+    const driverRoute = eval(request.body.driverRoute)
+    const pedidos = await model.Pedidos.findAll({
+      attributes: [
+        "id",
+        "matriculaPedido",
+        "rota"
+      ]
+    })
+    let result
+    pedidos.forEach(pedido => {
+      let r = eval(pedido.rota)
+      result = driverRoute.join().includes(r.join())
+      console.log(result)
+      console.log(r)
+      console.log(driverRoute)
+      if (result) {
+        return
+      }
+    });
+    if (result) {
+      const corrida = await model.Matches.create({
+        matriculaMotorista: request.body.driverMatricula,
+        matriculaPassageiro: pedido.matriculaPedido,
+        idRota: pedido.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+    }
+    return response.end(JSON.stringify(pedidos))
+  }
+)
+
 app.post("/avaliar",
   async (request, response) => {
     const user = await model.Usuarios.findByPk(request.body.matricula)
