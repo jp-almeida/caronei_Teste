@@ -64,7 +64,7 @@ const InitialScreen = () => {
                             </View>
                             <View style={{}}>
                                 <DefaultButton title="Testes" onPress={() => {
-                                    dispatch()
+                                    dispatch(carregar_motorista())
                                     navigation.navigate('MatchRideScreen')}} />
                             </View>
 

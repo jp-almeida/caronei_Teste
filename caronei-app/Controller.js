@@ -318,7 +318,6 @@ app.post(
   }
 )
 
-// PROBLEEEMAAAAAAA
 app.post(
   "/matchroute",
   async (request, response) => {
@@ -330,27 +329,28 @@ app.post(
         "rota"
       ]
     })
-    let result
+    let result, pedidoEscolhido
     pedidos.forEach(pedido => {
       let r = eval(pedido.rota)
-      result = driverRoute.join().includes(r.join())
+      result = result ? result : driverRoute.join().includes(r.join())
       console.log(result)
-      console.log(r)
-      console.log(driverRoute)
+
       if (result) {
-        return
+        pedidoEscolhido = pedido
       }
     });
     if (result) {
       const corrida = await model.Matches.create({
         matriculaMotorista: request.body.driverMatricula,
-        matriculaPassageiro: pedido.matriculaPedido,
-        idRota: pedido.id,
+        matriculaPassageiro: pedidoEscolhido.matriculaPedido,
+        nomeDestino: "nada",
+        nomeOrigem: "nada",
+        idRota: pedidoEscolhido.id,
         createdAt: new Date(),
         updatedAt: new Date(),
       })
     }
-    return response.end(JSON.stringify(pedidos))
+    return response.end(JSON.stringify({response: result, pedidos: pedidoEscolhido}))
   }
 )
 

@@ -84,18 +84,6 @@ Content-Type: application/json
 
 
 ###
-PUT http://192.168.1.7:3000/alterar-carro/
-
-{
-    "matricula": 1,
-    "placa": "abc-",
-    "cor": request.body.cor,
-    "modelo": request.body.modelo,
-
-}
-
-
-###
 POST http://192.168.15.36:3000/createroute
 Content-Type: application/json
 
@@ -105,9 +93,10 @@ Content-Type: application/json
 }
 
 ###
-POST http://192.168.15.36:3000/matchroute
+POST http://192.168.1.7:3000/matchroute
 Content-Type: application/json
 
 {
-    "driverRoute": "['c', 'd']"
+    "driverMatricula": 1,
+    "driverRoute": "['a','b','c','d']"
 }
