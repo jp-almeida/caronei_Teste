@@ -12,7 +12,7 @@ import {Icon} from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
 
-const MatchRideScreen = () => {
+const SearchRideScreen = () => {
 
     const navigation = useNavigation()
 
@@ -58,7 +58,7 @@ var avaliacao = 5
                                         borderRadius:25
                                     }}>
                                         
-                                        <Text style={{color:'white'}}>       Motorista está a caminho </Text>
+                                        <Text style={{color:'white'}}>       Procurando motorista... </Text>
                                     </View>
                                     
                                     <View style = {{
@@ -103,5 +103,5 @@ var avaliacao = 5
     )
 }
 
-export default MatchRideScreen
+export default SearchRideScreen
 
