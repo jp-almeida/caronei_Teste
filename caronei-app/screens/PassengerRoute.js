@@ -16,9 +16,9 @@ import { selectDestination, selectOrigin, setDestination, setOrigin } from "../s
 import { addRoute } from "../requestsFunctions"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
-import { carregar_motorista } from "../slices/rideState"
+import { carregar_passageiro } from "../slices/rideState"
 
-const HomeScreen2 = () => {
+const PassengerRoute = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [partida, setPartida] = useState("")
@@ -29,6 +29,7 @@ const HomeScreen2 = () => {
   const [rota, setRota] = useState("")
   const [data, setData] = useState([{}])
   const [data2, setData2] = useState([{}])
+  const [id, setId] = useState("")
   const [originalData, setOriginalData] = useState([{}])
   const [originalData2, setOriginalData2] = useState([{}])
 
@@ -49,6 +50,11 @@ const HomeScreen2 = () => {
     let arr = [...originalData2]
     setData2(arr.filter((d) => d.nome.toLowerCase().includes(s.toLowerCase())))
     setDestino(s)
+  }
+
+  async function adicionarRota(rota) {
+    const response = await addRoute(rota)
+    setId(await response)
   }
 
   return (
@@ -157,16 +163,18 @@ const HomeScreen2 = () => {
       <View style={tw`h-10%`}>
       <DefaultButton title="Confirmar" onPress={() => {
         if (origin?.location && destination?.location){
-          dispatch(carregar_motorista())
-          navigation.navigate("SearchRideScreen", {rota: rota})
+          adicionarRota(rota)
+          dispatch(carregar_passageiro())
+          navigation.navigate("SearchRideScreen", {parametro: id})
         }
-      }} />
+      }
+      } />
       </View>
     </SafeAreaView>
   )
 }
 
-export default HomeScreen2
+export default PassengerRoute
 
 const styles = StyleSheet.create({
   card: {
