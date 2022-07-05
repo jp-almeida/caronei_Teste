@@ -7,6 +7,7 @@ import {
 } from "react-native"
 import React, { useState } from "react"
 import tw from "twrnc"
+import Map from "../components/Map"
 import { Image } from "react-native"
 import { Icon } from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
@@ -27,11 +28,29 @@ const SearchRideScreen = () => {
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
-                    <Image //por o mapa
-                        style={{
-                            width: '100%',
-                            height: undefined,
-                            aspectRatio: 1,
+                <View style={{
+                                width: '100%',
+                                height: undefined,
+                                aspectRatio :1,
+                            }}>
+                    <Map />
+                </View>
+                    {/* <Image //por o mapa
+                            style={{
+                                width: '100%',
+                                height: undefined,
+                                aspectRatio :1,
+                            }}
+                            source={require("../images/mapapici.png")}
+                        /> */}
+                        <View style ={{
+                            
+                            //'rgba(144,144, 144, 0.1)'
+                            justifyContent:"center",
+                            alignItems:"center",
+                            margin:10,
+                            
+                            
                         }}
                         source={require("../images/mapapici.png")}
                     />
@@ -89,18 +108,27 @@ const SearchRideScreen = () => {
                         </View>
 
 
-                    </View>
-
-
-                    <View style={{
-                        marginTop: 190,
-                        padding: 25,
-
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                    }}>
-                        <DefaultButton
-                            title="Cancelar viagem"
+                        </View>
+        
+                        <View style={{
+                             marginTop:100,  
+                             padding: 5,
+                             
+                             flexDirection: 'row',
+                             justifyContent: 'space-around',                          
+                            }}>
+                            <DefaultButton 
+                            title="Atualizar Busca" 
+                            onPress={() => navigation.navigate('HomeScreen')} />
+                        </View>
+                        <View style={{ 
+                             padding: 5,
+                             
+                             flexDirection: 'row',
+                             justifyContent: 'space-around',                          
+                            }}>
+                            <DefaultButton 
+                            title="Cancelar viagem" 
                             onPress={() => navigation.navigate('HomeScreen')} />
                     </View>
                 </View>

@@ -140,19 +140,21 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="AcceptRideScreen"
-              component={AcceptRideScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
               name="MatchRideScreen"
               component={MatchRideScreen}
               options={{
                 headerShown: false,
               }}
             />
+
+            {/* <Stack.Screen
+              name="AcceptRideScreen"
+              component={AcceptRideScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            
             {/* <HomeScreen /> */}
           </Stack.Navigator>
         </SafeAreaProvider>
