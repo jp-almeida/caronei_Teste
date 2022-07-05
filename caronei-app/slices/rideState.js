@@ -4,10 +4,12 @@ const EM_CORRIDA_PASSAGEIRO = "Em corrida - passageiro"
 const EM_CORRIDA_MOTORISTA = "Em corrida - motorista"
 const CARREGAR_PASSAGEIRO = "Carregando - passageiro"
 const CARREGAR_MOTORISTA = "Carregando - motorista"
-
+export const MOTORISTA = "motorista"
+export const PASSAGEIRO = "passageiro"
 
 const INITIAL_STATE = {
   ride: null,
+  role: null
 }
 
 export const carregar_passageiro = createAction('CA_PASS')
@@ -19,10 +21,10 @@ export const cancelar_corrida = createAction('CANCELA')
 export default createReducer(
   INITIAL_STATE,
   {
-    [carregar_passageiro.type]: (state, action) => ({...state, ride: CARREGAR_PASSAGEIRO}),
-    [carregar_motorista.type]: (state, action) => ({...state, ride: CARREGAR_MOTORISTA}),
-    [em_corrida_passageiro.type]: (state, action) => ({...state, ride: EM_CORRIDA_PASSAGEIRO}),
-    [em_corrida_motorista.type]: (state, action) => ({...state, ride: EM_CORRIDA_MOTORISTA}),
-    [cancelar_corrida.type]: (state, action) => ({...state, ride: null})
+    [carregar_passageiro.type]: (state, action) => ({...state, ride: CARREGAR_PASSAGEIRO, role: PASSAGEIRO}),
+    [carregar_motorista.type]: (state, action) => ({...state, ride: CARREGAR_MOTORISTA, role: MOTORISTA}),
+    [em_corrida_passageiro.type]: (state, action) => ({...state, ride: EM_CORRIDA_PASSAGEIRO, role: PASSAGEIRO}),
+    [em_corrida_motorista.type]: (state, action) => ({...state, ride: EM_CORRIDA_MOTORISTA, role: MOTORISTA}),
+    [cancelar_corrida.type]: (state, action) => ({...state, ride: null, role: null})
   }
 )
