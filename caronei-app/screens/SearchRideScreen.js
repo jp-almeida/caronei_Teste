@@ -30,7 +30,7 @@ const SearchRideScreen = ({ route }) => {
 
 
     async function procurarPassageiro() {
-        const response = await searchPassageiro(rota)
+        const response = await searchPassageiro(parametro)
 
         if (await response.response) {
             setMatch(await response.pedidos)

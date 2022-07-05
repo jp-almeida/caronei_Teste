@@ -37,7 +37,7 @@ app.post(
       return response.send(
         JSON.stringify("O usuário foi cadastrado com sucesso!")
       )
-    } 
+    }
     if (user) {
       return response.send(JSON.stringify("Usuário já cadastrado"))
     }
@@ -285,7 +285,7 @@ app.post(
           updatedAt: new Date(),
         },
       })
-    
+
     if (created) {
       return response.send(
         JSON.stringify(pedido.id)
@@ -326,15 +326,16 @@ app.post(
     if (result) {
       [corrida, created] = await model.Matches.findOrCreate(
         {
-        where: { idRota: pedidoEscolhido.id },
-        defaults: {
-        matriculaMotorista: request.body.driverMatricula,
-        matriculaPassageiro: pedidoEscolhido.matriculaPedido,
-        nomeDestino: "nada",
-        nomeOrigem: "nada",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }})
+          where: { idRota: pedidoEscolhido.id },
+          defaults: {
+            matriculaMotorista: request.body.driverMatricula,
+            matriculaPassageiro: pedidoEscolhido.matriculaPedido,
+            nomeDestino: "nada",
+            nomeOrigem: "nada",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }
+        })
     }
     //não apagar a rota da tabela de pedidos agora, porque o motorista precisa 
     // confirmar o passageiro primeiro. Depois que ele confirmar, a gente remove 
@@ -358,7 +359,7 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
 app.post("/aceitar-passageiro", async (request, response) => {
   const match = await model.Matches.findByPk(request.body.idRota)
   if (!match) {
-    return response.end(JSON.stringify({response: false, message: "Corrida não existe"}))
+    return response.end(JSON.stringify({ response: false, message: "Corrida não existe" }))
   }
   model.Pedidos.destroy(
     {
@@ -374,14 +375,14 @@ app.post("/aceitar-passageiro", async (request, response) => {
         updatedAt: new Date()
       })
         .then((b) => {
-          response.end(JSON.stringify({response: true, message: "Passageiro aceito com sucesso"}))
+          response.end(JSON.stringify({ response: true, message: "Passageiro aceito com sucesso" }))
         })
         .catch((err) => {
-          response.end(JSON.stringify({response: false, message: "Não foi possível criar a corrida"}))
+          response.end(JSON.stringify({ response: false, message: "Não foi possível criar a corrida" }))
         })
     })
     .catch((err) => {
-      response.end(JSON.stringify({response: false, message: "Não foi possível aceitar o passageiro"}))
+      response.end(JSON.stringify({ response: false, message: "Não foi possível aceitar o passageiro" }))
     })
 
 })
