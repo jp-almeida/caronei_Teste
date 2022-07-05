@@ -156,26 +156,6 @@ app.get(
   }
 )
 
-//solicitar carona
-app.post("/solicitar", async (request, response) => {
-  let reqs = await model.Pedidos.create({
-    matriculaPedido: request.body.matricula,
-    nomeDestino: request.body.nomeDestino,
-    nomePartida: request.body.nomePartida,
-    latitudeDestino: request.body.latitudeDestino,
-    longitudeDestino: request.body.longitudeDestino,
-    latitudePartida: request.body.latitudePartida,
-    longitudePartida: request.body.longitudePartida,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  })
-  if (reqs) {
-    response.send(JSON.stringify("Carona solicitada"))
-  } else {
-    response.send(JSON.stringify("Ocorreu algum problema. Tente novamente"))
-  }
-})
-
 //adicionar um carro
 app.post("/adicionar-carro/", async (request, response) => {
   let user,
@@ -220,16 +200,16 @@ app.get("/dados-publicos/:matricula", async (request, response) => {
     return response.send(JSON.stringify("Usuário não existe"))
   } else {
     let dadosPublicos = {}
-    if(user.emailVisib){
+    if (user.emailVisib) {
       dadosPublicos.email = user.email
     }
-    if(user.nascimentoVisib){
+    if (user.nascimentoVisib) {
       dadosPublicos.birth = user.nascimento
     }
-    if(user.generoVisib){
+    if (user.generoVisib) {
       dadosPublicos.gender = user.genero
     }
-    if(user.telefoneVisib){
+    if (user.telefoneVisib) {
       dadosPublicos.phone = user.telefone
     }
 
@@ -268,9 +248,10 @@ app.put("/alterar-carro/", async (request, response) => {
 
 app.delete("/deletar-carro/", async (request, response) => {
   model.Carros.destroy({
-    where: {matricula: request.body.matricula, placa: request.body.placa}})
-  .then((result) => response.send(JSON.stringify(true)))
-  .catch((err) => response.send(JSON.stringify(false)))
+    where: { matricula: request.body.matricula, placa: request.body.placa }
+  })
+    .then((result) => response.send(JSON.stringify(true)))
+    .catch((err) => response.send(JSON.stringify(false)))
 })
 
 
@@ -292,7 +273,7 @@ app.post(
     //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
     let user,
       created = await model.Pedidos.findOrCreate({
-        where: { 
+        where: {
           matriculaPedido: request.body.passengerMatricula,
           rota: request.body.passengerRoute,
         },
@@ -350,9 +331,28 @@ app.post(
         updatedAt: new Date(),
       })
     }
-    return response.end(JSON.stringify({response: result, pedidos: pedidoEscolhido}))
+    //não apagar a rota da tabela de pedidos agora, porque o motorista precisa 
+    // confirmar o passageiro primeiro. Depois que ele confirmar, a gente remove 
+    // da tabela de pedido e da tabela de matches e passa para uma tabela de corridas
+    return response.end(JSON.stringify({ response: result, pedidos: corrida }))
   }
 )
+
+//PASSAGEIRO BUSCAR POR MOTORISTA
+app.get("/buscar-motorista/:idRota", async (request, response) => {
+  const corrida = await model.Matches.findByPk(request.params.idRota)
+  if (corrida){
+    return response.end(JSON.stringify(corrida))
+  }
+  else{
+    return response.send(JSON.stringify("Não encontrou uma corrida"))
+  }
+})
+
+// MOTORISTA ACEITAR PASSAGEIRO
+app.post("/aceitar-passageiro", async (request, response) => {
+  return
+})
 
 app.post("/avaliar",
   async (request, response) => {
@@ -360,8 +360,8 @@ app.post("/avaliar",
 
     model.Usuarios.update(
       {
-        numAvaliacoes: user.numAvaliacoes+1,
-        avaliacao: (user.avaliacao*user.numAvaliacoes + request.body.avaliacao) / (user.numAvaliacoes+1),
+        numAvaliacoes: user.numAvaliacoes + 1,
+        avaliacao: (user.avaliacao * user.numAvaliacoes + request.body.avaliacao) / (user.numAvaliacoes + 1),
       },
       {
         where: {
@@ -369,9 +369,8 @@ app.post("/avaliar",
         },
       }
     )
-    .then((result) => {
-      response.send(JSON.stringify(true))
-    })
-    .catch((err) => response.send(JSON.stringify(false)))
-})
-  
+      .then((result) => {
+        response.send(JSON.stringify(true))
+      })
+      .catch((err) => response.send(JSON.stringify(false)))
+  })

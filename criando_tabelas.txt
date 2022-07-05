@@ -8,6 +8,10 @@ npx sequelize-cli model:generate --name Matches --attributes matriculaMotorista:
 
 npx sequelize-cli model:generate --name Carros --attributes placa:string,matricula:integer,modelo:string,cor:string
 
+npx sequelize-cli model:generate --name Corridas --attributes matriculaMotorista:integer,matriculaPassageiro:integer,idCorrida:integer,timestamp:integer,ativa:boolean
+
+
+
 #################
 npx sequelize-cli db:migrate
 npx sequelize-cli migration:generate --name migration-skeleton
