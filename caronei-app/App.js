@@ -132,13 +132,27 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            {/* <Stack.Screen
+            <Stack.Screen
+              name="SearchRideScreen"
+              component={SearchRideScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
               name="AcceptRideScreen"
               component={AcceptRideScreen}
               options={{
                 headerShown: false,
               }}
-            /> */}
+            />
+            <Stack.Screen
+              name="MatchRideScreen"
+              component={MatchRideScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             {/* <HomeScreen /> */}
           </Stack.Navigator>
         </SafeAreaProvider>

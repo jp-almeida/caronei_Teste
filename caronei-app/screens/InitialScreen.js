@@ -64,7 +64,7 @@ const InitialScreen = () => {
                             </View>
                             <View style={{}}>
                                 <DefaultButton title="Testes" onPress={() => {
-                                    dispatch()
+                                    dispatch(carregar_motorista())
                                     navigation.navigate('MatchRideScreen')}} />
                             </View>
 
@@ -86,7 +86,7 @@ const InitialScreen = () => {
                                     }}
                                     source={require("../images/cc_logo.png")}
                                 /></View>
-
+  
                         </View>
                     </View>
                 </View>

@@ -11,11 +11,14 @@ import { Image } from "react-native"
 import {Icon} from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
+import { store } from '../store.js'
+import { EM_CORRIDA_MOTORISTA,EM_CORRIDA_PASSAGEIRO, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
+
 
 const MatchRideScreen = () => {
 
     const navigation = useNavigation()
-
+ 
 const [name,setName] = useState(null)
 const [partida,setPartida] = useState(null)
 const [destino,setDestino] = useState(null)
@@ -57,8 +60,16 @@ var avaliacao = 5
                                         backgroundColor:'#4D4C7D',
                                         borderRadius:25
                                     }}>
+                                        {store.getState().ride.ride == EM_CORRIDA_PASSAGEIRO || store.getState().ride.ride == EM_CORRIDA_MOTORISTA ?
+                                         <Text style={{color:'white'}}>       Em corrida </Text> 
+                                         :  
+                                         (store.getState().ride.role == MOTORISTA ? 
+                                            <Text style={{color:'white'}}>       Passageiro está a caminho </Text>
+                                         :
+                                           <Text style={{ color: 'white' }}>       Motorista está a caminho </Text>
+                                         )}
                                         
-                                        <Text style={{color:'white'}}>       Motorista está a caminho </Text>
+                                        
                                     </View>
                                     
                                     <View style = {{

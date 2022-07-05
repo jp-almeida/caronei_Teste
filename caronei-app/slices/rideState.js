@@ -1,7 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit"
 
-const EM_CORRIDA_PASSAGEIRO = "Em corrida - passageiro"
-const EM_CORRIDA_MOTORISTA = "Em corrida - motorista"
+export const EM_CORRIDA_PASSAGEIRO = "Em corrida - passageiro"
+export const EM_CORRIDA_MOTORISTA = "Em corrida - motorista"
 const CARREGAR_PASSAGEIRO = "Carregando - passageiro"
 const CARREGAR_MOTORISTA = "Carregando - motorista"
 export const MOTORISTA = "motorista"
