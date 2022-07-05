@@ -12,13 +12,13 @@ const data = [
   {
     id: "123",
     title: "Solicitar carona",
-    image: require("../images/car.png"),
+    image: require("../images/ride.png"),
     screen: "HomeScreen2",
   },
   {
     id: "456",
     title: "Oferecer carona",
-    image: require("../images/ride.png"),
+    image: require("../images/car.png"),
     screen: "HomeScreen3",
   },
 ]
@@ -35,11 +35,11 @@ const NavOptions = () => {
         <TouchableOpacity
           // @ts-ignore
           onPress={() => navigation.navigate(item.screen)}
-          style={tw`p-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40`}
+          style={tw`p-2 pl-7 pb-5 bg-gray-200 m-2 w-40`}
         >
           <View>
             <Image
-              style={{ width: 120, height: 120, resizeMode: "contain" }}
+              style={{ width: 100, height: 100, resizeMode: "contain" }}
               source={item.image}
             />
             <Text style={tw`mt-2 text-lg font-semibold`}>{item.title}</Text>

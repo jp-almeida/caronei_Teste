@@ -5,7 +5,6 @@ import tw from "twrnc"
 import { useSelector } from "react-redux"
 import { selectDestination, selectOrigin } from "../slices/navSlice"
 import MapViewDirections from "react-native-maps-directions"
-
 import { GOOGLE_MAPS_APIKEY } from "@env"
 
 const Map = () => {

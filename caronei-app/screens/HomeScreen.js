@@ -10,13 +10,12 @@ import React, { useState } from "react"
 import { Image } from "react-native"
 import tw from "twrnc"
 import NavOptions from "../components/NavOptions"
-import { GOOGLE_MAPS_APIKEY } from "@env"
 import { useDispatch } from "react-redux"
-import { setDestination, setOrigin } from "../slices/navSlice"
 import { logoutAuth } from "../slices/userAuth"
 import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
 import config from "../config/config.json"
+import MapView, { Marker } from "react-native-maps"
 import paradas from "../paradas/paradas.json"
 
 const HomeScreen = () => {
@@ -50,21 +49,22 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
-      <View style={{padding:5}}>
-        <View style ={{
-          justifyContent: 'center',
-          alignItems:'center'
-        }}><Image
-        style={{
-          width: 150,
-          height: 200,
-          resizeMode: "contain",
-          
-        }}
-        source={require("../images/logo.png")}
-        />
+      <View style={{ padding: 5 }}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            style={{
+              width: 150,
+              height: 200,
+              resizeMode: "contain",
+            }}
+            source={require("../images/logo.png")}
+          />
         </View>
-        
 
         <Text>Olá, {name}</Text>
         <TouchableOpacity style={{}} onPress={exitAccount}>
