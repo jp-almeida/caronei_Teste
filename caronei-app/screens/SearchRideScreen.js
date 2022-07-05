@@ -19,7 +19,6 @@ import { searchPassageiro } from "../requestsFunctions"
 const SearchRideScreen = ({route}) => {
 
     const navigation = useNavigation()
-    const {rota} = route.params
     const [name,setName] = useState(null)
     const [partida,setPartida] = useState(null)
     const [destino,setDestino] = useState(null)
@@ -27,6 +26,7 @@ const SearchRideScreen = ({route}) => {
     var avaliacao = 5
 
     async function procurarPassageiro() {
+        const {rota} = route.params
         const response = await searchPassageiro(store.getState().auth.matricula, rota)
         if (response.response) {
             setCorrida(response.pedidos)

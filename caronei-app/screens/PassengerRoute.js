@@ -16,9 +16,9 @@ import { selectDestination, selectOrigin, setDestination, setOrigin } from "../s
 import { addRoute } from "../requestsFunctions"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
-import { carregar_motorista } from "../slices/rideState"
+import { carregar_passageiro } from "../slices/rideState"
 
-const HomeScreen2 = () => {
+const PassengerRoute = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [partida, setPartida] = useState("")
@@ -157,16 +157,18 @@ const HomeScreen2 = () => {
       <View style={tw`h-10%`}>
       <DefaultButton title="Confirmar" onPress={() => {
         if (origin?.location && destination?.location){
-          dispatch(carregar_motorista())
-          navigation.navigate("SearchRideScreen", {rota: rota})
+          addRoute(rota)
+          dispatch(carregar_passageiro())
+          navigation.navigate("SearchRideScreen")
         }
-      }} />
+      }
+      } />
       </View>
     </SafeAreaView>
   )
 }
 
-export default HomeScreen2
+export default PassengerRoute
 
 const styles = StyleSheet.create({
   card: {
