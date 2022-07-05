@@ -6,7 +6,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: false
+        autoIncrement: false,
+        references:{
+          model:"pedidos",
+          key:"id"
+        },
       },
       matriculaMotorista: {
         type: Sequelize.INTEGER,

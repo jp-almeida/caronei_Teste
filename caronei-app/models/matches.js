@@ -43,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
       autoIncrement: false,
+      references:{
+        model:"pedidos",
+        key:"id"
+      },
+      allowNull: false
     }
   }, {
     sequelize,
