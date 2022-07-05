@@ -31,7 +31,11 @@ module.exports = (sequelize, DataTypes) => {
     telefone: DataTypes.STRING,
     telefoneVisib: DataTypes.BOOLEAN,
     avaliacao: DataTypes.FLOAT,
-    experiencia: DataTypes.INTEGER
+    experiencia: DataTypes.INTEGER,
+    numAvaliacoes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   }, {
     sequelize,
     modelName: 'Usuarios',
