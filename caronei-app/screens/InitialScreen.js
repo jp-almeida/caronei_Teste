@@ -83,7 +83,7 @@ const InitialScreen = () => {
                                 <DefaultButton title="Criar uma conta" onPress={() => navigation.navigate('SignUpScreen')} />
                             </View>
 
-                            <Text style={{ color: '#4D4C7D' }}>Já tem conta?</Text>
+                            <Text style={{textAlign: 'center', color: '#4D4C7D' }}>Já tem conta?</Text>
 
                             <View style={{}}>
                                 <DefaultButton title="Entrar" onPress={() => navigation.navigate('LogInScreen')} />
