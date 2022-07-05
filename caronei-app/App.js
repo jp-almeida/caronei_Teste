@@ -133,6 +133,13 @@ export default function App() {
                 headerShown: false,
               }}
             />
+            <Stack.Screen
+              name="AcceptRideScreen"
+              component={AcceptRideScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             {/* <HomeScreen /> */}
           </Stack.Navigator>
         </SafeAreaProvider>
