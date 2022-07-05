@@ -84,12 +84,12 @@ Content-Type: application/json
 
 
 ###
-POST http://192.168.15.36:3000/createroute
+POST http://192.168.1.7:3000/createroute
 Content-Type: application/json
 
 {
     "passengerMatricula": 497493,
-    "passengerRoute": "['c', 'd', 'e', 'f']"
+    "passengerRoute": "['a','b', 'd', 'e', 'f']"
 }
 
 ###
@@ -98,5 +98,13 @@ Content-Type: application/json
 
 {
     "driverMatricula": 1,
-    "driverRoute": "['a','b','c','d']"
+    "driverRoute": "['b','c','d']"
+}
+
+###
+POST http://192.168.1.7:3000/aceitar-passageiro
+Content-Type: application/json
+
+{
+    "idRota":3
 }

@@ -341,17 +341,44 @@ app.post(
 //PASSAGEIRO BUSCAR POR MOTORISTA
 app.get("/buscar-motorista/:idRota", async (request, response) => {
   const corrida = await model.Matches.findByPk(request.params.idRota)
-  if (corrida){
+  if (corrida) {
     return response.end(JSON.stringify(corrida))
   }
-  else{
+  else {
     return response.send(JSON.stringify("Não encontrou uma corrida"))
   }
 })
 
 // MOTORISTA ACEITAR PASSAGEIRO
 app.post("/aceitar-passageiro", async (request, response) => {
-  return
+  const match = await model.Matches.findByPk(request.body.idRota)
+  if (!match) {
+    return response.send(JSON.stringify("Corrida não existe"))
+  }
+  model.Pedidos.destroy(
+    {
+      where:
+        { id: request.body.idRota }
+    })
+    .then((a) => {
+      model.Corridas.create({
+        idCorrida: request.body.idRota,
+        matriculaMotorista: match.matriculaMotorista,
+        matriculaPassageiro: match.matriculaPassageiro,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+        .then((b) => {
+          response.send(JSON.stringify("Passageiro aceito com sucesso"))
+        })
+        .catch((err) => {
+          response.send(JSON.stringify("Não foi possível criar a corrida"))
+        })
+    })
+    .catch((err) => {
+      response.send(JSON.stringify("Não foi possível aceitar o passageiro"))
+    })
+
 })
 
 app.post("/avaliar",
