@@ -88,8 +88,8 @@ POST http://192.168.1.7:3000/createroute
 Content-Type: application/json
 
 {
-    "passengerMatricula": 497493,
-    "passengerRoute": "['a','b', 'd', 'e', 'f']"
+    "passengerMatricula": 1,
+    "passengerRoute": "['b','c','d']"
 }
 
 ###
@@ -98,7 +98,7 @@ Content-Type: application/json
 
 {
     "driverMatricula": 1,
-    "driverRoute": "['b','c','d']"
+    "driverRoute": "['a','b', 'c', 'd', 'e', 'f']"
 }
 
 ###
@@ -106,5 +106,5 @@ POST http://192.168.1.7:3000/aceitar-passageiro
 Content-Type: application/json
 
 {
-    "idRota":3
+    "idRota":6
 }

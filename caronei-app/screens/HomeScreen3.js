@@ -16,6 +16,7 @@ import { selectDestination, selectOrigin, setDestination, setOrigin } from "../s
 import { addRoute } from "../requestsFunctions"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
+import { carregar_motorista } from "../slices/rideState"
 
 const HomeScreen2 = () => {
   const dispatch = useDispatch()
@@ -155,9 +156,10 @@ const HomeScreen2 = () => {
       </View>
       <View style={tw`h-10%`}>
       <DefaultButton title="Confirmar" onPress={() => {
-        {origin?.location && destination?.location && (
-          navigation.navigate("SearchRideScreen")
-        )}
+        if (origin?.location && destination?.location){
+          dispatch(carregar_motorista())
+          navigation.navigate("SearchRideScreen", {rota: rota})
+        }
       }} />
       </View>
     </SafeAreaView>

@@ -302,6 +302,7 @@ app.post(
 app.post(
   "/matchroute",
   async (request, response) => {
+    let corrida = null
     const driverRoute = eval(request.body.driverRoute)
     const pedidos = await model.Pedidos.findAll({
       attributes: [
@@ -314,14 +315,13 @@ app.post(
     pedidos.forEach(pedido => {
       let r = eval(pedido.rota)
       result = result ? result : driverRoute.join().includes(r.join())
-      console.log(result)
 
       if (result) {
         pedidoEscolhido = pedido
       }
     });
     if (result) {
-      const corrida = await model.Matches.create({
+      corrida = await model.Matches.create({
         matriculaMotorista: request.body.driverMatricula,
         matriculaPassageiro: pedidoEscolhido.matriculaPedido,
         nomeDestino: "nada",
@@ -353,7 +353,7 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
 app.post("/aceitar-passageiro", async (request, response) => {
   const match = await model.Matches.findByPk(request.body.idRota)
   if (!match) {
-    return response.send(JSON.stringify("Corrida não existe"))
+    return response.end(JSON.stringify({response: false, message: "Corrida não existe"}))
   }
   model.Pedidos.destroy(
     {
@@ -369,14 +369,14 @@ app.post("/aceitar-passageiro", async (request, response) => {
         updatedAt: new Date()
       })
         .then((b) => {
-          response.send(JSON.stringify("Passageiro aceito com sucesso"))
+          response.end(JSON.stringify({response: true, message: "Passageiro aceito com sucesso"}))
         })
         .catch((err) => {
-          response.send(JSON.stringify("Não foi possível criar a corrida"))
+          response.end(JSON.stringify({response: false, message: "Não foi possível criar a corrida"}))
         })
     })
     .catch((err) => {
-      response.send(JSON.stringify("Não foi possível aceitar o passageiro"))
+      response.end(JSON.stringify({response: false, message: "Não foi possível aceitar o passageiro"}))
     })
 
 })

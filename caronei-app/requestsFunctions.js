@@ -7,7 +7,7 @@ export const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], 
 
 export async function searchPassageiro(matriculaMotorista, rotaMotorista) {
   let reqs = await fetch(url + "/matchroute", {
-    method: "PUT",
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
