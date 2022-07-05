@@ -12,15 +12,33 @@ import { Image } from "react-native"
 import {Icon} from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
+import { store } from "../store"
+import { MOTORISTA } from "../slices/rideState"
+import { searchPassageiro } from "../requestsFunctions"
 
-const SearchRideScreen = () => {
+const SearchRideScreen = ({route}) => {
 
     const navigation = useNavigation()
+    const {rota} = route.params
+    const [name,setName] = useState(null)
+    const [partida,setPartida] = useState(null)
+    const [destino,setDestino] = useState(null)
+    const [corrida,setCorrida] = useState(null)    
+    var avaliacao = 5
 
-const [name,setName] = useState(null)
-const [partida,setPartida] = useState(null)
-const [destino,setDestino] = useState(null)
-var avaliacao = 5
+    async function procurarPassageiro() {
+        const response = await searchPassageiro(store.getState().auth.matricula, rota)
+        if (response.response) {
+            setCorrida(response.pedidos)
+        }
+        else {
+            console.log("Não achou")
+        }
+    }
+
+    if (store.getState().ride.role == MOTORISTA) {
+        procurarPassageiro()
+    }
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>

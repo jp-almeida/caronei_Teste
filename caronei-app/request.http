@@ -93,10 +93,10 @@ Content-Type: application/json
 }
 
 ###
-POST http://192.168.1.7:3000/matchroute
+POST http://192.168.15.36:3000/matchroute
 Content-Type: application/json
 
 {
     "driverMatricula": 1,
-    "driverRoute": "['a','b','c','d']"
+    "driverRoute": "['a','b','c','d','e','f']"
 }

@@ -302,6 +302,7 @@ app.post(
 app.post(
   "/matchroute",
   async (request, response) => {
+    let corrida = null
     const driverRoute = eval(request.body.driverRoute)
     const pedidos = await model.Pedidos.findAll({
       attributes: [
@@ -314,14 +315,13 @@ app.post(
     pedidos.forEach(pedido => {
       let r = eval(pedido.rota)
       result = result ? result : driverRoute.join().includes(r.join())
-      console.log(result)
 
       if (result) {
         pedidoEscolhido = pedido
       }
     });
     if (result) {
-      const corrida = await model.Matches.create({
+      corrida = await model.Matches.create({
         matriculaMotorista: request.body.driverMatricula,
         matriculaPassageiro: pedidoEscolhido.matriculaPedido,
         nomeDestino: "nada",
