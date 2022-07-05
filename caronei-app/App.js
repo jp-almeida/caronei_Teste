@@ -141,7 +141,6 @@ export default function App() {
                 headerShown: false,
               }}
             />
-
             <Stack.Screen
               name="SearchRideScreen"
               component={SearchRideScreen}

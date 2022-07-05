@@ -57,7 +57,7 @@ const InitialScreen = () => {
                                 <DefaultButton title="Criar uma conta" onPress={() => navigation.navigate('SignUpScreen')} />
                             </View>
 
-                            <Text style={{ color: '#4D4C7D' }}>Já tem conta?</Text>
+                            <Text style={{textAlign: 'center', color: '#4D4C7D' }}>Já tem conta?</Text>
 
                             <View style={{}}>
                                 <DefaultButton title="Entrar" onPress={() => navigation.navigate('LogInScreen')} />
@@ -65,7 +65,7 @@ const InitialScreen = () => {
                             <View style={{}}>
                                 <DefaultButton title="Testes" onPress={() => {
                                     dispatch(carregar_motorista())
-                                    navigation.navigate('MatchRideScreen')}} />
+                                    navigation.navigate('SearchRideScreen')}} />
                             </View>
 
 
@@ -86,7 +86,7 @@ const InitialScreen = () => {
                                     }}
                                     source={require("../images/cc_logo.png")}
                                 /></View>
-
+  
                         </View>
                     </View>
                 </View>

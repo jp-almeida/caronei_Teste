@@ -50,15 +50,21 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
-      <View style={tw`p-5`}>
-        <Image
-          style={{
-            width: 150,
-            height: 200,
-            resizeMode: "contain",
-          }}
-          source={require("../images/logo.png")}
+      <View style={{padding:5}}>
+        <View style ={{
+          justifyContent: 'center',
+          alignItems:'center'
+        }}><Image
+        style={{
+          width: 150,
+          height: 200,
+          resizeMode: "contain",
+          
+        }}
+        source={require("../images/logo.png")}
         />
+        </View>
+        
 
         <Text>Olá, {name}</Text>
         <TouchableOpacity style={{}} onPress={exitAccount}>
