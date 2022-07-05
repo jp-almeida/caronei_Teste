@@ -15,7 +15,8 @@ import ProfileScreen from "./screens/ProfileScreen"
 import RecoverPswdScreen from "./screens/RecoverPswdScreen"
 import PswdRecoveredScreen from "./screens/PswdRecoveredScreen"
 import InitialScreen from "./screens/InitialScreen"
-import HomeScreen2 from "./screens/HomeScreen2"
+import PassengerRoute from "./screens/PassengerRoute"
+import DriverRoute from "./screens/DriverRoute"
 import RateUserScreen from "./screens/RateUserScreen"
 import AcceptRideScreen from "./screens/AcceptRideScreen"
 import ReportScreen from "./screens/ReportScreen"
@@ -118,8 +119,16 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="HomeScreen2"
-              component={HomeScreen2}
+              name="PassengerRoute"
+              component={PassengerRoute}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
+              name="DriverRoute"
+              component={DriverRoute}
               options={{
                 headerShown: false,
               }}

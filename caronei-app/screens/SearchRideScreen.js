@@ -12,18 +12,34 @@ import { Image } from "react-native"
 import { Icon } from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
-import { store } from "../store.js"
-import { cancelar_corrida, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
-import { useDispatch } from "react-redux"
+import { store } from "../store"
+import { MOTORISTA, PASSAGEIRO } from "../slices/rideState"
+import { searchPassageiro } from "../requestsFunctions"
 
-const SearchRideScreen = () => {
+const SearchRideScreen = ({ route }) => {
   const navigation = useNavigation()
-  const dispatch = useDispatch()
-
   const [name, setName] = useState(null)
   const [partida, setPartida] = useState(null)
   const [destino, setDestino] = useState(null)
+  const [corrida, setCorrida] = useState(null)
   var avaliacao = 5
+
+  async function procurarPassageiro() {
+    const { rota } = route.params
+    const response = await searchPassageiro(
+      store.getState().auth.matricula,
+      rota
+    )
+    if (response.response) {
+      setCorrida(response.pedidos)
+    } else {
+      console.log("Não achou")
+    }
+  }
+
+  if (store.getState().ride.role == MOTORISTA) {
+    procurarPassageiro()
+  }
 
   return (
     <SafeAreaView style={tw`bg-white h-full`}>

@@ -302,6 +302,7 @@ app.post(
 app.post(
   "/matchroute",
   async (request, response) => {
+    let corrida = null
     const driverRoute = eval(request.body.driverRoute)
     const pedidos = await model.Pedidos.findAll({
       attributes: [
@@ -314,14 +315,13 @@ app.post(
     pedidos.forEach(pedido => {
       let r = eval(pedido.rota)
       result = result ? result : driverRoute.join().includes(r.join())
-      console.log(result)
 
       if (result) {
         pedidoEscolhido = pedido
       }
     });
     if (result) {
-      const corrida = await model.Matches.create({
+      corrida = await model.Matches.create({
         matriculaMotorista: request.body.driverMatricula,
         matriculaPassageiro: pedidoEscolhido.matriculaPedido,
         nomeDestino: "nada",
@@ -341,17 +341,44 @@ app.post(
 //PASSAGEIRO BUSCAR POR MOTORISTA
 app.get("/buscar-motorista/:idRota", async (request, response) => {
   const corrida = await model.Matches.findByPk(request.params.idRota)
-  if (corrida){
+  if (corrida) {
     return response.end(JSON.stringify(corrida))
   }
-  else{
+  else {
     return response.send(JSON.stringify("Não encontrou uma corrida"))
   }
 })
 
 // MOTORISTA ACEITAR PASSAGEIRO
 app.post("/aceitar-passageiro", async (request, response) => {
-  return
+  const match = await model.Matches.findByPk(request.body.idRota)
+  if (!match) {
+    return response.end(JSON.stringify({response: false, message: "Corrida não existe"}))
+  }
+  model.Pedidos.destroy(
+    {
+      where:
+        { id: request.body.idRota }
+    })
+    .then((a) => {
+      model.Corridas.create({
+        idCorrida: request.body.idRota,
+        matriculaMotorista: match.matriculaMotorista,
+        matriculaPassageiro: match.matriculaPassageiro,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+        .then((b) => {
+          response.end(JSON.stringify({response: true, message: "Passageiro aceito com sucesso"}))
+        })
+        .catch((err) => {
+          response.end(JSON.stringify({response: false, message: "Não foi possível criar a corrida"}))
+        })
+    })
+    .catch((err) => {
+      response.end(JSON.stringify({response: false, message: "Não foi possível aceitar o passageiro"}))
+    })
+
 })
 
 app.post("/avaliar",

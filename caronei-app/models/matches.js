@@ -14,6 +14,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Matches.init({
+    idRota: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: false,
+      references:{
+        model:"pedidos",
+        key:"id"
+      },
+      allowNull: false
+    },
     matriculaMotorista: {
       type: DataTypes.INTEGER,
       references:{
@@ -38,17 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    idRota: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      autoIncrement: false,
-      references:{
-        model:"pedidos",
-        key:"id"
-      },
-      allowNull: false
-    }
   }, {
     sequelize,
     modelName: 'Matches',
