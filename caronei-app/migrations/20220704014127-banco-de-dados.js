@@ -56,7 +56,7 @@ module.exports = {
       numAvaliacoes: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        default: 0
+        defaultValue: 0
       },
       experiencia: {
         type: Sequelize.INTEGER,

@@ -126,8 +126,6 @@ const HomeScreen2 = () => {
                   orig.forEach((element) => {
                     if (element[item.item.ponto] != undefined) {
                       setRota(element[item.item.ponto])
-                      console.log(element[item.item.ponto])
-                      addRoute(element[item.item.ponto])
                     }
                   })
                   setData2([])

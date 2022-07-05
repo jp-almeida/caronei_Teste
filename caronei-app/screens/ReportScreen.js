@@ -12,17 +12,11 @@ import {
 import React, { useState } from "react"
 import { Image } from "react-native"
 import tw from "twrnc"
-import NavOptions from "../components/NavOptions"
-import { GOOGLE_MAPS_APIKEY } from "@env"
 import { useDispatch } from "react-redux"
-import { setDestination, setOrigin } from "../slices/navSlice"
-import { logoutAuth } from "../slices/userAuth"
 import { store } from "../store"
 import { useNavigation } from "@react-navigation/native"
 import config from "../config/config.json"
-import paradas from "../paradas/paradas.json"
 import { DefaultButton } from "../components/Button"
-import { AntDesign } from "@expo/vector-icons"
 import SimpleSelectButton from "react-native-simple-select-button"
 
 const ReportScreen = () => {

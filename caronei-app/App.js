@@ -17,11 +17,12 @@ import PswdRecoveredScreen from "./screens/PswdRecoveredScreen"
 import InitialScreen from "./screens/InitialScreen"
 import HomeScreen2 from "./screens/HomeScreen2"
 import RateUserScreen from "./screens/RateUserScreen"
-//import MainScreen from "./screens/MainScreen"
 import AcceptRideScreen from "./screens/AcceptRideScreen"
 import ReportScreen from "./screens/ReportScreen"
 import MainScreen from "./screens/MainScreen"
 import UserScreen from "./screens/UserScreen"
+import MatchRideScreen from "./screens/MatchRideScreen"
+import SearchRideScreen from "./screens/SearchRideScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -30,7 +31,6 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
-
             <Stack.Screen
               name="InitialScreen"
               component={InitialScreen}
@@ -132,6 +132,22 @@ export default function App() {
                 headerShown: false,
               }}
             />
+
+            <Stack.Screen
+              name="SearchRideScreen"
+              component={SearchRideScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            {/* <Stack.Screen
+              name="AcceptRideScreen"
+              component={AcceptRideScreen}
+              options={{
+                headerShown: false,
+              }}
+            /> */}
             {/* <HomeScreen /> */}
           </Stack.Navigator>
         </SafeAreaProvider>

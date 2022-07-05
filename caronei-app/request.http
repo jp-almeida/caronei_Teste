@@ -1,5 +1,19 @@
 ###
+POST http://192.168.1.7:3000/avaliar
+Content-Type: application/json
+
+{
+    "matricula": 1,
+    "avaliacao": 5
+}
+
+
+
+###
 GET http://192.168.1.16:3000/oferecer
+
+
+
 
 ###
 GET http://192.168.1.7:3000/dados-publicos/1

@@ -14,8 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Pedidos.init({
-    matriculaPedido: {type: DataTypes.INTEGER, allowNull: false},
-    rota: {type: DataTypes.STRING, allowNull: false}
+    matriculaPedido: {
+      type: DataTypes.INTEGER, 
+      allowNull: false
+    },
+    rota: {
+      type: DataTypes.STRING, 
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Pedidos',

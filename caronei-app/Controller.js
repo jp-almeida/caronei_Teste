@@ -317,3 +317,25 @@ app.post(
     }
   }
 )
+
+app.post("/avaliar",
+  async (request, response) => {
+    const user = await model.Usuarios.findByPk(request.body.matricula)
+
+    model.Usuarios.update(
+      {
+        numAvaliacoes: user.numAvaliacoes+1,
+        avaliacao: (user.avaliacao*user.numAvaliacoes + request.body.avaliacao) / (user.numAvaliacoes+1),
+      },
+      {
+        where: {
+          matricula: request.body.matricula,
+        },
+      }
+    )
+    .then((result) => {
+      response.send(JSON.stringify(true))
+    })
+    .catch((err) => response.send(JSON.stringify(false)))
+})
+  
