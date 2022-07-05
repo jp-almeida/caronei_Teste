@@ -89,7 +89,7 @@ const InitialScreen = () => {
                                 <DefaultButton title="Entrar" onPress={() => navigation.navigate('LogInScreen')} />
                             </View>
                             <View style={{}}>
-                                <DefaultButton title="Avaliação" onPress={() => navigation.navigate('RateUserScreen', {matricula:1, name: "Teste"})} />
+                                <DefaultButton title="Testes" onPress={() => navigation.navigate('AcceptRideScreen', {matricula:1, partida: "Partida", destino: "Destino"})} />
                             </View>
 
 
