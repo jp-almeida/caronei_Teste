@@ -32,6 +32,8 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
+           
+
             <Stack.Screen
               name="InitialScreen"
               component={InitialScreen}

@@ -92,7 +92,9 @@ var avaliacao = 5
                              flexDirection: 'row',
                              justifyContent: 'space-around',                          
                             }}>
-                            <DefaultButton title="Cancelar viagem" onPress={() => {}} />
+                            <DefaultButton 
+                            title="Cancelar viagem" 
+                            onPress={() => navigation.navigate('HomeScreen')} />
                         </View>
                    </View>
                
