@@ -18,55 +18,20 @@ import { useNavigation } from '@react-navigation/native'
 import { DefaultButton } from '../components/Button'
 import StarRating from 'react-native-star-rating'
 import { Icon } from 'react-native-elements'
+import { getUserData, rateUser } from '../requestsFunctions'
+import { styles } from '../styles'
 
-const RateUserScreen = () => {
+//chamar com {matricula: <matricula>, name: <nome do usuario>}
+
+const RateUserScreen = ({ route }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const [name, setName] = useState(null)
+  const { matricula, name } = route.params
+
   const [comment, setComment] = useState(null)
   const [rating, setRating] = useState(null)
-  const [parada, setParada] = useState(null)
-  const [destino, setDestino] = useState(null)
-
-  async function getUserData() {
-    //pega os dados do banco de dados e preenche as variaveis
-
-    let reqs = await fetch(url + '/data/' + store.getState().auth.matricula, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    const response = await reqs.json()
-
-    setName(response.name)
-    setRating(response.rating)
-    setExperience(response.experience)
-    setEmail({
-      ...email,
-      data: response.email,
-      visibility: response.emailVisibility
-    })
-    setGender({
-      ...gender,
-      value: response.gender,
-      data: getGenderName(response.gender),
-      visibility: response.genderVisibility,
-      changed: false
-    })
-    setPhone({
-      ...phone,
-      visibility: response.phoneVisibility,
-      changed: false
-    })
-    setBirth({
-      ...birth,
-      visibility: response.birthVisibility,
-      data: response.birth ? new Date(response.birth) : response.birth //converte para objeto de data (chega do back em string)
-    })
-  }
-  getUserData
+  const [parada, setParada] = useState('Parada')
+  const [destino, setDestino] = useState('Destino')
 
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
@@ -110,11 +75,11 @@ const RateUserScreen = () => {
             >
               <Icon name="room" type="material" size={15} color="gray" />
               <Text style={{ textAlign: 'center', color: '#4D4C7D' }}>
-                Parada A
+                {parada}
               </Text>
               <Icon name="east" type="material" size={15} color="gray" />
               <Text style={{ textAlign: 'center', color: '#4D4C7D' }}>
-                Parada B
+                {destino}
               </Text>
             </View>
 
@@ -165,21 +130,17 @@ const RateUserScreen = () => {
 
             <TextInput
               placeholder="Escreva seu comentário aqui"
-              styles={{
-                container: {
-                  flex: 0
-                },
-                textInput: {
-                  fontSize: 18,
-                  color: '#4D4C7D'
-                }
-              }}
+              styles={styles.textInput}
             />
 
             <View style={{ marginBottom: 15 }}>
               <DefaultButton
                 title="Enviar"
-                onChangeText={text => setComment(text)}
+                onPress={text => {
+                  if (rating) {
+                    let resp = rateUser(matricula, rating)
+                  }
+                }}
               />
             </View>
 
@@ -204,9 +165,3 @@ const RateUserScreen = () => {
 }
 
 export default RateUserScreen
-
-const styles = StyleSheet.create({
-  text: {
-    color: 'blue'
-  }
-})

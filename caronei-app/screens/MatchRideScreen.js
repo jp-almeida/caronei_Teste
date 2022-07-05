@@ -12,7 +12,7 @@ import {Icon} from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
 
-const AcceptRideScreen = () => {
+const MatchRideScreen = () => {
 
     const navigation = useNavigation()
 
@@ -34,19 +34,16 @@ var avaliacao = 5
                             source={require("../images/mapapici.png")}
                         />
                         <View style ={{
-                            backgroundColor:'rgba(144,144, 144, 0.1)',
+                            
                             //'rgba(144,144, 144, 0.1)'
                             justifyContent:"center",
                             alignItems:"center",
                             margin:10,
-                            borderWidth: 2,
-                            borderStyle:'solid',
-                            borderColor:'#949494',
-                            borderRadius:10,
+                           
                             
                         }}
                         >
-                            <Text >Usuário deu match com sua carona</Text>
+                            <Text ></Text>
 
                             <View style={{
                                 flexDirection: 'row',
@@ -56,21 +53,27 @@ var avaliacao = 5
                                     <Icon name="account-circle" type="material" size={100} />
                                 </View>
                                 <View>
-                                    <Text>{name}</Text>
-                                    <Text><Icon name="room" type="material" size={15}/>{partida} -- {destino}</Text>
+                                    <View style ={{
+                                        backgroundColor:'#4D4C7D',
+                                        borderRadius:25
+                                    }}>
+                                        
+                                        <Text style={{color:'white'}}>       Motorista está a caminho </Text>
+                                    </View>
+                                    
                                     <View style = {{
                                         flexDirection: 'row',
                                         padding:10,
 
                                         }}>
                                         <View style ={{backgroundColor:'#4D4C7D',borderRadius:25}}>
-                                            <Text style={{color:'white'}}> <Icon name="alarm" type="material" size={15}/> Tempo para chegada  </Text>
+                                            <Text style={{color:'white'}}> <Icon name="alarm" type="material" size={15}/> Tempo para chegada </Text>
                                         </View>
                                         <View>
                                             <Text>  </Text>
                                         </View>
                                         <View style ={{backgroundColor:'#4D4C7D',borderRadius:25,}}>
-                                            <Text style={{color:'white'}} > <Icon name="stars" type="material" size={15}/>  {avaliacao}  </Text>
+                                            <Text style={{color:'white'}}> <Icon name="stars" type="material" size={15}/>  {avaliacao}  </Text>
                                         </View>
                                         
                                     </View>    
@@ -81,17 +84,9 @@ var avaliacao = 5
 
                         </View>
         
-                            <View style={{ 
-                                padding: 25,
-                                marginTop:100,
-                                flexDirection: 'row',
-                                justifyContent: 'space-around',
-
-                                 }}>
-                                <DefaultButton title="Aceitar" onPress={() => {}} />
-                                <DefaultButton title="Recusar" onPress={() => {}} />
-                            </View>
-                        <View style={{  
+                            
+                        <View style={{
+                             marginTop:190,  
                              padding: 25,
                              
                              flexDirection: 'row',
@@ -106,5 +101,5 @@ var avaliacao = 5
     )
 }
 
-export default AcceptRideScreen
+export default MatchRideScreen
 
