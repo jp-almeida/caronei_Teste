@@ -5,7 +5,7 @@ import config from './config/config.json'
 export const url = config.urlRootNode.replace(config.urlRootNode.split(":")[2], config.backend_port)
 
 
-export async function searchPassageiro(matriculaMotorista, rotaMotorista) {
+export async function searchPassageiro(rotaMotorista) {
   let reqs = await fetch(url + "/matchroute", {
     method: "POST",
     headers: {
@@ -13,7 +13,7 @@ export async function searchPassageiro(matriculaMotorista, rotaMotorista) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      driverMatricula: matriculaMotorista,
+      driverMatricula: store.getState().auth.matricula,
       driverRoute: rotaMotorista
     }),
   })
@@ -131,7 +131,6 @@ export async function addRoute(route) {
     })
   })
   return await reqs.json()
-
 }
 
 export async function rateUser(matricula, rating) {
@@ -145,6 +144,17 @@ export async function rateUser(matricula, rating) {
       matricula: matricula,
       avaliacao: rating
     })
+  })
+  return await reqs.json()
+}
+
+export async function searchDriver(idRoute) {
+  const reqs = await fetch(url + '/buscar-motorista/' + idRoute, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
   })
   return await reqs.json()
 }

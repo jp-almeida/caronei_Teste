@@ -84,12 +84,12 @@ Content-Type: application/json
 
 
 ###
-POST http://192.168.1.7:3000/createroute
+POST http://192.168.15.36:3000/createroute
 Content-Type: application/json
 
 {
     "passengerMatricula": 1,
-    "passengerRoute": "['b','c','d']"
+    "passengerRoute": "['b','c','h']"
 }
 
 ###
@@ -108,3 +108,6 @@ Content-Type: application/json
 {
     "idRota":6
 }
+
+###
+GET http://192.168.1.7:3000/buscar-motorista/10

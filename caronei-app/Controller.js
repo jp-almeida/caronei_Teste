@@ -19,8 +19,8 @@ app.post(
   async (request, response) => {
     //caso não exista um usuário, ele irá criar
     //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
-    let user,
-      created = await model.Usuarios.findOrCreate({
+    let [user,
+      created] = await model.Usuarios.findOrCreate({
         where: { matricula: request.body.userMatricula },
         defaults: {
           matricula: request.body.userMatricula,
@@ -31,21 +31,22 @@ app.post(
           updatedAt: new Date(),
         },
       })
-    if (user) {
-      return response.send(JSON.stringify("Usuário já cadastrado"))
-    }
+    console.log(user)
+    console.log(created)
     if (created) {
       return response.send(
         JSON.stringify("O usuário foi cadastrado com sucesso!")
       )
-    } else {
+    }
+    if (user) {
+      return response.send(JSON.stringify("Usuário já cadastrado"))
+    }
+    else {
       return response.send(
         JSON.stringify("Ocorreu algum problema. Tente novamente")
       )
     }
   }
-
-  // }
 )
 
 //fazer login
@@ -271,8 +272,8 @@ app.post(
   async (request, response) => {
     //caso não exista um usuário, ele irá criar
     //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
-    let user,
-      created = await model.Pedidos.findOrCreate({
+    let [pedido,
+      created] = await model.Pedidos.findOrCreate({
         where: {
           matriculaPedido: request.body.passengerMatricula,
           rota: request.body.passengerRoute,
@@ -284,14 +285,16 @@ app.post(
           updatedAt: new Date(),
         },
       })
-    if (user) {
-      return response.send(JSON.stringify("Rota já cadastrada"))
-    }
+
     if (created) {
       return response.send(
-        JSON.stringify("A rota foi cadastrada com sucesso!")
+        JSON.stringify(pedido.id)
       )
-    } else {
+    }
+    if (pedido) {
+      return response.send(JSON.stringify("Rota já cadastrada"))
+    }
+    else {
       return response.send(
         JSON.stringify("Ocorreu algum problema. Tente novamente")
       )
@@ -321,15 +324,18 @@ app.post(
       }
     });
     if (result) {
-      corrida = await model.Matches.create({
-        matriculaMotorista: request.body.driverMatricula,
-        matriculaPassageiro: pedidoEscolhido.matriculaPedido,
-        nomeDestino: "nada",
-        nomeOrigem: "nada",
-        idRota: pedidoEscolhido.id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
+      [corrida, created] = await model.Matches.findOrCreate(
+        {
+          where: { idRota: pedidoEscolhido.id },
+          defaults: {
+            matriculaMotorista: request.body.driverMatricula,
+            matriculaPassageiro: pedidoEscolhido.matriculaPedido,
+            nomeDestino: "nada",
+            nomeOrigem: "nada",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }
+        })
     }
     //não apagar a rota da tabela de pedidos agora, porque o motorista precisa 
     // confirmar o passageiro primeiro. Depois que ele confirmar, a gente remove 
@@ -340,6 +346,7 @@ app.post(
 
 //PASSAGEIRO BUSCAR POR MOTORISTA
 app.get("/buscar-motorista/:idRota", async (request, response) => {
+  console.log("oi")
   const corrida = await model.Matches.findByPk(request.params.idRota)
   if (corrida) {
     return response.end(JSON.stringify(corrida))
@@ -353,7 +360,7 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
 app.post("/aceitar-passageiro", async (request, response) => {
   const match = await model.Matches.findByPk(request.body.idRota)
   if (!match) {
-    return response.end(JSON.stringify({response: false, message: "Corrida não existe"}))
+    return response.end(JSON.stringify({ response: false, message: "Corrida não existe" }))
   }
   model.Pedidos.destroy(
     {
@@ -369,14 +376,14 @@ app.post("/aceitar-passageiro", async (request, response) => {
         updatedAt: new Date()
       })
         .then((b) => {
-          response.end(JSON.stringify({response: true, message: "Passageiro aceito com sucesso"}))
+          response.end(JSON.stringify({ response: true, message: "Passageiro aceito com sucesso" }))
         })
         .catch((err) => {
-          response.end(JSON.stringify({response: false, message: "Não foi possível criar a corrida"}))
+          response.end(JSON.stringify({ response: false, message: "Não foi possível criar a corrida" }))
         })
     })
     .catch((err) => {
-      response.end(JSON.stringify({response: false, message: "Não foi possível aceitar o passageiro"}))
+      response.end(JSON.stringify({ response: false, message: "Não foi possível aceitar o passageiro" }))
     })
 
 })
