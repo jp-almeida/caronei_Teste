@@ -12,11 +12,14 @@ import { Icon } from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
 import { getPublicData } from "../requestsFunctions"
+import { cancelar_corrida, em_corrida_motorista, em_corrida_passageiro, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
+import { store } from "../store"
 
 const AcceptRideScreen = ({route}) => {
     const {partida, destino, matricula, tempo} = route.params
     const navigation = useNavigation()
     const [usuario, setUsuario] = useState({})
+    const dispatch = useDispatch()
     
     async function getData(){
         let resp = await getPublicData(matricula)
@@ -93,8 +96,18 @@ const AcceptRideScreen = ({route}) => {
                         justifyContent: 'space-around',
 
                     }}>
-                        <DefaultButton title="Aceitar" onPress={() => {navigation.navigate('MatchRideScreen')}} />
-                        <DefaultButton title="Recusar" onPress={() => {navigation.navigate('SearchRideScreen')}} />
+                        <DefaultButton title="Aceitar" onPress={() => {
+                            navigation.navigate('MatchRideScreen')
+                            if(store.getState().ride.role == PASSAGEIRO){
+                                dispatch((em_corrida_passageiro))
+                            }
+                            else if(store.getState().ride.role == MOTORISTA){
+                                dispatch((em_corrida_motorista))
+                            }
+                        }} />
+                        <DefaultButton title="Recusar" onPress={() => {
+                            navigation.navigate('SearchRideScreen')
+                        }} />
                     </View>
                     <View style={{
                         padding: 25,
@@ -102,7 +115,10 @@ const AcceptRideScreen = ({route}) => {
                         flexDirection: 'row',
                         justifyContent: 'space-around',
                     }}>
-                        <DefaultButton title="Cancelar viagem" onPress={() => { navigation.navigate("HomeScreen")}} />
+                        <DefaultButton title="Cancelar viagem" onPress={() => {
+                            dispatch(cancelar_corrida()) 
+                            navigation.navigate("HomeScreen")
+                            }} />
                     </View>
                 </View>
 
