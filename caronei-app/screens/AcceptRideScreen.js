@@ -14,19 +14,31 @@ import { DefaultButton } from '../components/Button'
 import { getPublicData } from "../requestsFunctions"
 import { cancelar_corrida, em_corrida_motorista, em_corrida_passageiro, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
 import { store } from "../store"
+import { useDispatch } from "react-redux"
 
 const AcceptRideScreen = ({route}) => {
-    const {partida, destino, matricula, tempo} = route.params
+    const {corrida} = route.params
+    const partida = "partida teste"
+    const destino = "destino teste"
+    const matricula = corrida.matriculaPassageiro
+
     const navigation = useNavigation()
     const [usuario, setUsuario] = useState({})
     const dispatch = useDispatch()
+    let carregando = false
+    let carregou =  false
     
     async function getData(){
-        let resp = await getPublicData(matricula)
-        setUsuario(await resp)
+        if(!carregou){
+            let resp = await getPublicData(matricula)
+            setUsuario(resp)
+            console.log(resp)
+            carregou =  true
+        }
+        
     }
     
-    if(!usuario.matricula){
+    if(!carregou){
         getData()
     }
     return (
@@ -71,12 +83,6 @@ const AcceptRideScreen = ({route}) => {
                                     padding: 10,
 
                                 }}>
-                                    <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25 }}>
-                                        <Text style={{ color: 'white' }}> <Icon name="alarm" type="material" size={15} /> Tempo para chegada  </Text>
-                                    </View>
-                                    <View>
-                                        <Text> {tempo} </Text>
-                                    </View>
                                     <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25, }}>
                                         <Text style={{ color: 'white' }} > <Icon name="stars" type="material" size={15} />  {usuario.avaliacao ? usuario.avaliacao : "(Usuário não avaliado)"}  </Text>
                                     </View>

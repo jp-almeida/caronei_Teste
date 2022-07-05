@@ -321,15 +321,17 @@ app.post(
       }
     });
     if (result) {
-      corrida = await model.Matches.create({
+      [corrida, created] = await model.Matches.findOrCreate(
+        {
+        where: { idRota: pedidoEscolhido.id },
+        defaults: {
         matriculaMotorista: request.body.driverMatricula,
         matriculaPassageiro: pedidoEscolhido.matriculaPedido,
         nomeDestino: "nada",
         nomeOrigem: "nada",
-        idRota: pedidoEscolhido.id,
         createdAt: new Date(),
         updatedAt: new Date(),
-      })
+      }})
     }
     //não apagar a rota da tabela de pedidos agora, porque o motorista precisa 
     // confirmar o passageiro primeiro. Depois que ele confirmar, a gente remove 
