@@ -132,6 +132,15 @@ export default function App() {
                 headerShown: false,
               }}
             />
+
+            <Stack.Screen
+              name="SearchRideScreen"
+              component={SearchRideScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+
             {/* <Stack.Screen
               name="AcceptRideScreen"
               component={AcceptRideScreen}

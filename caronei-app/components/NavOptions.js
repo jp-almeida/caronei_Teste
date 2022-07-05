@@ -19,7 +19,7 @@ const data = [
     id: "456",
     title: "Oferecer carona",
     image: require("../images/ride.png"),
-    screen: "HomeScreen2",
+    screen: "HomeScreen3",
   },
 ]
 

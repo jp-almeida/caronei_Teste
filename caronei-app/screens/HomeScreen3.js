@@ -38,23 +38,6 @@ const HomeScreen2 = () => {
     setOriginalData2(paradas)
   }, [])
 
-  // function renderOptions(item) {
-  //   return (
-  //     <View style={styles.card}>
-  //       <TouchableHighlight
-  //         onPress={() => {
-  //           setPartida(item.item.nome)
-  //           setData([])
-  //         }}
-  //       >
-  //         <Text style={styles.rowText} numberOfLines={1}>
-  //           {item.item.nome}
-  //         </Text>
-  //       </TouchableHighlight>
-  //     </View>
-  //   )
-  // }
-
   function searchP(s) {
     let arr = [...originalData]
     setData(arr.filter((d) => d.nome.toLowerCase().includes(s.toLowerCase())))
@@ -143,8 +126,6 @@ const HomeScreen2 = () => {
                   orig.forEach((element) => {
                     if (element[item.item.ponto] != undefined) {
                       setRota(element[item.item.ponto])
-                      console.log(element[item.item.ponto])
-                      addRoute(element[item.item.ponto])
                     }
                   })
                   setData2([])
