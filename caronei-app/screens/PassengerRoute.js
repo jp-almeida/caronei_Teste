@@ -29,6 +29,7 @@ const PassengerRoute = () => {
   const [rota, setRota] = useState("")
   const [data, setData] = useState([{}])
   const [data2, setData2] = useState([{}])
+  const [id, setId] = useState("")
   const [originalData, setOriginalData] = useState([{}])
   const [originalData2, setOriginalData2] = useState([{}])
 
@@ -49,6 +50,11 @@ const PassengerRoute = () => {
     let arr = [...originalData2]
     setData2(arr.filter((d) => d.nome.toLowerCase().includes(s.toLowerCase())))
     setDestino(s)
+  }
+
+  async function adicionarRota(rota) {
+    const response = await addRoute(rota)
+    setId(await response)
   }
 
   return (
@@ -157,9 +163,9 @@ const PassengerRoute = () => {
       <View style={tw`h-10%`}>
       <DefaultButton title="Confirmar" onPress={() => {
         if (origin?.location && destination?.location){
-          addRoute(rota)
+          adicionarRota(rota)
           dispatch(carregar_passageiro())
-          navigation.navigate("SearchRideScreen")
+          navigation.navigate("SearchRideScreen", {parametro: id})
         }
       }
       } />

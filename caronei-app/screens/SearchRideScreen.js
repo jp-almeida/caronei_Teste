@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
 import { store } from "../store"
 import { MOTORISTA, PASSAGEIRO} from "../slices/rideState"
-import { searchPassageiro } from "../requestsFunctions"
+import { searchDriver, searchPassageiro } from "../requestsFunctions"
 
 const SearchRideScreen = ({route}) => {
 
@@ -24,10 +24,10 @@ const SearchRideScreen = ({route}) => {
     const [destino,setDestino] = useState(null)
     const [corrida,setCorrida] = useState(null)    
     var avaliacao = 5
+    const {parametro} = route.params
 
     async function procurarPassageiro() {
-        const {rota} = route.params
-        const response = await searchPassageiro(store.getState().auth.matricula, rota)
+        const response = await searchPassageiro(store.getState().auth.matricula, parametro)
         if (response.response) {
             setCorrida(response.pedidos)
         }
@@ -36,8 +36,22 @@ const SearchRideScreen = ({route}) => {
         }
     }
 
+    async function procurarMotorista() {
+        const response = await searchDriver(parametro)
+        if (typeof(response) != "string") {
+            // FAZER O MATCH!!!!!!
+            console.log("DEU MATCH!!!!!!!!!!")
+        }
+        else {
+            console.log("Nenhum motorista por enquanto")
+        }
+    }
+
     if (store.getState().ride.role == MOTORISTA) {
         procurarPassageiro()
+    }
+    else{
+        console.log(parametro)
     }
 
     return (
@@ -135,7 +149,11 @@ const SearchRideScreen = ({route}) => {
                             }}>
                             <DefaultButton 
                             title="Atualizar Busca" 
-                            onPress={() => navigation.navigate('HomeScreen')} />
+                            onPress={() => 
+                                {if (store.getState().ride.role == PASSAGEIRO) {
+                                    procurarMotorista()
+                                }
+                                navigation.navigate('HomeScreen')}} />
                         </View>
                         <View style={{ 
                              padding: 5,
@@ -147,7 +165,7 @@ const SearchRideScreen = ({route}) => {
                             title="Cancelar viagem" 
                             onPress={() => {
                                 dispatch(cancelar_corrida())
-                                navigation.navigate('HomeScreen')}} />
+                                navigation.navigate('MatchRideScreen')}} />
                     </View>
                 </View>
 

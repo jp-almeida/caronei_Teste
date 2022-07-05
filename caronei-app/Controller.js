@@ -19,8 +19,8 @@ app.post(
   async (request, response) => {
     //caso não exista um usuário, ele irá criar
     //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
-    let user,
-      created = await model.Usuarios.findOrCreate({
+    let [user,
+      created] = await model.Usuarios.findOrCreate({
         where: { matricula: request.body.userMatricula },
         defaults: {
           matricula: request.body.userMatricula,
@@ -31,21 +31,22 @@ app.post(
           updatedAt: new Date(),
         },
       })
-    if (user) {
-      return response.send(JSON.stringify("Usuário já cadastrado"))
-    }
+    console.log(user)
+    console.log(created)
     if (created) {
       return response.send(
         JSON.stringify("O usuário foi cadastrado com sucesso!")
       )
-    } else {
+    } 
+    if (user) {
+      return response.send(JSON.stringify("Usuário já cadastrado"))
+    }
+    else {
       return response.send(
         JSON.stringify("Ocorreu algum problema. Tente novamente")
       )
     }
   }
-
-  // }
 )
 
 //fazer login
@@ -271,8 +272,8 @@ app.post(
   async (request, response) => {
     //caso não exista um usuário, ele irá criar
     //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
-    let user,
-      created = await model.Pedidos.findOrCreate({
+    let [pedido,
+      created] = await model.Pedidos.findOrCreate({
         where: {
           matriculaPedido: request.body.passengerMatricula,
           rota: request.body.passengerRoute,
@@ -284,14 +285,16 @@ app.post(
           updatedAt: new Date(),
         },
       })
-    if (user) {
-      return response.send(JSON.stringify("Rota já cadastrada"))
-    }
+    
     if (created) {
       return response.send(
-        JSON.stringify("A rota foi cadastrada com sucesso!")
+        JSON.stringify(pedido.id)
       )
-    } else {
+    }
+    if (pedido) {
+      return response.send(JSON.stringify("Rota já cadastrada"))
+    }
+    else {
       return response.send(
         JSON.stringify("Ocorreu algum problema. Tente novamente")
       )
