@@ -94,7 +94,7 @@ var avaliacao = 5
                             }}>
                             <DefaultButton 
                             title="Cancelar viagem" 
-                            onPress={() => navigation.navigate('HomeScreen')} />
+                            onPress={() => navigation.navigate('MainScreen')} />
                         </View>
                    </View>
                
