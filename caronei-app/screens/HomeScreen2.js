@@ -5,6 +5,7 @@ import {
   TextInput,
   FlatList,
   TouchableHighlight,
+  Image,
 } from "react-native"
 import React, { useEffect, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -12,11 +13,14 @@ import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
 import { useDispatch } from "react-redux"
 import { setDestination, setOrigin } from "../slices/navSlice"
+import { addRoute } from "../requestsFunctions"
 
 const HomeScreen2 = () => {
   const dispatch = useDispatch()
-  const [partida, setPartida] = useState(null)
-  const [destino, setDestino] = useState(null)
+  const [partida, setPartida] = useState("")
+  const [destino, setDestino] = useState("")
+  const [orig, setOrig] = useState([{}])
+  const [rota, setRota] = useState("")
   const [data, setData] = useState([{}])
   const [data2, setData2] = useState([{}])
   const [originalData, setOriginalData] = useState([{}])
@@ -78,10 +82,11 @@ const HomeScreen2 = () => {
           data={data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={(item) => (
-            <View style={styles.card}>
+            <View>
               <TouchableHighlight
                 onPress={() => {
                   setPartida(item.item.nome)
+                  setOrig(item.item.para)
                   setData([])
                   dispatch(
                     setOrigin({
@@ -94,9 +99,15 @@ const HomeScreen2 = () => {
                   dispatch(setDestination(null))
                 }}
               >
-                <Text style={styles.rowText} numberOfLines={1}>
-                  {item.item.nome}
-                </Text>
+                <View style={styles.SectionStyle}>
+                  <Image
+                    style={styles.ImageStyle}
+                    source={require("../images/markerIco.png")}
+                  />
+                  <Text style={styles.rowText} numberOfLines={1}>
+                    {item.item.nome}
+                  </Text>
+                </View>
               </TouchableHighlight>
             </View>
           )}
@@ -120,10 +131,17 @@ const HomeScreen2 = () => {
           data={data2}
           keyExtractor={(item, index) => index.toString()}
           renderItem={(item) => (
-            <View style={styles.card}>
+            <View>
               <TouchableHighlight
                 onPress={() => {
                   setDestino(item.item.nome)
+                  orig.forEach((element) => {
+                    if (element[item.item.ponto] != undefined) {
+                      setRota(element[item.item.ponto])
+                      console.log(element[item.item.ponto])
+                      addRoute(element[item.item.ponto])
+                    }
+                  })
                   setData2([])
                   dispatch(
                     setDestination({
@@ -135,9 +153,15 @@ const HomeScreen2 = () => {
                   )
                 }}
               >
-                <Text style={styles.rowText} numberOfLines={1}>
-                  {item.item.nome}
-                </Text>
+                <View style={styles.SectionStyle}>
+                  <Image
+                    style={styles.ImageStyle}
+                    source={require("../images/markerIco.png")}
+                  />
+                  <Text style={styles.rowText} numberOfLines={1}>
+                    {item.item.nome}
+                  </Text>
+                </View>
               </TouchableHighlight>
             </View>
           )}
@@ -193,5 +217,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginStart: 20,
     borderColor: "#FAFAFA",
+    flex: 1,
+  },
+  ImageStyle: {
+    padding: 10,
+    margin: 5,
+    height: 25,
+    width: 25,
+    resizeMode: "stretch",
+    alignItems: "center",
+  },
+  SectionStyle: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    height: 40,
+    borderRadius: 5,
+    margin: 10,
   },
 })

@@ -1,6 +1,8 @@
 ###
 GET http://192.168.1.16:3000/oferecer
 
+###
+GET http://192.168.1.7:3000/dados-publicos/1
 
 ###
 POST http://192.168.1.16:3000/solicitar
@@ -76,4 +78,14 @@ PUT http://192.168.1.7:3000/alterar-carro/
     "cor": request.body.cor,
     "modelo": request.body.modelo,
 
+}
+
+
+###
+POST http://192.168.15.36:3000/createroute
+Content-Type: application/json
+
+{
+    "passengerMatricula": 497493,
+    "passengerRoute": "['c', 'd', 'e', 'f']"
 }

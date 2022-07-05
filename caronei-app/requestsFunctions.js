@@ -68,6 +68,18 @@ export async function getUserData() {
   return await reqs.json()
 }
 
+export async function getPublicData(matricula) {
+  //pega os dados do banco de dados e preenche as variaveis
+  let reqs = await fetch(url + '/dados-publicos/' + matricula, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+  return await reqs.json()
+}
+
 export async function deleteCar(placa) {
   
   let reqs = await fetch(url + '/deletar-carro/', {
@@ -82,4 +94,24 @@ export async function deleteCar(placa) {
     })
   })
   return await reqs.json()
+}
+
+export async function addRoute(route) {
+  let routeString = JSON.stringify(route)
+  let rota = routeString.replace(/"/g, "'")
+
+
+  let reqs = await fetch(url + '/createroute', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      passengerMatricula: store.getState().auth.matricula,
+      passengerRoute: rota
+    })
+  })
+  return await reqs.json()
+  
 }

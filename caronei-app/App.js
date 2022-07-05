@@ -21,6 +21,7 @@ import RateUserScreen from "./screens/RateUserScreen"
 import AcceptRideScreen from "./screens/AcceptRideScreen"
 import ReportScreen from "./screens/ReportScreen"
 import MainScreen from "./screens/MainScreen"
+import UserScreen from "./screens/UserScreen"
 
 export default function App() {
   const Stack = createNativeStackNavigator()
@@ -29,6 +30,7 @@ export default function App() {
       <NavigationContainer>
         <SafeAreaProvider>
           <Stack.Navigator>
+
             <Stack.Screen
               name="InitialScreen"
               component={InitialScreen}
@@ -118,6 +120,14 @@ export default function App() {
             <Stack.Screen
               name="HomeScreen2"
               component={HomeScreen2}
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
+              name="UserScreen"
+              component={UserScreen}
               options={{
                 headerShown: false,
               }}

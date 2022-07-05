@@ -71,7 +71,6 @@ app.post("/login", async (request, response) => {
       response_data.message = "Logando..."
     }
   }
-  console.log(response_data.token)
   return response.end(JSON.stringify(response_data))
 })
 
@@ -179,7 +178,6 @@ app.post("/solicitar", async (request, response) => {
 
 //adicionar um carro
 app.post("/adicionar-carro/", async (request, response) => {
-  console.log(request)
   let user,
     created = await model.Carros.findOrCreate({
       where: {
@@ -215,9 +213,39 @@ app.get("/carros/:matricula", async (request, response) => {
   return response.send(JSON.stringify(carros))
 })
 
+app.get("/dados-publicos/:matricula", async (request, response) => {
+  const { matricula } = request.params
+  const user = await model.Usuarios.findByPk(matricula)
+  if (!user) {
+    return response.send(JSON.stringify("Usuário não existe"))
+  } else {
+    let dadosPublicos = {}
+    if(user.emailVisib){
+      dadosPublicos.email = user.email
+    }
+    if(user.nascimentoVisib){
+      dadosPublicos.birth = user.nascimento
+    }
+    if(user.generoVisib){
+      dadosPublicos.gender = user.genero
+    }
+    if(user.telefoneVisib){
+      dadosPublicos.phone = user.telefone
+    }
+
+    dadosPublicos.avaliacao = user.avaliacao
+    dadosPublicos.experience = user.experiencia
+    dadosPublicos.name = user.nomeCompleto
+    dadosPublicos.matricula = user.matricula
+
+    return response.end(JSON.stringify(dadosPublicos))
+
+  }
+
+})
+
 //alterar carro
 app.put("/alterar-carro/", async (request, response) => {
-  console.log(request.body)
   model.Carros.update(
     {
       placa: request.body.placaNova,
@@ -254,3 +282,38 @@ let port = config.backend_port //process.env.PORT || 3000
 app.listen(port, (request, response) => {
   console.log("Servidor rodando")
 })
+
+
+//cadastrando uma rota no bd
+app.post(
+  "/createroute",
+  async (request, response) => {
+    //caso não exista um usuário, ele irá criar
+    //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
+    let user,
+      created = await model.Pedidos.findOrCreate({
+        where: { 
+          matriculaPedido: request.body.passengerMatricula,
+          rota: request.body.passengerRoute,
+        },
+        defaults: {
+          matriculaPedido: request.body.passengerMatricula,
+          rota: request.body.passengerRoute,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      })
+    if (user) {
+      return response.send(JSON.stringify("Rota já cadastrada"))
+    }
+    if (created) {
+      return response.send(
+        JSON.stringify("A rota foi cadastrada com sucesso!")
+      )
+    } else {
+      return response.send(
+        JSON.stringify("Ocorreu algum problema. Tente novamente")
+      )
+    }
+  }
+)

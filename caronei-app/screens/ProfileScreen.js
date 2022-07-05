@@ -50,6 +50,7 @@ function getGenderName(gender) {
 }
 
 const ProfileScreen = () => {
+  const navigation = useNavigation()
   const [name, setName] = useState({
     data: null,
     isEditing: false,
@@ -280,6 +281,10 @@ const ProfileScreen = () => {
                 />
               </View>
             )}
+
+            <TouchableOpacity style={{}} onPress={()=>{navigation.navigate("UserScreen", {matricula: store.getState().auth.matricula})}}>
+                    <Text style={{}}>Como os outros vêem o meu perfil?</Text>
+            </TouchableOpacity>
 
             <View style={{}}>
 
