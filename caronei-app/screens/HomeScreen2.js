@@ -11,14 +11,19 @@ import React, { useEffect, useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
-import { useDispatch } from "react-redux"
-import { setDestination, setOrigin } from "../slices/navSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { selectDestination, selectOrigin, setDestination, setOrigin } from "../slices/navSlice"
 import { addRoute } from "../requestsFunctions"
+import { useNavigation } from "@react-navigation/native"
+import { DefaultButton } from "../components/Button"
 
 const HomeScreen2 = () => {
   const dispatch = useDispatch()
+  const navigation = useNavigation()
   const [partida, setPartida] = useState("")
   const [destino, setDestino] = useState("")
+  const origin = useSelector(selectOrigin)
+  const destination = useSelector(selectDestination)
   const [orig, setOrig] = useState([{}])
   const [rota, setRota] = useState("")
   const [data, setData] = useState([{}])
@@ -64,7 +69,7 @@ const HomeScreen2 = () => {
 
   return (
     <SafeAreaView>
-      <View style={tw`h-1/2`}>
+      <View style={tw`h-45%`}>
         <TextInput
           value={partida}
           style={{
@@ -113,7 +118,7 @@ const HomeScreen2 = () => {
           )}
         />
       </View>
-      <View style={tw`h-1/2`}>
+      <View style={tw`h-45%`}>
         <TextInput
           value={destino}
           style={{
@@ -166,6 +171,13 @@ const HomeScreen2 = () => {
             </View>
           )}
         />
+      </View>
+      <View style={tw`h-10%`}>
+      <DefaultButton title="Confirmar" onPress={() => {
+        {origin?.location && destination?.location && (
+          navigation.navigate("MapScreen")
+        )}
+      }} />
       </View>
     </SafeAreaView>
   )
