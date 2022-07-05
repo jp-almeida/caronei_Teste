@@ -13,7 +13,7 @@ const data = [
     id: "123",
     title: "Solicitar carona",
     image: require("../images/car.png"),
-    screen: "MapScreen",
+    screen: "HomeScreen2",
   },
   {
     id: "456",
