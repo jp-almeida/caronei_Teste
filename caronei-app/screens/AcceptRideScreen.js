@@ -93,8 +93,8 @@ const AcceptRideScreen = ({route}) => {
                         justifyContent: 'space-around',
 
                     }}>
-                        <DefaultButton title="Aceitar" onPress={() => { }} />
-                        <DefaultButton title="Recusar" onPress={() => { }} />
+                        <DefaultButton title="Aceitar" onPress={() => {navigation.navigate('MatchRideScreen')}} />
+                        <DefaultButton title="Recusar" onPress={() => {navigation.navigate('SearchRideScreen')}} />
                     </View>
                     <View style={{
                         padding: 25,
