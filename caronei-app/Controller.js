@@ -346,6 +346,7 @@ app.post(
 
 //PASSAGEIRO BUSCAR POR MOTORISTA
 app.get("/buscar-motorista/:idRota", async (request, response) => {
+  console.log("oi")
   const corrida = await model.Matches.findByPk(request.params.idRota)
   if (corrida) {
     return response.end(JSON.stringify(corrida))

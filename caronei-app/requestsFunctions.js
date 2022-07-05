@@ -149,7 +149,7 @@ export async function rateUser(matricula, rating) {
 }
 
 export async function searchDriver(idRoute) {
-  let reqs = await fetch(url + '/buscar-motorista/' + idRoute, {
+  const reqs = await fetch(url + '/buscar-motorista/' + idRoute, {
     method: 'GET',
     headers: {
       Accept: 'application/json',

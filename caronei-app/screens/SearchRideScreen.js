@@ -57,7 +57,7 @@ const SearchRideScreen = ({ route }) => {
         procurarPassageiro()
     }
     else {
-        console.log(parametro)
+        console.log(parametro) //printa a rota
     }
 
 
