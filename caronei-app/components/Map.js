@@ -12,6 +12,13 @@ const Map = () => {
   const destination = useSelector(selectDestination)
   const mapRef = useRef(null)
 
+  // const Map = (props) => {
+  //   const origin = props.origin ? props.origin : useSelector(selectOrigin)
+  //   const destination = props.destination
+  //     ? props.destination
+  //     : useSelector(selectDestination)
+  //   const mapRef = useRef(null)
+
   return (
     <MapView
       ref={mapRef}
