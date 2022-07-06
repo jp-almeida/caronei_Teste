@@ -55,6 +55,12 @@ const SearchRideScreen = ({ route }) => {
     }
   }
 
+  // USAR NO BOTÃO DE CANCELAR VIAGEM
+  // async function cancelarRota() {
+  //   const response = await removeRoute(parametro)
+    
+  // }
+
   if (store.getState().ride.role == MOTORISTA) {
     procurarPassageiro()
   } else {
