@@ -40,7 +40,9 @@ const AcceptRideScreen = ({ route }) => {
         let resp = await aceitarPassageiro(corrida.pedidoId)
         
         if(await resp.response){
-            navigation.navigate('MatchRideScreen', {matrUser: corrida.matriculaPassageiro})
+            navigation.navigate('MatchRideScreen', {corrida:{
+                                                    matricula: corrida.matriculaPassageiro,
+                                                    rota: {destino: destino, partida: partida}}})
         } 
     }
 
