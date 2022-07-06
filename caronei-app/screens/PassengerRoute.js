@@ -52,9 +52,11 @@ const PassengerRoute = () => {
     setDestino(s)
   }
 
-  async function adicionarRota(rota) {
+  async function seguirParaMotorista(rota) {
     const response = await addRoute(rota)
     setId(await response)
+    dispatch(carregar_passageiro())
+    navigation.navigate("SearchRideScreen", {parametro: await response})
   }
 
   return (
@@ -163,9 +165,7 @@ const PassengerRoute = () => {
       <View style={tw`h-10%`}>
       <DefaultButton title="Confirmar" onPress={() => {
         if (origin?.location && destination?.location){
-          adicionarRota(rota)
-          dispatch(carregar_passageiro())
-          navigation.navigate("SearchRideScreen", {parametro: id})
+          seguirParaMotorista(rota)
         }
       }
       } />

@@ -14,16 +14,31 @@ import { DefaultButton } from '../components/Button'
 import { store } from '../store.js'
 import { cancelar_corrida, EM_CORRIDA_MOTORISTA, EM_CORRIDA_PASSAGEIRO, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
 import { useDispatch, } from "react-redux"
+import { getNome } from "../paradas/paradasFunctions"
+import { getPublicData } from "../requestsFunctions"
 
-const MatchRideScreen = () => {
+const MatchRideScreen = ({route}) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
-    const [name, setName] = useState(null)
-    const [partida, setPartida] = useState(null)
-    const [destino, setDestino] = useState(null)
-    var avaliacao = 5
+    const { corrida } = route.params
 
+    
+    const partida = corrida.rota.partida //pega o nome do primeiro ponto da roda
+    const destino = corrida.rota.destino //pega o nome do último ponto da rota
+
+    const [usuario, setUsuario] = useState({})
+    const [carregou, setCarregou] = useState(false)
+
+    async function getData() { //carrega os dados do passeiro de acordo com a matricula encontrada
+        let resp = await getPublicData(corrida.matricula)
+        setUsuario(resp)
+    }
+
+    if (!carregou) {
+        setCarregou(true)
+        getData()
+    }
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -69,7 +84,8 @@ const MatchRideScreen = () => {
                                             <Text style={{ color: 'white' }}>       Motorista está a caminho </Text>
                                         )}
 
-
+                                    <Text>{usuario.name}</Text>
+                                    <Text>{corrida.rota.partida} - {corrida.rota.destino}</Text>
                                 </View>
 
                                 <View style={{
@@ -77,14 +93,8 @@ const MatchRideScreen = () => {
                                     padding: 10,
 
                                 }}>
-                                    <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25 }}>
-                                        <Text style={{ color: 'white' }}> <Icon name="alarm" type="material" size={15} /> Tempo para chegada </Text>
-                                    </View>
-                                    <View>
-                                        <Text>  </Text>
-                                    </View>
                                     <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25, }}>
-                                        <Text style={{ color: 'white' }}> <Icon name="stars" type="material" size={15} />  {avaliacao}  </Text>
+                                        <Text style={{ color: 'white' }}> <Icon name="stars" type="material" size={15} />  {usuario.avaliacao}  </Text>
                                     </View>
 
                                 </View>

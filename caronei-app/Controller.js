@@ -157,7 +157,7 @@ app.get(
   }
 )
 
-//adicionar um carro
+//ADICIONAR UM CARRO
 app.post("/adicionar-carro/", async (request, response) => {
   let user,
     created = await model.Carros.findOrCreate({
@@ -183,7 +183,7 @@ app.post("/adicionar-carro/", async (request, response) => {
     )
   }
 })
-//carregar todos os carros do banco de dados de acordo com uma matricula
+//CARREGAR CARROS
 app.get("/carros/:matricula", async (request, response) => {
   const { matricula } = request.params
   let carros = await model.Carros.findAll({
@@ -194,6 +194,7 @@ app.get("/carros/:matricula", async (request, response) => {
   return response.send(JSON.stringify(carros))
 })
 
+//RECUPERAR DADOS PUBLICOS DE UM USUARIO
 app.get("/dados-publicos/:matricula", async (request, response) => {
   const { matricula } = request.params
   const user = await model.Usuarios.findByPk(matricula)
@@ -225,7 +226,7 @@ app.get("/dados-publicos/:matricula", async (request, response) => {
 
 })
 
-//alterar carro
+//ALTERAR CARRO
 app.put("/alterar-carro/", async (request, response) => {
   model.Carros.update(
     {
@@ -267,8 +268,7 @@ app.listen(port, (request, response) => {
 
 
 //cadastrando uma rota no bd
-app.post(
-  "/createroute",
+app.post("/createroute",
   async (request, response) => {
     //caso não exista um usuário, ele irá criar
     //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
@@ -292,7 +292,7 @@ app.post(
       )
     }
     if (pedido) {
-      return response.send(JSON.stringify("Rota já cadastrada"))
+      return response.send(JSON.stringify(pedido.id))
     }
     else {
       return response.send(
@@ -302,40 +302,50 @@ app.post(
   }
 )
 
-app.post(
-  "/matchroute",
+//MOTORISTA BUSCAR PASSAGEIRO - checa os pedidos de carona e vê se algum dá match com a rota enviada no body
+app.post("/matchroute",
   async (request, response) => {
-    let corrida = null
+    let result, pedidoEscolhido, corrida = null
+    
     const driverRoute = eval(request.body.driverRoute)
-    const pedidos = await model.Pedidos.findAll({
+    console.log(request.body.recusadas)
+    const pedidos = await model.Pedidos.findAll({ //seleciona todos os pedidos
       attributes: [
         "id",
         "matriculaPedido",
         "rota"
       ]
     })
-    let result, pedidoEscolhido
+    
     pedidos.forEach(pedido => {
-      let r = eval(pedido.rota)
-      result = result ? result : driverRoute.join().includes(r.join())
+      if(!request.body.recusadas.includes(pedido.matriculaPedido)){ //se a matricula do pedido não estiver na lista de recusadas
+        let r = eval(pedido.rota) //converte de string para array
+        result = result ? result : driverRoute.join().includes(r.join())
 
-      if (result) {
-        pedidoEscolhido = pedido
+        if (result) { //se result for verdadeiro
+          pedidoEscolhido = pedido //seta o match
+        }
       }
+      
     });
-    if (result) {
-      [corrida, created] = await model.Matches.findOrCreate(
-        {
-          where: { idRota: pedidoEscolhido.id },
-          defaults: {
-            matriculaMotorista: request.body.driverMatricula,
-            matriculaPassageiro: pedidoEscolhido.matriculaPedido,
-            nomeDestino: "nada",
-            nomeOrigem: "nada",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }
-        })
+    if (result) { //se achar um match
+      return response.end(JSON.stringify({ response: result, 
+                                            pedidoId : pedidoEscolhido.id, 
+                                            matriculaPassageiro: 
+                                            pedidoEscolhido.matriculaPedido,
+                                            rota: pedidoEscolhido.rota })) //retorna o ID do pedido que deu match
+      // [corrida, created] = await model.Matches.findOrCreate(
+      //   {
+      //     where: { idRota: pedidoEscolhido.id },
+      //     defaults: {
+      //       matriculaMotorista: request.body.driverMatricula,
+      //       matriculaPassageiro: pedidoEscolhido.matriculaPedido,
+      //       nomeDestino: "nada",
+      //       nomeOrigem: "nada",
+      //       createdAt: new Date(),
+      //       updatedAt: new Date(),
+      //     }
+      //   })
     }
     //não apagar a rota da tabela de pedidos agora, porque o motorista precisa 
     // confirmar o passageiro primeiro. Depois que ele confirmar, a gente remove 
@@ -344,10 +354,10 @@ app.post(
   }
 )
 
-//PASSAGEIRO BUSCAR POR MOTORISTA
+//PASSAGEIRO BUSCAR POR MOTORISTA - vê se na tabela de matches apareceu alguma corrida com o seu ID
 app.get("/buscar-motorista/:idRota", async (request, response) => {
-  console.log("oi")
   const corrida = await model.Matches.findByPk(request.params.idRota)
+  console.log(corrida)
   if (corrida) {
     return response.end(JSON.stringify(corrida))
   }
@@ -358,27 +368,29 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
 
 // MOTORISTA ACEITAR PASSAGEIRO
 app.post("/aceitar-passageiro", async (request, response) => {
-  const match = await model.Matches.findByPk(request.body.idRota)
+  const match = await model.Pedidos.findByPk(request.body.idRota)
   if (!match) {
     return response.end(JSON.stringify({ response: false, message: "Corrida não existe" }))
   }
   model.Pedidos.destroy(
-    {
-      where:
+    {where:
         { id: request.body.idRota }
     })
     .then((a) => {
-      model.Corridas.create({
-        idCorrida: request.body.idRota,
-        matriculaMotorista: match.matriculaMotorista,
-        matriculaPassageiro: match.matriculaPassageiro,
+      console.log("deletou")
+      model.Matches.create({
+        idRota: request.body.idRota,
+        matriculaMotorista: request.body.matriculaMotorista,
+        matriculaPassageiro: match.matriculaPedido,
+        nomeDestino: "nada",
+        nomeOrigem: "nada",
         createdAt: new Date(),
         updatedAt: new Date()
-      })
-        .then((b) => {
+      }).then((b) => {
+          console.log("criou")
           response.end(JSON.stringify({ response: true, message: "Passageiro aceito com sucesso" }))
-        })
-        .catch((err) => {
+        }).catch((err) => {
+          console.log(err)
           response.end(JSON.stringify({ response: false, message: "Não foi possível criar a corrida" }))
         })
     })
@@ -388,6 +400,7 @@ app.post("/aceitar-passageiro", async (request, response) => {
 
 })
 
+//AVALIAÇÃO - um usuário avalia o outo. Seta a nova média de avaliação
 app.post("/avaliar",
   async (request, response) => {
     const user = await model.Usuarios.findByPk(request.body.matricula)

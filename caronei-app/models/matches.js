@@ -43,11 +43,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     nomeDestino: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: "nada"
     },
     nomeOrigem:  {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: "nada"
     },
   }, {
     sequelize,

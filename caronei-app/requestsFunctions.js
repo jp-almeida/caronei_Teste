@@ -13,14 +13,12 @@ export async function searchPassageiro(rotaMotorista) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      driverMatricula: store.getState().auth.matricula,
-      driverRoute: rotaMotorista
+      driverRoute: rotaMotorista,
+      recusadas: store.getState().ride.recusadas
     }),
   })
   return await reqs.json()
 }
-
-
 
 export async function updateCar(placaNova, placaAntiga, modelo, cor) {
   let reqs = await fetch(url + "/alterar-carro/", {
@@ -40,7 +38,6 @@ export async function updateCar(placaNova, placaAntiga, modelo, cor) {
   return await reqs.json()
 
 }
-
 
 export async function getCars() {
   //carrega os carros do banco de dados
@@ -149,12 +146,29 @@ export async function rateUser(matricula, rating) {
 }
 
 export async function searchDriver(idRoute) {
-  const reqs = await fetch(url + '/buscar-motorista/' + idRoute, {
+  let reqs = await fetch(url + '/buscar-motorista/' + idRoute, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }
+  })
+
+  return await reqs.json()
+}
+
+
+export async function aceitarPassageiro(idRota) {
+  let reqs = await fetch(url + '/aceitar-passageiro', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      idRota: idRota,
+      matriculaMotorista: store.getState().auth.matricula
+    })
   })
   return await reqs.json()
 }

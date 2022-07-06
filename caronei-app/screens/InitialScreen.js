@@ -62,12 +62,6 @@ const InitialScreen = () => {
                             <View style={{}}>
                                 <DefaultButton title="Entrar" onPress={() => navigation.navigate('LogInScreen')} />
                             </View>
-                            <View style={{}}>
-                                <DefaultButton title="Testes" onPress={() => {
-                                    dispatch(carregar_motorista())
-                                    navigation.navigate('SearchRideScreen')}} />
-                            </View>
-
 
                             <View style={{ flexDirection: "row", marginTop: 100 }}>
                                 <Image
