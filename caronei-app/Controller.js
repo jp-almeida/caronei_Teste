@@ -302,19 +302,22 @@ app.post(
   }
 )
 
+//MOTORISTA BUSCAR PASSAGEIRO - checa os pedidos de carona e vê se algum dá match com a rota enviada no body
 app.post(
   "/matchroute",
   async (request, response) => {
-    let corrida = null
+    let result, pedidoEscolhido, corrida = null
+    
     const driverRoute = eval(request.body.driverRoute)
-    const pedidos = await model.Pedidos.findAll({
+    
+    const pedidos = await model.Pedidos.findAll({ //seleciona todos os pedidos
       attributes: [
         "id",
         "matriculaPedido",
         "rota"
       ]
     })
-    let result, pedidoEscolhido
+    
     pedidos.forEach(pedido => {
       let r = eval(pedido.rota)
       result = result ? result : driverRoute.join().includes(r.join())
@@ -323,19 +326,24 @@ app.post(
         pedidoEscolhido = pedido
       }
     });
-    if (result) {
-      [corrida, created] = await model.Matches.findOrCreate(
-        {
-          where: { idRota: pedidoEscolhido.id },
-          defaults: {
-            matriculaMotorista: request.body.driverMatricula,
-            matriculaPassageiro: pedidoEscolhido.matriculaPedido,
-            nomeDestino: "nada",
-            nomeOrigem: "nada",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }
-        })
+    if (result) { //se achar um match
+      return response.end(JSON.stringify({ response: result, 
+                                            pedidoId : pedidoEscolhido.id, 
+                                            matriculaPassageiro: 
+                                            pedidoEscolhido.matriculaPedido,
+                                            rota: pedidoEscolhido.rota })) //retorna o ID do pedido que deu match
+      // [corrida, created] = await model.Matches.findOrCreate(
+      //   {
+      //     where: { idRota: pedidoEscolhido.id },
+      //     defaults: {
+      //       matriculaMotorista: request.body.driverMatricula,
+      //       matriculaPassageiro: pedidoEscolhido.matriculaPedido,
+      //       nomeDestino: "nada",
+      //       nomeOrigem: "nada",
+      //       createdAt: new Date(),
+      //       updatedAt: new Date(),
+      //     }
+      //   })
     }
     //não apagar a rota da tabela de pedidos agora, porque o motorista precisa 
     // confirmar o passageiro primeiro. Depois que ele confirmar, a gente remove 
@@ -344,9 +352,8 @@ app.post(
   }
 )
 
-//PASSAGEIRO BUSCAR POR MOTORISTA
+//PASSAGEIRO BUSCAR POR MOTORISTA - vê se na tabela de matches apareceu alguma corrida com o seu ID
 app.get("/buscar-motorista/:idRota", async (request, response) => {
-  console.log("oi")
   const corrida = await model.Matches.findByPk(request.params.idRota)
   if (corrida) {
     return response.end(JSON.stringify(corrida))
@@ -356,7 +363,7 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
   }
 })
 
-// MOTORISTA ACEITAR PASSAGEIRO
+// MOTORISTA ACEITAR PASSAGEIRO - NÃO FEITO
 app.post("/aceitar-passageiro", async (request, response) => {
   const match = await model.Matches.findByPk(request.body.idRota)
   if (!match) {
@@ -388,6 +395,7 @@ app.post("/aceitar-passageiro", async (request, response) => {
 
 })
 
+//AVALIAÇÃO - um usuário avalia o outo. Seta a nova média de avaliação
 app.post("/avaliar",
   async (request, response) => {
     const user = await model.Usuarios.findByPk(request.body.matricula)

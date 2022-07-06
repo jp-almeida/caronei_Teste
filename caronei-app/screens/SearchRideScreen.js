@@ -30,13 +30,13 @@ const SearchRideScreen = ({ route }) => {
 
   async function procurarPassageiro() {
     const response = await searchPassageiro(parametro)
-
-    if (await response.response) {
-      setMatch(await response.pedidos)
+    
+    if (await response.response) { //caso ache uma corrida, vai para a tela de aceitar corrida (apenas motoristas)
+      setMatch(await response)
       navigation.navigate("AcceptRideScreen", {
-        corrida: await response.pedidos,
+        corrida: await response,
       })
-    } else {
+    } else { //caso não ache, deverá continuar procurando
       procurando = false
       console.log("Não achou")
     }
