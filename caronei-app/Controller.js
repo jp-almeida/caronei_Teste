@@ -309,7 +309,7 @@ app.post(
     let result, pedidoEscolhido, corrida = null
     
     const driverRoute = eval(request.body.driverRoute)
-    
+    console.log(request.body.recusadas)
     const pedidos = await model.Pedidos.findAll({ //seleciona todos os pedidos
       attributes: [
         "id",
@@ -319,12 +319,15 @@ app.post(
     })
     
     pedidos.forEach(pedido => {
-      let r = eval(pedido.rota)
-      result = result ? result : driverRoute.join().includes(r.join())
+      if(!request.body.recusadas.includes(pedido.matriculaPedido)){ //se a matricula do pedido não estiver na lista de recusadas
+        let r = eval(pedido.rota) //converte de string para array
+        result = result ? result : driverRoute.join().includes(r.join())
 
-      if (result) {
-        pedidoEscolhido = pedido
+        if (result) { //se result for verdadeiro
+          pedidoEscolhido = pedido //seta o match
+        }
       }
+      
     });
     if (result) { //se achar um match
       return response.end(JSON.stringify({ response: result, 
@@ -365,7 +368,7 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
 
 // MOTORISTA ACEITAR PASSAGEIRO - NÃO FEITO
 app.post("/aceitar-passageiro", async (request, response) => {
-  const match = await model.Matches.findByPk(request.body.idRota)
+  const match = await model.Pedidos.findByPk(request.body.idRota)
   if (!match) {
     return response.end(JSON.stringify({ response: false, message: "Corrida não existe" }))
   }
@@ -375,8 +378,8 @@ app.post("/aceitar-passageiro", async (request, response) => {
         { id: request.body.idRota }
     })
     .then((a) => {
-      model.Corridas.create({
-        idCorrida: request.body.idRota,
+      model.Matches.create({
+        idRota: request.body.idRota,
         matriculaMotorista: match.matriculaMotorista,
         matriculaPassageiro: match.matriculaPassageiro,
         createdAt: new Date(),

@@ -13,7 +13,8 @@ export async function searchPassageiro(rotaMotorista) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      driverRoute: rotaMotorista
+      driverRoute: rotaMotorista,
+      recusadas: store.getState().ride.recusadas
     }),
   })
   return await reqs.json()

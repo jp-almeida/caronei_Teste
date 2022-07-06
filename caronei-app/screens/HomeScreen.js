@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native"
 import { logoutAuth } from "../slices/userAuth"
 import config from "../config/config.json"
 import { store } from "../store"
+import { logout } from "../slices/rideState"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -25,6 +26,7 @@ export default function HomeScreen() {
 
   function exitAccount() {
     dispatch(logoutAuth())
+    dispatch(logout())
     navigation.navigate("LogInScreen")
   }
   async function getUserName() {

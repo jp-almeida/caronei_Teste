@@ -12,7 +12,7 @@ import { Icon } from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
 import { getPublicData } from "../requestsFunctions"
-import { cancelar_corrida, em_corrida_motorista, em_corrida_passageiro, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
+import { cancelar_corrida, em_corrida_motorista, em_corrida_passageiro, MOTORISTA, PASSAGEIRO, recusar } from "../slices/rideState"
 import { store } from "../store"
 import { useDispatch } from "react-redux"
 import { getNome } from "../paradas/paradasFunctions"
@@ -21,7 +21,7 @@ const AcceptRideScreen = ({ route }) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
-    const { corrida } = route.params
+    const { corrida, rotaMotorista } = route.params
     let rota = eval(corrida.rota) //transforma a string da rota em array
     const partida = getNome(rota[0]) //pega o nome do primeiro ponto da roda
     const destino = getNome(rota.slice(-1)) //pega o nome do último ponto da rota
@@ -84,7 +84,8 @@ const AcceptRideScreen = ({ route }) => {
 
                                 }}>
                                     <View style={{ backgroundColor: '#4D4C7D', borderRadius: 25, }}>
-                                        <Text style={{ color: 'white' }} > <Icon name="stars" type="material" size={15} />  {usuario.avaliacao ? usuario.avaliacao : "(Usuário não avaliado)"}  </Text>
+                                        <Text style={{ color: 'white' }} > <Icon name="stars" type="material" size={15} />  
+                                        {usuario.avaliacao ? usuario.avaliacao : "(Usuário não avaliado)"}  </Text>
                                     </View>
 
                                 </View>
@@ -109,10 +110,12 @@ const AcceptRideScreen = ({ route }) => {
                             }
                             else if (store.getState().ride.role == MOTORISTA) {
                                 dispatch((em_corrida_motorista))
+
                             }
                         }} />
                         <DefaultButton title="Recusar" onPress={() => {
-                            navigation.navigate('SearchRideScreen')
+                            dispatch(recusar(corrida.matriculaPassageiro))
+                            navigation.navigate('SearchRideScreen', {parametro: rotaMotorista})
                         }} />
                     </View>
                     <View style={{

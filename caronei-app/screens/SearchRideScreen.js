@@ -23,7 +23,6 @@ const SearchRideScreen = ({ route }) => {
   const [name, setName] = useState(null)
   const [partida, setPartida] = useState(null)
   const [destino, setDestino] = useState(null)
-  const [match, setMatch] = useState(null)
   const { parametro } = route.params
   var avaliacao = 5
   let procurando = false
@@ -32,10 +31,12 @@ const SearchRideScreen = ({ route }) => {
     const response = await searchPassageiro(parametro)
     
     if (await response.response) { //caso ache uma corrida, vai para a tela de aceitar corrida (apenas motoristas)
-      setMatch(await response)
-      navigation.navigate("AcceptRideScreen", {
+
+      navigation.navigate("AcceptRideScreen", { //chama a tela de aceitar o passageiro
         corrida: await response,
+        rotaMotorista: parametro,
       })
+
     } else { //caso não ache, deverá continuar procurando
       procurando = false
       console.log("Não achou")
