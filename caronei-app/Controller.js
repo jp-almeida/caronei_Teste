@@ -416,3 +416,17 @@ app.post("/avaliar",
       })
       .catch((err) => response.send(JSON.stringify(false)))
   })
+
+
+app.delete("/deleteroute/", 
+  async (request, response) => {
+    model.Pedidos.destroy({
+      where: {
+        id: request.body.id,
+        matriculaPedido: request.body.matricula,
+        rota: request.body.rota 
+      }
+    })
+      .then((result) => response.send(JSON.stringify(true)))
+      .catch((err) => response.send(JSON.stringify(false)))
+})
