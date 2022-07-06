@@ -20,8 +20,6 @@ export async function searchPassageiro(rotaMotorista) {
   return await reqs.json()
 }
 
-
-
 export async function updateCar(placaNova, placaAntiga, modelo, cor) {
   let reqs = await fetch(url + "/alterar-carro/", {
     method: "PUT",
@@ -40,7 +38,6 @@ export async function updateCar(placaNova, placaAntiga, modelo, cor) {
   return await reqs.json()
 
 }
-
 
 export async function getCars() {
   //carrega os carros do banco de dados
@@ -157,5 +154,21 @@ export async function searchDriver(idRoute) {
     }
   })
 
+  return await reqs.json()
+}
+
+
+export async function aceitarPassageiro(idRota) {
+  let reqs = await fetch(url + '/aceitar-passageiro', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      idRota: idRota,
+      matriculaMotorista: store.getState().auth.matricula
+    })
+  })
   return await reqs.json()
 }

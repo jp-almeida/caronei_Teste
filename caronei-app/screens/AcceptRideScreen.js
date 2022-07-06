@@ -11,7 +11,7 @@ import { Image } from "react-native"
 import { Icon } from "react-native-elements"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
-import { getPublicData } from "../requestsFunctions"
+import { aceitarPassageiro, getPublicData } from "../requestsFunctions"
 import { cancelar_corrida, em_corrida_motorista, em_corrida_passageiro, MOTORISTA, PASSAGEIRO, recusar } from "../slices/rideState"
 import { store } from "../store"
 import { useDispatch } from "react-redux"
@@ -34,6 +34,14 @@ const AcceptRideScreen = ({ route }) => {
     async function getData() { //carrega os dados do passeiro de acordo com a matricula encontrada
         let resp = await getPublicData(matricula)
         setUsuario(resp)
+    }
+
+    async function aceitar(){
+        let resp = await aceitarPassageiro(corrida.pedidoId)
+        
+        if(await resp.response){
+            navigation.navigate('MatchRideScreen', {matrUser: corrida.matriculaPassageiro})
+        } 
     }
 
     if (!carregou) {
@@ -104,14 +112,8 @@ const AcceptRideScreen = ({ route }) => {
 
                     }}>
                         <DefaultButton title="Aceitar" onPress={() => {
-                            navigation.navigate('MatchRideScreen')
-                            if (store.getState().ride.role == PASSAGEIRO) {
-                                dispatch((em_corrida_passageiro))
-                            }
-                            else if (store.getState().ride.role == MOTORISTA) {
-                                dispatch((em_corrida_motorista))
-
-                            }
+                            dispatch((em_corrida_motorista))
+                            aceitar()
                         }} />
                         <DefaultButton title="Recusar" onPress={() => {
                             dispatch(recusar(corrida.matriculaPassageiro))

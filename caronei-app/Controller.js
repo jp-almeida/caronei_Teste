@@ -303,8 +303,7 @@ app.post("/createroute",
 )
 
 //MOTORISTA BUSCAR PASSAGEIRO - checa os pedidos de carona e vê se algum dá match com a rota enviada no body
-app.post(
-  "/matchroute",
+app.post("/matchroute",
   async (request, response) => {
     let result, pedidoEscolhido, corrida = null
     
@@ -367,29 +366,31 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
   }
 })
 
-// MOTORISTA ACEITAR PASSAGEIRO - NÃO FEITO
+// MOTORISTA ACEITAR PASSAGEIRO
 app.post("/aceitar-passageiro", async (request, response) => {
   const match = await model.Pedidos.findByPk(request.body.idRota)
   if (!match) {
     return response.end(JSON.stringify({ response: false, message: "Corrida não existe" }))
   }
   model.Pedidos.destroy(
-    {
-      where:
+    {where:
         { id: request.body.idRota }
     })
     .then((a) => {
+      console.log("deletou")
       model.Matches.create({
         idRota: request.body.idRota,
-        matriculaMotorista: match.matriculaMotorista,
-        matriculaPassageiro: match.matriculaPassageiro,
+        matriculaMotorista: request.body.matriculaMotorista,
+        matriculaPassageiro: match.matriculaPedido,
+        nomeDestino: "nada",
+        nomeOrigem: "nada",
         createdAt: new Date(),
         updatedAt: new Date()
-      })
-        .then((b) => {
+      }).then((b) => {
+          console.log("criou")
           response.end(JSON.stringify({ response: true, message: "Passageiro aceito com sucesso" }))
-        })
-        .catch((err) => {
+        }).catch((err) => {
+          console.log(err)
           response.end(JSON.stringify({ response: false, message: "Não foi possível criar a corrida" }))
         })
     })
