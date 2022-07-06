@@ -12,7 +12,12 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
 import { useDispatch, useSelector } from "react-redux"
-import { selectDestination, selectOrigin, setDestination, setOrigin } from "../slices/navSlice"
+import {
+  selectDestination,
+  selectOrigin,
+  setDestination,
+  setOrigin,
+} from "../slices/navSlice"
 import { addRoute } from "../requestsFunctions"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
@@ -56,7 +61,7 @@ const PassengerRoute = () => {
     const response = await addRoute(rota)
     setId(await response)
     dispatch(carregar_passageiro())
-    navigation.navigate("SearchRideScreen", {parametro: await response})
+    navigation.navigate("SearchRideScreen", { parametro: await response })
   }
 
   return (
@@ -163,12 +168,14 @@ const PassengerRoute = () => {
         />
       </View>
       <View style={tw`h-10%`}>
-      <DefaultButton title="Confirmar" onPress={() => {
-        if (origin?.location && destination?.location){
-          seguirParaMotorista(rota)
-        }
-      }
-      } />
+        <DefaultButton
+          title="Confirmar"
+          onPress={() => {
+            if (origin?.location && destination?.location) {
+              seguirParaMotorista(rota)
+            }
+          }}
+        />
       </View>
     </SafeAreaView>
   )
