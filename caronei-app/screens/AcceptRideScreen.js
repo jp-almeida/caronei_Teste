@@ -15,32 +15,32 @@ import { getPublicData } from "../requestsFunctions"
 import { cancelar_corrida, em_corrida_motorista, em_corrida_passageiro, MOTORISTA, PASSAGEIRO } from "../slices/rideState"
 import { store } from "../store"
 import { useDispatch } from "react-redux"
+import { getNome } from "../paradas/paradasFunctions"
 
-const AcceptRideScreen = ({route}) => {
-    const {corrida} = route.params
-    const partida = "partida teste"
-    const destino = "destino teste"
+const AcceptRideScreen = ({ route }) => {
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
+
+    const { corrida } = route.params
+    let rota = eval(corrida.rota) //transforma a string da rota em array
+    const partida = getNome(rota[0]) //pega o nome do primeiro ponto da roda
+    const destino = getNome(rota.slice(-1)) //pega o nome do último ponto da rota
+
     const matricula = corrida.matriculaPassageiro
 
-    const navigation = useNavigation()
     const [usuario, setUsuario] = useState({})
-    const dispatch = useDispatch()
-    let carregando = false
-    let carregou =  false
-    
-    async function getData(){
-        if(!carregou){
-            let resp = await getPublicData(matricula)
-            setUsuario(resp)
-            console.log(resp)
-            carregou =  true
-        }
-        
+    const [carregou, setCarregou] = useState(false)
+
+    async function getData() { //carrega os dados do passeiro de acordo com a matricula encontrada
+        let resp = await getPublicData(matricula)
+        setUsuario(resp)
     }
-    
-    if(!carregou){
+
+    if (!carregou) {
+        setCarregou(true)
         getData()
     }
+
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -66,7 +66,7 @@ const AcceptRideScreen = ({route}) => {
 
                     }}
                     >
-                        <Text style={{color: "#4D4C7D", fontSize: 20, marginTop: 10}}>Usuário deu match com sua carona</Text>
+                        <Text style={{ color: "#4D4C7D", fontSize: 20, marginTop: 10 }}>Usuário deu match com sua carona</Text>
 
                         <View style={{
                             flexDirection: 'row',
@@ -104,10 +104,10 @@ const AcceptRideScreen = ({route}) => {
                     }}>
                         <DefaultButton title="Aceitar" onPress={() => {
                             navigation.navigate('MatchRideScreen')
-                            if(store.getState().ride.role == PASSAGEIRO){
+                            if (store.getState().ride.role == PASSAGEIRO) {
                                 dispatch((em_corrida_passageiro))
                             }
-                            else if(store.getState().ride.role == MOTORISTA){
+                            else if (store.getState().ride.role == MOTORISTA) {
                                 dispatch((em_corrida_motorista))
                             }
                         }} />
@@ -122,9 +122,9 @@ const AcceptRideScreen = ({route}) => {
                         justifyContent: 'space-around',
                     }}>
                         <DefaultButton title="Cancelar viagem" onPress={() => {
-                            dispatch(cancelar_corrida()) 
+                            dispatch(cancelar_corrida())
                             navigation.navigate("HomeScreen")
-                            }} />
+                        }} />
                     </View>
                 </View>
 

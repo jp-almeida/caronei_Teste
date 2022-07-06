@@ -13,7 +13,6 @@ export async function searchPassageiro(rotaMotorista) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      driverMatricula: store.getState().auth.matricula,
       driverRoute: rotaMotorista
     }),
   })
