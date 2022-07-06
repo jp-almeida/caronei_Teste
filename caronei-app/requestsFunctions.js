@@ -172,3 +172,19 @@ export async function aceitarPassageiro(idRota) {
   })
   return await reqs.json()
 }
+
+export async function removeRoute(id, rota) {
+  let reqs = await fetch(url + '/deleteroute/', {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: id,
+      matricula: store.getState().auth.matricula,
+      rota: rota,
+    })
+  })
+  return await reqs.json()
+}
