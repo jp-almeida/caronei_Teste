@@ -48,80 +48,82 @@ export default function HomeScreen() {
   getUserName()
 
   return (
-    <View>
-      <View
-        style={{
-          justifyContent: "space-around",
-          height: "20%",
-          flexDirection: "row",
-          padding: 10,
-          backgroundColor: "#EFE9E5",
-        }}
-      >
+    <SafeAreaView>
+      <View>
         <View
           style={{
-            width: "50%",
-            paddingTop: 40,
+            justifyContent: "space-around",
+            height: "20%",
+            flexDirection: "row",
+            padding: 10,
+            backgroundColor: "#EFE9E5",
           }}
         >
-          <Text>Olá, {name}</Text>
-          <TouchableOpacity style={{}} onPress={exitAccount}>
-            <Text style={{}}>Sair</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{}}
-            onPress={() => navigation.navigate("ProfileScreen")}
-          >
-            <Text style={{}}>Perfil</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            width: "50%",
-            paddingTop: 30,
-            paddingLeft: 50,
-          }}
-        >
-          <Image
+          <View
             style={{
-              width: 140,
-              height: 100,
+              width: "50%",
+              paddingTop: 40,
             }}
-            source={require("../images/logo.png")}
-          />
+          >
+            <Text>Olá, {name}</Text>
+            <TouchableOpacity style={{}} onPress={exitAccount}>
+              <Text style={{}}>Sair</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{}}
+              onPress={() => navigation.navigate("ProfileScreen")}
+            >
+              <Text style={{}}>Perfil</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              width: "50%",
+              paddingTop: 30,
+              paddingLeft: 50,
+            }}
+          >
+            <Image
+              style={{
+                width: 140,
+                height: 100,
+              }}
+              source={require("../images/logo.png")}
+            />
+          </View>
         </View>
-      </View>
-      <View style={tw`h-40%`}>
-        <MapView
-          style={styles.mapStyle}
-          region={{
-            latitude: -3.742522,
-            longitude: -38.574836,
-            latitudeDelta: 0.013,
-            longitudeDelta: 0.013,
+        <View style={tw`h-40%`}>
+          <MapView
+            style={styles.mapStyle}
+            region={{
+              latitude: -3.742522,
+              longitude: -38.574836,
+              latitudeDelta: 0.013,
+              longitudeDelta: 0.013,
+            }}
+          >
+            {paradas.map((marker, index) => (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: marker.lat,
+                  longitude: marker.lng,
+                }}
+                title={marker.nome}
+              />
+            ))}
+          </MapView>
+        </View>
+        <View
+          style={{
+            height: "40%",
+            backgroundColor: "#EFE9E5",
           }}
         >
-          {paradas.map((marker, index) => (
-            <Marker
-              key={index}
-              coordinate={{
-                latitude: marker.lat,
-                longitude: marker.lng,
-              }}
-              title={marker.nome}
-            />
-          ))}
-        </MapView>
+          <NavOptions />
+        </View>
       </View>
-      <View
-        style={{
-          height: "40%",
-          backgroundColor: "#EFE9E5",
-        }}
-      >
-        <NavOptions />
-      </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
