@@ -157,7 +157,7 @@ app.get(
   }
 )
 
-//adicionar um carro
+//ADICIONAR UM CARRO
 app.post("/adicionar-carro/", async (request, response) => {
   let user,
     created = await model.Carros.findOrCreate({
@@ -183,7 +183,7 @@ app.post("/adicionar-carro/", async (request, response) => {
     )
   }
 })
-//carregar todos os carros do banco de dados de acordo com uma matricula
+//CARREGAR CARROS
 app.get("/carros/:matricula", async (request, response) => {
   const { matricula } = request.params
   let carros = await model.Carros.findAll({
@@ -194,6 +194,7 @@ app.get("/carros/:matricula", async (request, response) => {
   return response.send(JSON.stringify(carros))
 })
 
+//RECUPERAR DADOS PUBLICOS DE UM USUARIO
 app.get("/dados-publicos/:matricula", async (request, response) => {
   const { matricula } = request.params
   const user = await model.Usuarios.findByPk(matricula)
@@ -225,7 +226,7 @@ app.get("/dados-publicos/:matricula", async (request, response) => {
 
 })
 
-//alterar carro
+//ALTERAR CARRO
 app.put("/alterar-carro/", async (request, response) => {
   model.Carros.update(
     {
@@ -267,8 +268,7 @@ app.listen(port, (request, response) => {
 
 
 //cadastrando uma rota no bd
-app.post(
-  "/createroute",
+app.post("/createroute",
   async (request, response) => {
     //caso não exista um usuário, ele irá criar
     //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
@@ -292,7 +292,7 @@ app.post(
       )
     }
     if (pedido) {
-      return response.send(JSON.stringify("Rota já cadastrada"))
+      return response.send(JSON.stringify(pedido.id))
     }
     else {
       return response.send(
@@ -358,6 +358,7 @@ app.post(
 //PASSAGEIRO BUSCAR POR MOTORISTA - vê se na tabela de matches apareceu alguma corrida com o seu ID
 app.get("/buscar-motorista/:idRota", async (request, response) => {
   const corrida = await model.Matches.findByPk(request.params.idRota)
+  console.log(corrida)
   if (corrida) {
     return response.end(JSON.stringify(corrida))
   }
