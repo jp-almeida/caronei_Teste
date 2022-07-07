@@ -3,15 +3,15 @@ import {
   View,
   TouchableWithoutFeedback,
   SafeAreaView,
-  Keyboard
-} from 'react-native'
-import React, { useEffect, useState } from 'react'
-import tw from 'twrnc'
-import { Image } from 'react-native'
-import { Icon } from 'react-native-elements'
-import { useNavigation } from '@react-navigation/native'
-import { DefaultButton } from '../components/Button'
-import { store } from '../store.js'
+  Keyboard,
+} from "react-native"
+import React, { useEffect, useState } from "react"
+import tw from "twrnc"
+import { Image } from "react-native"
+import { Icon } from "react-native-elements"
+import { useNavigation } from "@react-navigation/native"
+import { DefaultButton } from "../components/Button"
+import { store } from "../store.js"
 import {
   cancelar_corrida,
   EM_CORRIDA_MOTORISTA,
@@ -45,7 +45,7 @@ const MatchRideScreen = ({ route }) => {
   const destination = coordenadas.destination
 
   async function getData() {
-    console.log('CORRIDA: ', corrida)
+    console.log("CORRIDA: ", corrida)
     console.log(matricula)
     //carrega os dados do passeiro ou do motorista de acordo com a matricula encontrada
     let resp = await getPublicData(matricula)
@@ -56,11 +56,17 @@ const MatchRideScreen = ({ route }) => {
     //verifica o status da corrida: se ela foi cancelada ou finalizada
     let resp = await verificarStatus(corrida.idRota)
     if (!(await resp.ativa)) {
-      console.log(store.getState().ride.role + " - Identificou: corrida inativa")
+      console.log(
+        store.getState().ride.role + " - Identificou: corrida inativa"
+      )
       if (await resp.finalizada) {
-        console.log(store.getState().ride.role + " - Identificou: corrida finalizada")
+        console.log(
+          store.getState().ride.role + " - Identificou: corrida finalizada"
+        )
       } else {
-        console.log(store.getState().ride.role + " - Identificou: corrida cancelada")
+        console.log(
+          store.getState().ride.role + " - Identificou: corrida cancelada"
+        )
       }
     } 
     else {
@@ -72,7 +78,10 @@ const MatchRideScreen = ({ route }) => {
     let resp = await acabarCorrida(corrida.idRota, finalizar)
 
     if (await resp.response) {
-      console.log(store.getState().ride.role + " - Desativação da corrida com sucesso. Indo para homescreen")
+      console.log(
+        store.getState().ride.role +
+          " - Desativação da corrida com sucesso. Indo para homescreen"
+      )
       dispatch(cancelar_corrida())
       navigation.navigate('RateUserScreen', {matricula: matricula, rota: {partida: partida, destino: destino}})
     } else {
@@ -100,12 +109,12 @@ const MatchRideScreen = ({ route }) => {
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
+        <View style={{ backgroundColor: "#EFE9E5", flex: 1 }}>
           <View //por o mapa
             style={{
-              width: '100%',
+              width: "100%",
               height: undefined,
-              aspectRatio: 1
+              aspectRatio: 1,
             }}
           >
             <Map origin={origin} destination={destination} />
@@ -113,17 +122,17 @@ const MatchRideScreen = ({ route }) => {
           <View
             style={{
               //'rgba(144,144, 144, 0.1)'
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: 10
+              justifyContent: "center",
+              alignItems: "center",
+              margin: 10,
             }}
           >
             <Text></Text>
 
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around'
+                flexDirection: "row",
+                justifyContent: "space-around",
               }}
             >
               <View>
@@ -132,22 +141,22 @@ const MatchRideScreen = ({ route }) => {
               <View>
                 <View
                   style={{
-                    backgroundColor: '#4D4C7D',
-                    borderRadius: 25
+                    backgroundColor: "#4D4C7D",
+                    borderRadius: 25,
                   }}
                 >
                   {store.getState().ride.ride == EM_CORRIDA_PASSAGEIRO ||
                   store.getState().ride.ride == EM_CORRIDA_MOTORISTA ? (
-                    <Text style={{ color: 'white' }}> Em corrida </Text>
+                    <Text style={{ color: "white" }}> Em corrida </Text>
                   ) : store.getState().ride.role == MOTORISTA ? (
-                    <Text style={{ color: 'white' }}>
-                      {' '}
-                      Passageiro está esperando{' '}
+                    <Text style={{ color: "white" }}>
+                      {" "}
+                      Passageiro está esperando{" "}
                     </Text>
                   ) : (
-                    <Text style={{ color: 'white' }}>
-                      {' '}
-                      Motorista está a caminho{' '}
+                    <Text style={{ color: "white" }}>
+                      {" "}
+                      Motorista está a caminho{" "}
                     </Text>
                   )}
 
@@ -159,17 +168,17 @@ const MatchRideScreen = ({ route }) => {
 
                 <View
                   style={{
-                    flexDirection: 'row',
-                    padding: 10
+                    flexDirection: "row",
+                    padding: 10,
                   }}
                 >
                   <View
-                    style={{ backgroundColor: '#4D4C7D', borderRadius: 25 }}
+                    style={{ backgroundColor: "#4D4C7D", borderRadius: 25 }}
                   >
-                    <Text style={{ color: 'white' }}>
-                      {' '}
-                      <Icon name="stars" type="material" size={15} />{' '}
-                      {usuario.avaliacao}{' '}
+                    <Text style={{ color: "white" }}>
+                      {" "}
+                      <Icon name="stars" type="material" size={15} />{" "}
+                      {usuario.avaliacao}{" "}
                     </Text>
                   </View>
                 </View>
@@ -182,8 +191,8 @@ const MatchRideScreen = ({ route }) => {
               marginTop: 5,
               padding: 5,
 
-              flexDirection: 'row',
-              justifyContent: 'space-around'
+              flexDirection: "row",
+              justifyContent: "space-around",
             }}
           >
             <DefaultButton
@@ -196,27 +205,35 @@ const MatchRideScreen = ({ route }) => {
 
           <View
             style={{
-              //marginTop: 190,
-              padding: 5,
-
-              flexDirection: 'row',
-              justifyContent: 'space-around'
+              padding: 25,
+              marginTop: "10%",
+              flexDirection: "row",
+              justifyContent: "space-around",
             }}
           >
-            <DefaultButton
-              title="Cancelar viagem"
-              onPress={() => {
-                console.log(store.getState().ride.role + " - Cancelou corrida ativa")
-                acabar(false)
-              }}
-            />
-            <DefaultButton
-              title="Finalizar viagem"
-              onPress={() => {
-                console.log(store.getState().ride.role + " - Finalizou corrida")
-                acabar(true)
-              }}
-            />
+            <View style={{ width: "47%" }}>
+              <DefaultButton
+                title="Cancelar viagem"
+                onPress={() => {
+                  console.log(
+                    store.getState().ride.role + " - Cancelou corrida ativa"
+                  )
+                  acabar(false)
+                }}
+              />
+            </View>
+            <View style={{ width: "6%" }} />
+            <View style={{ width: "47%" }}>
+              <DefaultButton
+                title="Finalizar viagem"
+                onPress={() => {
+                  console.log(
+                    store.getState().ride.role + " - Finalizou corrida"
+                  )
+                  acabar(true)
+                }}
+              />
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>

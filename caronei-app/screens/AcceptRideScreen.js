@@ -139,7 +139,7 @@ const AcceptRideScreen = ({ route }) => {
           <View
             style={{
               padding: 25,
-              marginTop: 100,
+              marginTop: "10%",
               flexDirection: "row",
               justifyContent: "space-around",
             }}
@@ -155,7 +155,9 @@ const AcceptRideScreen = ({ route }) => {
               title="Recusar"
               onPress={() => {
                 dispatch(recusar(corrida.matriculaPassageiro))
-                console.log(store.getState().ride.role + " - Recusou passageiro")
+                console.log(
+                  store.getState().ride.role + " - Recusou passageiro"
+                )
                 navigation.navigate("SearchRideScreen", {
                   parametro: rotaMotorista,
                 })
