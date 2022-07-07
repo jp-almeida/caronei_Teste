@@ -173,33 +173,36 @@ const UserScreen = ({ route }) => {
             data={data}
             keyExtractor={(item, index) => index.toString()}
             renderItem={(item) => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                <View style={{ width: "20%" }}>
-                  <Icon name="account-circle" type="material" size={30} />
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <View style={{ width: "20%", marginTop: "3%" }}>
+                    <Icon name="account-circle" type="material" size={30} />
+                  </View>
+                  <View style={{ width: "80%" }}>
+                    <Text
+                      style={{
+                        color: "#46458D",
+                        fontSize: 20,
+                      }}
+                    >
+                      {item.item.remetente}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#46458D",
+                        fontSize: 18,
+                      }}
+                    >
+                      {item.item.comentario}
+                    </Text>
+                  </View>
                 </View>
-                <View style={{ width: "80%" }}>
-                  <Text
-                    style={{
-                      color: "#46458D",
-                      fontSize: 20,
-                    }}
-                  >
-                    {item.item.remetente}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#46458D",
-                      fontSize: 18,
-                    }}
-                  >
-                    {item.item.comentario}
-                  </Text>
-                </View>
+                <View style={{ height: "2%" }} />
               </View>
             )}
           />
