@@ -72,7 +72,7 @@ const UserScreen = ({ route }) => {
   ]
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
-      <View style={{ height: "40%" }}>
+      <View style={{ height: "30%" }}>
         <View style={{ backgroundColor: "#EFE9E5", flex: 1 }}>
           <View style={{ marginTop: 40, marginLeft: 30 }}>
             {/* HEADER DO PERFIL */}
@@ -146,12 +146,24 @@ const UserScreen = ({ route }) => {
           </View>
         </View>
       </View>
+      <View style={{ height: "10%", backgroundColor: "#EFE9E5" }}>
+        <Text
+          style={{
+            marginTop: "10%",
+            marginLeft: "6%",
+            color: "#46458D",
+            fontSize: 20,
+          }}
+        >
+          Total de corridas: 101
+        </Text>
+      </View>
       <View style={{ height: "60%", backgroundColor: "#EFE9E5" }}>
         <View>
           <Text
             style={{
               color: "#46458D",
-              fontSize: 30,
+              fontSize: 20,
               marginLeft: "6%",
             }}
           >
