@@ -16,15 +16,19 @@ import { store } from "../store"
 import { MOTORISTA, PASSAGEIRO, cancelar_corrida } from "../slices/rideState"
 import { searchPassageiro, searchDriver, removeRoute} from "../requestsFunctions"
 import { useDispatch } from "react-redux"
+import {getNome} from "../paradas/paradasFunctions"
 
 const SearchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
+  const { parametro } = route.params
   const navigation = useNavigation()
   const [name, setName] = useState(null)
-  const [partida, setPartida] = useState(null)
-  const [destino, setDestino] = useState(null)
-  const { parametro } = route.params
-  var avaliacao = 5
+
+  //caso exista "rota" no parametro (isso so ocorre se o usuário for motorista), irá setar o nome da origem e do destino para passar para a tela de match
+  const [rota, setRota] = useState(parametro.rota ? eval(parametro.rota) : null)
+  const [partida, setPartida] = useState(rota ? getNome(rota[0]) : null)
+  const [destino, setDestino] = useState(rota ? getNome(rota.slice(-1)) : null)
+  
   let procurando = false
 
   async function procurarPassageiro() {
@@ -46,17 +50,22 @@ const SearchRideScreen = ({ route }) => {
   }
 
   async function procurarMotorista() {
-    const response = await searchDriver(parametro)
-    if (typeof response != "string") {
-      // FAZER O MATCH!!!!!!
-      console.log("DEU MATCH!!!!!!!!!!")
+    const response = await searchDriver(parametro.id)
+    if (await response.response) {
+      navigation.navigate("MatchRideScreen", {
+        corrida:{
+          matricula: await response.content.matriculaMotorista,
+          rota: {destino: destino,
+          partida: partida}
+        }
+      })
     } else {
-      console.log("Nenhum motorista por enquanto")
+      console.log(response.content)
     }
   }
 
   async function cancelarRota() {
-    console.log(parametro)
+    //parametro é o id da rota
     const response = await removeRoute(parametro)
 
     if(await response){
@@ -163,7 +172,6 @@ const SearchRideScreen = ({ route }) => {
           <View
             style={{
               padding: 5,
-
               flexDirection: "row",
               justifyContent: "space-around",
             }}

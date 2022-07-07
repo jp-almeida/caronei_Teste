@@ -17,10 +17,8 @@ import {
   EM_CORRIDA_MOTORISTA,
   EM_CORRIDA_PASSAGEIRO,
   MOTORISTA,
-  PASSAGEIRO,
 } from "../slices/rideState"
 import { useDispatch } from "react-redux"
-import { getNome } from "../paradas/paradasFunctions"
 import { getPublicData } from "../requestsFunctions"
 
 const MatchRideScreen = ({ route }) => {
@@ -29,14 +27,15 @@ const MatchRideScreen = ({ route }) => {
 
   const { corrida } = route.params
 
-  const partida = corrida.rota.partida //pega o nome do primeiro ponto da roda
-  const destino = corrida.rota.destino //pega o nome do último ponto da rota
+  const [partida, setPartida] = useState(corrida.rota.partida) //pega o nome do primeiro ponto da roda
+  const [destino, setDestino] = useState(corrida.rota.destino) //pega o nome do último ponto da rota
 
   const [usuario, setUsuario] = useState({})
   const [carregou, setCarregou] = useState(false)
 
   async function getData() {
-    //carrega os dados do passeiro de acordo com a matricula encontrada
+    console.log(corrida.matricula)
+    //carrega os dados do passeiro ou do motorista de acordo com a matricula encontrada
     let resp = await getPublicData(corrida.matricula)
     setUsuario(resp)
   }
@@ -100,7 +99,7 @@ const MatchRideScreen = ({ route }) => {
 
                   <Text>{usuario.name}</Text>
                   <Text>
-                    {corrida.rota.partida} - {corrida.rota.destino}
+                    {partida} - {destino}
                   </Text>
                 </View>
 

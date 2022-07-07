@@ -286,13 +286,8 @@ app.post("/createroute",
         },
       })
 
-    if (created) {
-      return response.send(
-        JSON.stringify(pedido.id)
-      )
-    }
-    if (pedido) {
-      return response.send(JSON.stringify(pedido.id))
+    if (created || pedido) {
+      return response.end(JSON.stringify({id: pedido.id, rota: pedido.rota}))
     }
     else {
       return response.send(
@@ -359,10 +354,11 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
   const corrida = await model.Matches.findByPk(request.params.idRota)
   console.log(corrida)
   if (corrida) {
-    return response.end(JSON.stringify(corrida))
+    return response.end(JSON.stringify({response: true, content: corrida}))
+    
   }
   else {
-    return response.send(JSON.stringify("Não encontrou uma corrida"))
+    return response.send(JSON.stringify({response: false, content: "Não encontrou uma corrida"}))
   }
 })
 

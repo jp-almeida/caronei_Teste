@@ -153,8 +153,8 @@ export async function searchDriver(idRoute) {
       'Content-Type': 'application/json'
     }
   })
-
-  return await reqs.json()
+  let resp = await reqs.json()
+  return resp
 }
 
 
