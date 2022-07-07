@@ -26,8 +26,7 @@ const RecoverPswdScreen = () => {
 
   async function recoverPswd() {
     //gambiarra porque as portas não estavam batendo
-    let original_port = config.urlRootNode.split(':')[2]
-    let url = config.urlRootNode.replace(original_port, config.backend_port)
+    let url = config.urlRootNode
     //console.log(url)
     let reqs = await fetch(url + '/recoverpswd', {
       method: 'POST',

@@ -28,10 +28,7 @@ import { getCars, addCar, getUserData } from '../requestsFunctions'
 import { styles } from '../styles'
 
 //gambiarra porque as portas não estavam batendo
-const url = config.urlRootNode.replace(
-  config.urlRootNode.split(':')[2],
-  config.backend_port
-)
+const url = config.urlRootNode
 var cars = []
 
 function getGenderName(gender) {

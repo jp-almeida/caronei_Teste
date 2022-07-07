@@ -118,7 +118,7 @@ POST http://192.168.1.7:3000/acabar-corrida-ativa
 Content-Type: application/json
 
 {
-    "idCorrida":3,
+    "idCorrida":7,
     "finalizada":true
 }
 ###

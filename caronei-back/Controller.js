@@ -345,6 +345,7 @@ app.post("/aceitar-passageiro", async (request, response) => {
         idRota: request.body.idRota,
         matriculaMotorista: request.body.matriculaMotorista,
         matriculaPassageiro: match.matriculaPedido,
+        rota: match.rota,
         createdAt: new Date(),
         updatedAt: new Date()
       })
@@ -432,6 +433,7 @@ app.post("/acabar-corrida-ativa",
             matriculaMotorista: corridaAtiva.matriculaMotorista,
             matriculaPassageiro: corridaAtiva.matriculaPassageiro,
             finalizada: request.body.finalizada,
+            rota: corridaAtiva.rota,
             createdAt: new Date(),
             updatedAt: new Date()
           })
@@ -440,7 +442,7 @@ app.post("/acabar-corrida-ativa",
               response.end(JSON.stringify({ response: true, message: msg }))
             })
           .catch((err) => {
-              console.log("errou")
+              console.log(err)
               response.end(JSON.stringify({ error: err, response: false, message: msg_erro }))
             })
         })

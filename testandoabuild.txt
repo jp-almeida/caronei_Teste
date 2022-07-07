@@ -1,0 +1,5 @@
+No config.json :
+"urlRootNode": "https://caronei-app.herokuapp.com/",
+
+No index.js :
+const env = process.env.NODE_ENV || 'production';
