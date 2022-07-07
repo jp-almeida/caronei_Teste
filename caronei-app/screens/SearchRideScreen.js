@@ -19,16 +19,22 @@ import {
   searchDriver,
   removeRoute
 } from '../requestsFunctions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getNome } from '../paradas/paradasFunctions'
+import { selectDestination, selectOrigin } from '../slices/navSlice'
 
 const SearchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
+  const { parametro } = route.params
   const navigation = useNavigation()
   const [name, setName] = useState(null)
-  const [partida, setPartida] = useState(null)
-  const [destino, setDestino] = useState(null)
-  const { parametro } = route.params
-  var avaliacao = 5
+  const [message, setMessage] = useState('Procurando...')
+
+  //caso exista "rota" no parametro (isso so ocorre se o usuário for motorista), irá setar o nome da origem e do destino para passar para a tela de match
+  const [rota, setRota] = useState(parametro.rota ? eval(parametro.rota) : null)
+  const [partida, setPartida] = useState(rota ? getNome(rota[0]) : null)
+  const [destino, setDestino] = useState(rota ? getNome(rota.slice(-1)) : null)
+
   let procurando = false
 
   async function procurarPassageiro() {
@@ -45,22 +51,33 @@ const SearchRideScreen = ({ route }) => {
     } else {
       //caso não ache, deverá continuar procurando
       procurando = false
-      console.log('Não achou')
+      setMessage('Clique no botão para tentar novamente.')
     }
   }
 
   async function procurarMotorista() {
-    const response = await searchDriver(parametro)
-    if (typeof response != 'string') {
-      // FAZER O MATCH!!!!!!
-      console.log('DEU MATCH!!!!!!!!!!')
+    const response = await searchDriver(parametro.id)
+    if (await response.response) {
+      navigation.navigate('MatchRideScreen', {
+        matricula: await response.content.matriculaMotorista,
+        corrida: await response.content,
+        coordenadas: {
+          origin: useSelector(selectOrigin),
+          destination: useSelector(selectDestination)
+        },
+        rota: {
+          destino: destino,
+          partida: partida
+        }
+      })
     } else {
-      console.log('Nenhum motorista por enquanto')
+      console.log(response.content)
+      setMessage('Clique no botão para tentar novamente.')
     }
   }
 
   async function cancelarRota() {
-    console.log(parametro)
+    //parametro é o id da rota
     const response = await removeRoute(parametro)
 
     if (await response) {
@@ -69,9 +86,11 @@ const SearchRideScreen = ({ route }) => {
   }
 
   if (store.getState().ride.role == MOTORISTA) {
+    //se for motorista
     procurarPassageiro()
   } else {
-    console.log(parametro) //printa a rota
+    //se for passageiro
+    procurarMotorista()
   }
 
   return (
@@ -157,17 +176,20 @@ const SearchRideScreen = ({ route }) => {
             <DefaultButton
               title="Atualizar Busca "
               onPress={() => {
+                setMessage('Procurando...')
                 if (store.getState().ride.role == PASSAGEIRO) {
+                  //se for passageiro
                   procurarMotorista()
+                } else {
+                  //se for motorista
+                  procurarPassageiro()
                 }
-                // navigation.navigate('HomeScreen')
               }}
             />
           </View>
           <View
             style={{
               padding: 5,
-
               flexDirection: 'row',
               justifyContent: 'space-around'
             }}
@@ -183,6 +205,8 @@ const SearchRideScreen = ({ route }) => {
                 }
               }}
             />
+
+            <Text>{message}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>

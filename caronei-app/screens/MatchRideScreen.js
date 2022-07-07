@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   Keyboard
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import tw from 'twrnc'
 import { Image } from 'react-native'
 import { Icon } from 'react-native-elements'
@@ -16,47 +16,95 @@ import {
   cancelar_corrida,
   EM_CORRIDA_MOTORISTA,
   EM_CORRIDA_PASSAGEIRO,
-  MOTORISTA,
-  PASSAGEIRO
+  MOTORISTA
 } from '../slices/rideState'
 import { useDispatch } from 'react-redux'
-import { getNome } from '../paradas/paradasFunctions'
-import { getPublicData } from '../requestsFunctions'
+import { acabarCorrida, getPublicData } from '../requestsFunctions'
+import { getCoords } from '../paradas/paradasFunctions'
+import Map from '../components/Map'
 
 const MatchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
-  const { corrida } = route.params
+  const { corrida, rota, matricula, coordenadas } = route.params
 
-  const partida = corrida.rota.partida //pega o nome do primeiro ponto da roda
-  const destino = corrida.rota.destino //pega o nome do último ponto da rota
+  const [partida, setPartida] = useState(rota.partida) //pega o nome do primeiro ponto da roda
+  const [destino, setDestino] = useState(rota.destino) //pega o nome do último ponto da rota
 
   const [usuario, setUsuario] = useState({})
   const [carregou, setCarregou] = useState(false)
 
+  const [readyUpdate, setReadyUpdate] = useState(true)
+
+  const origin = coordenadas.origin
+  const destination = coordenadas.destination
+
   async function getData() {
-    //carrega os dados do passeiro de acordo com a matricula encontrada
-    let resp = await getPublicData(corrida.matricula)
+    console.log('CORRIDA: ', corrida)
+    console.log(matricula)
+    //carrega os dados do passeiro ou do motorista de acordo com a matricula encontrada
+    let resp = await getPublicData(matricula)
     setUsuario(resp)
+  }
+
+  async function verficarStatus() {
+    //verifica o status da corrida: se ela foi cancelada ou finalizada
+    let resp = await verficarStatus(corrida.idRota)
+    if (!(await resp.ativa)) {
+      console.log('Não está mais ativa')
+      if (await resp.finalizada) {
+        console.log('Foi finalizada')
+      } else {
+        console.log('foi finalizada')
+      }
+    } else {
+      console.log('ainda está ativa')
+    }
+    return true
+  }
+
+  async function acabar(finalizar) {
+    let resp = await acabarCorrida(corrida.idRota, finalizar)
+
+    if (await resp.response) {
+      dispatch(cancelar_corrida())
+      navigation.navigate('HomeScreen')
+    } else {
+    }
   }
 
   if (!carregou) {
     setCarregou(true)
     getData()
   }
+
+  //verifica o status da corrida a cada 4 segundos
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if(readyUpdate){
+  //       setReadyUpdate(false)
+  //       verficarStatus()
+  //     }
+
+  //   }, 4000);
+  //   return () => clearInterval(interval);
+
+  // }, []);
+
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
-          <Image //por o mapa
+          <View //por o mapa
             style={{
               width: '100%',
               height: undefined,
               aspectRatio: 1
             }}
-            source={require('../images/mapapici.png')}
-          />
+          >
+            <Map origin={origin} destination={destination} />
+          </View>
           <View
             style={{
               //'rgba(144,144, 144, 0.1)'
@@ -89,7 +137,7 @@ const MatchRideScreen = ({ route }) => {
                   ) : store.getState().ride.role == MOTORISTA ? (
                     <Text style={{ color: 'white' }}>
                       {' '}
-                      Passageiro está a caminho{' '}
+                      Passageiro está esperando{' '}
                     </Text>
                   ) : (
                     <Text style={{ color: 'white' }}>
@@ -100,7 +148,7 @@ const MatchRideScreen = ({ route }) => {
 
                   <Text>{usuario.name}</Text>
                   <Text>
-                    {corrida.rota.partida} - {corrida.rota.destino}
+                    {partida} - {destino}
                   </Text>
                 </View>
 
@@ -154,23 +202,13 @@ const MatchRideScreen = ({ route }) => {
             <DefaultButton
               title="Cancelar viagem"
               onPress={() => {
-                dispatch(cancelar_corrida())
-                navigation.navigate('HomeScreen')
+                acabar(false)
               }}
             />
-          </View>
-          <View
-            style={{
-              padding: 5,
-              flexDirection: 'row',
-              justifyContent: 'space-around'
-            }}
-          >
             <DefaultButton
               title="Finalizar viagem"
               onPress={() => {
-                dispatch(cancelar_corrida())
-                navigation.navigate('HomeScreen')
+                acabar(true)
               }}
             />
           </View>

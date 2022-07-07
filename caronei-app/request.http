@@ -70,10 +70,12 @@ Content-Type: application/json
 GET http://192.168.1.16:3000/username/12345
 
 ###
+
 GET http://192.168.1.16:3000/data/101010
 
 
 ###
+
 POST http://192.168.1.16:3000/update
 Content-Type: application/json
 
@@ -81,18 +83,17 @@ Content-Type: application/json
     "matricula": "1",
     "emailVisibility": false
 }
-
-
 ###
-POST http://192.168.15.36:3000/createroute
+
+POST http://192.168.1.7:3000/createroute
 Content-Type: application/json
 
 {
     "passengerMatricula": 1,
     "passengerRoute": "['b','c','h']"
 }
-
 ###
+
 POST http://192.168.1.7:3000/matchroute
 Content-Type: application/json
 
@@ -102,13 +103,23 @@ Content-Type: application/json
 }
 
 ###
+
 POST http://192.168.1.7:3000/aceitar-passageiro
 Content-Type: application/json
 
 {
-    "idRota":24,
+    "idRota":1,
     "matriculaMotorista":1
 }
-
 ###
+
 GET http://192.168.1.7:3000/buscar-motorista/200
+###
+
+POST http://192.168.1.7:3000/acabar-corrida-ativa
+Content-Type: application/json
+
+{
+    "idCorrida":3,
+    "finalizada":true
+}

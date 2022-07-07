@@ -129,11 +129,82 @@ module.exports = {
       }
     });
 
+    await queryInterface.createTable('corridasAtivas', {
+      idRota: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: false,
+      },
+      matriculaMotorista: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"usuarios",
+          key:"matricula"
+        },
+        allowNull: false
+      },
+      matriculaPassageiro: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"usuarios",
+          key:"matricula"
+        },
+        allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+    await queryInterface.createTable('corridasNaoAtivas', {
+      idCorrida: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: false,
+      },
+      matriculaMotorista: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"usuarios",
+          key:"matricula"
+        },
+        allowNull: false
+      },
+      matriculaPassageiro: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"usuarios",
+          key:"matricula"
+        },
+        allowNull: false
+      },
+      finalizada: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('usuarios');
     await queryInterface.dropTable('pedidos');
     await queryInterface.dropTable('carros');
+    await queryInterface.dropTable('corridasAtivas')
+    await queryInterface.dropTable('corridasNaoAtivas')
   }
 };

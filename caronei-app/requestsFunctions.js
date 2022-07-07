@@ -153,8 +153,8 @@ export async function searchDriver(idRoute) {
       'Content-Type': 'application/json'
     }
   })
-
-  return await reqs.json()
+  let resp = await reqs.json()
+  return resp
 }
 
 
@@ -185,4 +185,32 @@ export async function removeRoute(idRoute) {
     })
   })
   return await reqs.json()
+}
+
+export async function verifcarStatus(idRota){
+  let reqs = await fetch(url + '/verifica-status/' + idRota, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+  let resp = await reqs.json()
+  return resp
+}
+
+export async function acabarCorrida(idCorrida, finalizada){
+  let reqs = await fetch(url + '/acabar-corrida-ativa', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      idCorrida: idCorrida,
+      finalizada: finalizada
+    })
+  })
+  let resp = await reqs.json()
+  return resp
 }
