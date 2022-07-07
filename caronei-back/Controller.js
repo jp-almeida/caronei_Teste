@@ -11,7 +11,13 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-//ROTAS
+
+//configurando o servidor
+let port = config.backend_port //process.env.PORT || 3000
+
+app.listen(port, (request, response) => {
+  console.log("Servidor rodando")
+})
 
 //criar um usuário
 app.post(
@@ -239,16 +245,6 @@ app.delete("/deletar-carro/", async (request, response) => {
 })
 
 
-
-
-//configurando o servidor
-let port = config.backend_port //process.env.PORT || 3000
-
-app.listen(port, (request, response) => {
-  console.log("Servidor rodando")
-})
-
-
 //cadastrando uma rota no bd
 app.post("/createroute",
   async (request, response) => {
@@ -404,7 +400,7 @@ app.delete("/deleteroute/",
 
 //VERIFICA SE UMA CORRIDA AINDA ESTÁ ATIVA
 app.get("/verificar-status/:idRota", async (request, response) => {
-  const viagemNaoAtiva = await model.CorridasNaoAtivas.findByPk(idRota)
+  const viagemNaoAtiva = await model.CorridasNaoAtivas.findByPk(request.params.idRota)
 
   if(viagemNaoAtiva){
     return response.end(JSON.stringify({finalizada: viagemNaoAtiva.finalizada, ativa: false}))

@@ -187,8 +187,8 @@ export async function removeRoute(idRoute) {
   return await reqs.json()
 }
 
-export async function verifcarStatus(idRota){
-  let reqs = await fetch(url + '/verifica-status/' + idRota, {
+export async function verificarStatus(idRota){
+  let reqs = await fetch(url + '/verificar-status/' + idRota, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -196,6 +196,7 @@ export async function verifcarStatus(idRota){
     }
   })
   let resp = await reqs.json()
+  
   return resp
 }
 

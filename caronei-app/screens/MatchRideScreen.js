@@ -19,9 +19,12 @@ import {
   MOTORISTA
 } from '../slices/rideState'
 import { useDispatch } from 'react-redux'
-import { acabarCorrida, getPublicData } from '../requestsFunctions'
+import { acabarCorrida, getPublicData, verificarStatus } from '../requestsFunctions'
 import { getCoords } from '../paradas/paradasFunctions'
 import Map from '../components/Map'
+
+
+// chamar {corrida: <obj corrida>, rota: {partida: <partida>, destino: <destino>}, matricula: <matricula outro usuario>, coordenadas: {origin: <origin>, destination: <destination>}}
 
 const MatchRideScreen = ({ route }) => {
   console.log(store.getState().ride.role + " - Tela da corrida")
@@ -49,9 +52,9 @@ const MatchRideScreen = ({ route }) => {
     setUsuario(resp)
   }
 
-  async function verficarStatus() {
+  async function verificarStatusCorrida() {
     //verifica o status da corrida: se ela foi cancelada ou finalizada
-    let resp = await verficarStatus(corrida.idRota)
+    let resp = await verificarStatus(corrida.idRota)
     if (!(await resp.ativa)) {
       console.log(store.getState().ride.role + " - Identificou: corrida inativa")
       if (await resp.finalizada) {
@@ -59,10 +62,10 @@ const MatchRideScreen = ({ route }) => {
       } else {
         console.log(store.getState().ride.role + " - Identificou: corrida cancelada")
       }
-    } else {
+    } 
+    else {
       console.log(store.getState().ride.role + " - Identificou: corrida ainda ativa")
     }
-    return true
   }
 
   async function acabar(finalizar) {
@@ -71,7 +74,7 @@ const MatchRideScreen = ({ route }) => {
     if (await resp.response) {
       console.log(store.getState().ride.role + " - Desativação da corrida com sucesso. Indo para homescreen")
       dispatch(cancelar_corrida())
-      navigation.navigate('HomeScreen')
+      navigation.navigate('RateUserScreen', {matricula: matricula, rota: {partida: partida, destino: destino}})
     } else {
     }
   }
@@ -186,8 +189,7 @@ const MatchRideScreen = ({ route }) => {
             <DefaultButton
               title="Atualizar viagem"
               onPress={() => {
-                dispatch(cancelar_corrida())
-                navigation.navigate('HomeScreen')
+                verificarStatusCorrida()
               }}
             />
           </View>
