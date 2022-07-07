@@ -159,8 +159,8 @@ const DriverRoute = () => {
       <View style={tw`h-10%`}>
       <DefaultButton title="Confirmar" onPress={() => {
         if (origin?.location && destination?.location){
-          console.log(store.getState().ride.role + " - Escolheu rota")
           dispatch(carregar_motorista())
+          console.log(store.getState().ride.role + " - Escolheu rota")
           navigation.navigate("SearchRideScreen", {parametro: rota})
         }
       }} />

@@ -16,6 +16,15 @@ module.exports = {
       updatedAt: new Date()
     }], {});
 
+    await queryInterface.bulkInsert('Carros', [{
+      placa: 'ABC-123',
+      matricula: 1,
+      modelo: 'brasilia',
+      cor: "amarela",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }], {});
+
   },
 
   async down(queryInterface, Sequelize) {

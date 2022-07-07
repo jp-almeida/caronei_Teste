@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       allowNull: false
     },
+    rota: {
+      type: DataTypes.STRING, 
+      allowNull: false
+    },
     finalizada:{
       type: DataTypes.BOOLEAN,
       defaultValue: true

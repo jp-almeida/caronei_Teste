@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class CorridasAtivas extends Model {
+  class Comentarios extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,42 +13,40 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  CorridasAtivas.init({
-    idRota: {
+  Comentarios.init({
+    destinatario: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false,
       autoIncrement: false,
-      allowNull: false
-    },
-    matriculaMotorista: {
-      type: DataTypes.INTEGER,
       references:{
         model:"usuarios",
         key:"matricula"
       },
       allowNull: false
     },
-    matriculaPassageiro: {
+    remetente: {
       type: DataTypes.INTEGER,
       references:{
         model:"usuarios",
         key:"matricula"
       },
-      rota: {
-        type: DataTypes.STRING, 
-        allowNull: false
-      },
-      allowNull: false
+      allowNull: true
     },
-    emProgresso:{
+    aceito:{
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: false
+      defaultValue: false
+    },
+    comentario: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    avaliacao: {
+      type: DataTypes.FLOAT,
+      allowNull: true
     }
   }, {
     sequelize,
-    modelName: 'CorridasAtivas',
+    modelName: 'Comentarios',
   });
-  return CorridasAtivas;
+  return Comentarios;
 };

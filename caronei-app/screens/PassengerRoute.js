@@ -175,6 +175,7 @@ const PassengerRoute = () => {
           title="Confirmar"
           onPress={() => {
             if (origin?.location && destination?.location) {
+              dispatch(carregar_passageiro())
               console.log(store.getState().ride.role + " - Escolheu rota")
               seguirParaMotorista(rota)
             }

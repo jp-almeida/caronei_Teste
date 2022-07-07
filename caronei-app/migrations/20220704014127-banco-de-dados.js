@@ -138,18 +138,27 @@ module.exports = {
       },
       matriculaMotorista: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"usuarios",
-          key:"matricula"
+        references: {
+          model: "usuarios",
+          key: "matricula"
         },
         allowNull: false
       },
       matriculaPassageiro: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"usuarios",
-          key:"matricula"
+        references: {
+          model: "usuarios",
+          key: "matricula"
         },
+        allowNull: false
+      },
+      rota: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      emProgresso: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
         allowNull: false
       },
       createdAt: {
@@ -170,18 +179,22 @@ module.exports = {
       },
       matriculaMotorista: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"usuarios",
-          key:"matricula"
+        references: {
+          model: "usuarios",
+          key: "matricula"
         },
         allowNull: false
       },
       matriculaPassageiro: {
         type: Sequelize.INTEGER,
-        references:{
-          model:"usuarios",
-          key:"matricula"
+        references: {
+          model: "usuarios",
+          key: "matricula"
         },
+        allowNull: false
+      },
+      rota: {
+        type: Sequelize.STRING,
         allowNull: false
       },
       finalizada: {
@@ -198,6 +211,47 @@ module.exports = {
       }
     });
 
+
+    await queryInterface.createTable('Comentarios', {
+      destinatario: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: false,
+        references: {
+          model: "usuarios",
+          key: "matricula"
+        },
+        allowNull: false
+      },
+      remetente: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "usuarios",
+          key: "matricula"
+        },
+        allowNull: true
+      },
+      comentario: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      avaliacao: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
+      aceito: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
   },
 
   async down(queryInterface, Sequelize) {
@@ -206,5 +260,6 @@ module.exports = {
     await queryInterface.dropTable('carros');
     await queryInterface.dropTable('corridasAtivas')
     await queryInterface.dropTable('corridasNaoAtivas')
+    await queryInterface.dropTable('Comentarios');
   }
 };
