@@ -3,19 +3,23 @@ import {
   View,
   TouchableWithoutFeedback,
   SafeAreaView,
-  Keyboard,
-} from "react-native"
-import React, { useState } from "react"
-import tw from "twrnc"
-import Map from "../components/Map"
-import { Image } from "react-native"
-import { Icon } from "react-native-elements"
-import { useNavigation } from "@react-navigation/native"
-import { DefaultButton } from "../components/Button"
-import { store } from "../store"
-import { MOTORISTA, PASSAGEIRO, cancelar_corrida } from "../slices/rideState"
-import { searchPassageiro, searchDriver, removeRoute} from "../requestsFunctions"
-import { useDispatch } from "react-redux"
+  Keyboard
+} from 'react-native'
+import React, { useState } from 'react'
+import tw from 'twrnc'
+import Map from '../components/Map'
+import { Image } from 'react-native'
+import { Icon } from 'react-native-elements'
+import { useNavigation } from '@react-navigation/native'
+import { DefaultButton } from '../components/Button'
+import { store } from '../store'
+import { MOTORISTA, PASSAGEIRO, cancelar_corrida } from '../slices/rideState'
+import {
+  searchPassageiro,
+  searchDriver,
+  removeRoute
+} from '../requestsFunctions'
+import { useDispatch } from 'react-redux'
 
 const SearchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
@@ -33,25 +37,25 @@ const SearchRideScreen = ({ route }) => {
     if (await response.response) {
       //caso ache uma corrida, vai para a tela de aceitar corrida (apenas motoristas)
 
-      navigation.navigate("AcceptRideScreen", {
+      navigation.navigate('AcceptRideScreen', {
         //chama a tela de aceitar o passageiro
         corrida: await response,
-        rotaMotorista: parametro,
+        rotaMotorista: parametro
       })
     } else {
       //caso não ache, deverá continuar procurando
       procurando = false
-      console.log("Não achou")
+      console.log('Não achou')
     }
   }
 
   async function procurarMotorista() {
     const response = await searchDriver(parametro)
-    if (typeof response != "string") {
+    if (typeof response != 'string') {
       // FAZER O MATCH!!!!!!
-      console.log("DEU MATCH!!!!!!!!!!")
+      console.log('DEU MATCH!!!!!!!!!!')
     } else {
-      console.log("Nenhum motorista por enquanto")
+      console.log('Nenhum motorista por enquanto')
     }
   }
 
@@ -59,8 +63,8 @@ const SearchRideScreen = ({ route }) => {
     console.log(parametro)
     const response = await removeRoute(parametro)
 
-    if(await response){
-      navigation.navigate("HomeScreen")
+    if (await response) {
+      navigation.navigate('HomeScreen')
     }
   }
 
@@ -73,13 +77,13 @@ const SearchRideScreen = ({ route }) => {
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{ backgroundColor: "#EFE9E5", flex: 1 }}>
+        <View style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
           <View
             //parte do mapa
             style={{
-              width: "100%",
+              width: '100%',
               height: undefined,
-              aspectRatio: 1,
+              aspectRatio: 1
             }}
           >
             <Map />
@@ -87,18 +91,18 @@ const SearchRideScreen = ({ route }) => {
           <View
             style={{
               //'rgba(144,144, 144, 0.1)'
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
               margin: 10,
-              marginBottom: 5,
+              marginBottom: 5
             }}
           >
             <Text></Text>
 
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
+                flexDirection: 'row',
+                justifyContent: 'space-around'
               }}
             >
               <View>
@@ -107,35 +111,35 @@ const SearchRideScreen = ({ route }) => {
               <View>
                 <View
                   style={{
-                    backgroundColor: "#4D4C7D",
-                    borderRadius: 25,
+                    backgroundColor: '#4D4C7D',
+                    borderRadius: 25
                   }}
                 >
                   {store.getState().ride.role == MOTORISTA ? (
-                    <Text style={{ color: "white" }}>
-                      {" "}
-                      Procurando passageiro...{" "}
+                    <Text style={{ color: 'white' }}>
+                      {' '}
+                      Procurando passageiro...{' '}
                     </Text>
                   ) : (
-                    <Text style={{ color: "white" }}>
-                      {" "}
-                      Procurando motorista...{" "}
+                    <Text style={{ color: 'white' }}>
+                      {' '}
+                      Procurando motorista...{' '}
                     </Text>
                   )}
                 </View>
 
                 <View
                   style={{
-                    flexDirection: "row",
-                    padding: 10,
+                    flexDirection: 'row',
+                    padding: 10
                   }}
                 >
                   <View
-                    style={{ backgroundColor: "#4D4C7D", borderRadius: 25 }}
+                    style={{ backgroundColor: '#4D4C7D', borderRadius: 25 }}
                   >
-                    <Text style={{ color: "white" }}>
-                      {" "}
-                      <Icon name="stars" type="material" size={15} /> ?{" "}
+                    <Text style={{ color: 'white' }}>
+                      {' '}
+                      <Icon name="stars" type="material" size={15} /> ?{' '}
                     </Text>
                   </View>
                 </View>
@@ -144,10 +148,10 @@ const SearchRideScreen = ({ route }) => {
           </View>
           <View
             style={{
-              marginTop: 5,
+              //marginTop: 5,
               padding: 5,
-              flexDirection: "row",
-              justifyContent: "space-around",
+              flexDirection: 'row',
+              justifyContent: 'space-around'
             }}
           >
             <DefaultButton
@@ -164,21 +168,19 @@ const SearchRideScreen = ({ route }) => {
             style={{
               padding: 5,
 
-              flexDirection: "row",
-              justifyContent: "space-around",
+              flexDirection: 'row',
+              justifyContent: 'space-around'
             }}
           >
             <DefaultButton
               title="Cancelar viagem"
               onPress={() => {
-                if(store.getState().ride.role == MOTORISTA){
+                if (store.getState().ride.role == MOTORISTA) {
                   dispatch(cancelar_corrida())
-                  navigation.navigate("HomeScreen")
-                }
-                else{
+                  navigation.navigate('HomeScreen')
+                } else {
                   cancelarRota()
                 }
-                  
               }}
             />
           </View>

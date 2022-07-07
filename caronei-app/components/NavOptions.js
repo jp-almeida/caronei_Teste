@@ -1,27 +1,27 @@
-import { FlatList, Text, TouchableOpacity, View } from "react-native"
-import React from "react"
-import { Image } from "react-native"
-import tw from "twrnc"
-import { Icon } from "@rneui/themed"
-import "@react-navigation/native"
-import { useNavigation } from "@react-navigation/native"
-import { useSelector } from "react-redux"
-import { selectOrigin } from "../slices/navSlice"
-import { FullWindowOverlay } from "react-native-screens"
+import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { Image } from 'react-native'
+import tw from 'twrnc'
+import { Icon } from '@rneui/themed'
+import '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { selectOrigin } from '../slices/navSlice'
+import { FullWindowOverlay } from 'react-native-screens'
 
 const data = [
   {
-    id: "123",
-    title: "Solicitar carona",
-    image: require("../images/ride.png"),
-    screen: "PassengerRoute",
+    id: '123',
+    title: 'Solicitar carona',
+    image: require('../images/ride.png'),
+    screen: 'PassengerRoute'
   },
   {
-    id: "456",
-    title: "Oferecer carona",
-    image: require("../images/car.png"),
-    screen: "DriverRoute",
-  },
+    id: '456',
+    title: 'Oferecer carona',
+    image: require('../images/car.png'),
+    screen: 'DriverRoute'
+  }
 ]
 
 const NavOptions = () => {
@@ -31,7 +31,7 @@ const NavOptions = () => {
     <FlatList
       data={data}
       horizontal
-      keyExtractor={(item) => item.id}
+      keyExtractor={item => item.id}
       renderItem={({ item }) => (
         <TouchableOpacity
           // @ts-ignore
@@ -40,18 +40,18 @@ const NavOptions = () => {
         >
           <View>
             <Image
-              style={{ width: 100, height: 100, resizeMode: "contain" }}
+              style={{ width: 100, height: 100, resizeMode: 'contain' }}
               source={item.image}
             />
             <Text style={tw`mt-2 text-lg font-semibold`}>{item.title}</Text>
             <Icon
               style={{
                 padding: 12,
-                backgroundColor: "#4D4C7D",
+                backgroundColor: '#4D4C7D',
                 width: 50,
                 height: 50,
                 marginTop: 4,
-                borderRadius: 100,
+                borderRadius: 100
               }}
               // style={tw`p-2 bg-black rounded-full w-10 mt-4`}
               name="arrowright"
