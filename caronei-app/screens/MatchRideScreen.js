@@ -36,6 +36,7 @@ const MatchRideScreen = ({ route }) => {
   const [readyUpdate, setReadyUpdate] = useState(true)
 
   async function getData() {
+    console.log("CORRIDA: ", corrida)
     console.log(matricula)
     //carrega os dados do passeiro ou do motorista de acordo com a matricula encontrada
     let resp = await getPublicData(matricula)
@@ -62,9 +63,12 @@ const MatchRideScreen = ({ route }) => {
     let resp = await acabarCorrida(corrida.idRota, finalizar)
 
     if(await resp.response){
-      console.log(resp.message)
+      
       dispatch(cancelar_corrida())
       navigation.navigate("HomeScreen")
+    }
+    else{
+      
     }
   }
 

@@ -352,9 +352,9 @@ app.post("/aceitar-passageiro", async (request, response) => {
         createdAt: new Date(),
         updatedAt: new Date()
       })
-      .then((b) => {
+      .then((corrida) => {
           console.log("criou")
-          response.end(JSON.stringify({ response: true, message: "Passageiro aceito com sucesso" }))
+          response.end(JSON.stringify({ response: true, content: corrida, message: "Passageiro aceito com sucesso" }))
         })
       .catch((err) => {
           console.log("errou")
@@ -402,6 +402,7 @@ app.delete("/deleteroute/",
       .catch((err) => response.send(JSON.stringify(false)))
 })
 
+//VERIFICA SE UMA CORRIDA AINDA ESTÁ ATIVA
 app.get("/verificar-status/:idRota", async (request, response) => {
   const viagemNaoAtiva = await model.CorridasNaoAtivas.findByPk(idRota)
 
@@ -413,7 +414,9 @@ app.get("/verificar-status/:idRota", async (request, response) => {
 
 app.post("/acabar-corrida-ativa",
   async (request, response) => {
+    console.log("desativando corrida", request.body.idCorrida)
     const corridaAtiva = await model.CorridasAtivas.findByPk(request.body.idCorrida)
+    console.log(corridaAtiva)
 
     //setando as mensagens caso ela tenha sido finalizada ou cancelada
     const msg = request.body.finalizada ? "Corrida finalizada com sucesso" : "Corrida cancelada com sucesso"

@@ -211,5 +211,6 @@ export async function acabarCorrida(idCorrida, finalizada){
       finalizada: finalizada
     })
   })
-  return await reqs.json()
+  let resp = await reqs.json()
+  return resp
 }
