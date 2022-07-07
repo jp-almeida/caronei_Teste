@@ -217,9 +217,8 @@ const ProfileScreen = () => {
             style={{
               flex: 1,
               flexDirection: 'column',
-              justifyContent: 'space-between',
+
               padding: 45
-              //marginTop: 40, marginLeft: 30
             }}
           >
             {/* HEADER DO PERFIL */}
@@ -233,6 +232,7 @@ const ProfileScreen = () => {
                 <Image
                   style={{
                     width: 80,
+
                     height: 80,
                     resizeMode: 'contain'
                   }}
@@ -289,7 +289,9 @@ const ProfileScreen = () => {
             <View style={{}}>
               {/* AVALIAÇÃO */}
               {!rating && (
-                <Text style={{ color: 'black', fontSize: 15 }}>
+                <Text
+                  style={{ color: 'black', fontSize: 15, fontWeight: 'bold' }}
+                >
                   Você ainda não foi avaliado
                 </Text>
               ) //caso ainda não tenha avaliações
@@ -317,21 +319,25 @@ const ProfileScreen = () => {
                     })
                   }}
                 >
-                  <Text style={{ color: 'black', fontSize: 15 }}>
+                  <Text style={{ color: 'black', fontSize: 13 }}>
                     Como os outros vêem o meu perfil?
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
 
-            <View style={{}}>
+            <View style={{ marginTop: 60 }}>
               {/* MEUS DADOS */}
               <View style={styles.profileSectionHeader}>
                 <ExpandButton
                   isCollapsed={isCollapsedProfile}
                   collapseFunction={setCollapsedProfile}
                 />
-                <Text style={styles.profileSectionTitle}>Meus dados</Text>
+                <Text
+                  style={{ ...styles.profileSectionTitle, fontWeight: 'bold' }}
+                >
+                  Meus dados
+                </Text>
               </View>
 
               <Collapsible collapsed={isCollapsedProfile}>
@@ -459,23 +465,43 @@ const ProfileScreen = () => {
                 </Dialog>
 
                 {changed && ( //caso tenha alterações, mostrar o botão de salvar alterações
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={updateUserData}
+                  <View
+                    style={{
+                      marginTop: 20,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
                   >
-                    <Text style={styles.text}>Salvar alterações</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{ ...styles.button, width: '60%' }}
+                      onPress={updateUserData}
+                    >
+                      <Text
+                        style={{
+                          ...styles.text,
+                          fontSize: 15,
+                          fontWeight: 'bold'
+                        }}
+                      >
+                        Salvar alterações
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 )}
               </Collapsible>
 
               {/* MEUS CARROS */}
-              <View style={styles.profileSectionHeader}>
+              <View style={{ ...styles.profileSectionHeader, marginTop: 60 }}>
                 <ExpandButton
                   isCollapsed={isCollapsedCars}
                   collapseFunction={setCollapsedCars}
                 />
 
-                <Text style={styles.profileSectionTitle}>Meus carros</Text>
+                <Text
+                  style={{ ...styles.profileSectionTitle, fontWeight: 'bold' }}
+                >
+                  Meus carros
+                </Text>
                 <TouchableOpacity
                   style={{}}
                   onPress={() => {
