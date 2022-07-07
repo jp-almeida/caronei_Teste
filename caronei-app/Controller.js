@@ -428,8 +428,6 @@ app.delete("/deleteroute/",
     model.Pedidos.destroy({
       where: {
         id: request.body.id,
-        matriculaPedido: request.body.matricula,
-        rota: request.body.rota 
       }
     })
       .then((result) => response.send(JSON.stringify(true)))

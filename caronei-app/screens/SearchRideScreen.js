@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
 import { store } from "../store"
 import { MOTORISTA, PASSAGEIRO, cancelar_corrida } from "../slices/rideState"
-import { searchPassageiro, searchDriver } from "../requestsFunctions"
+import { searchPassageiro, searchDriver, removeRoute} from "../requestsFunctions"
 import { useDispatch } from "react-redux"
 
 const SearchRideScreen = ({ route }) => {
@@ -55,11 +55,14 @@ const SearchRideScreen = ({ route }) => {
     }
   }
 
-  // USAR NO BOTÃO DE CANCELAR VIAGEM
-  // async function cancelarRota() {
-  //   const response = await removeRoute(parametro)
+  async function cancelarRota() {
+    console.log(parametro)
+    const response = await removeRoute(parametro)
 
-  // }
+    if(await response){
+      navigation.navigate("HomeScreen")
+    }
+  }
 
   if (store.getState().ride.role == MOTORISTA) {
     procurarPassageiro()
@@ -168,8 +171,14 @@ const SearchRideScreen = ({ route }) => {
             <DefaultButton
               title="Cancelar viagem"
               onPress={() => {
-                dispatch(cancelar_corrida())
-                navigation.navigate("HomeScreen")
+                if(store.getState().ride.role == MOTORISTA){
+                  dispatch(cancelar_corrida())
+                  navigation.navigate("HomeScreen")
+                }
+                else{
+                  cancelarRota()
+                }
+                  
               }}
             />
           </View>
