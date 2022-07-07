@@ -14,9 +14,14 @@ import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
 import { store } from "../store"
 import { MOTORISTA, PASSAGEIRO, cancelar_corrida } from "../slices/rideState"
-import { searchPassageiro, searchDriver, removeRoute } from "../requestsFunctions"
-import { useDispatch } from "react-redux"
+import {
+  searchPassageiro,
+  searchDriver,
+  removeRoute,
+} from "../requestsFunctions"
+import { useDispatch, useSelector } from "react-redux"
 import { getNome } from "../paradas/paradasFunctions"
+import { selectDestination, selectOrigin } from "../slices/navSlice"
 
 const SearchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
@@ -55,10 +60,14 @@ const SearchRideScreen = ({ route }) => {
       navigation.navigate("MatchRideScreen", {
         matricula: await response.content.matriculaMotorista,
         corrida: await response.content,
+        coordenadas: {
+          origin: useSelector(selectOrigin),
+          destination: useSelector(selectDestination),
+        },
         rota: {
           destino: destino,
-          partida: partida
-        }
+          partida: partida,
+        },
       })
     } else {
       console.log(response.content)
@@ -183,11 +192,9 @@ const SearchRideScreen = ({ route }) => {
                 if (store.getState().ride.role == MOTORISTA) {
                   dispatch(cancelar_corrida())
                   navigation.navigate("HomeScreen")
-                }
-                else {
+                } else {
                   cancelarRota()
                 }
-
               }}
             />
           </View>

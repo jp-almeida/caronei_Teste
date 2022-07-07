@@ -20,12 +20,14 @@ import {
 } from "../slices/rideState"
 import { useDispatch } from "react-redux"
 import { acabarCorrida, getPublicData } from "../requestsFunctions"
+import { getCoords } from "../paradas/paradasFunctions"
+import Map from "../components/Map"
 
 const MatchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
-  const { corrida, rota, matricula } = route.params
+  const { corrida, rota, matricula, coordenadas } = route.params
 
   const [partida, setPartida] = useState(rota.partida) //pega o nome do primeiro ponto da roda
   const [destino, setDestino] = useState(rota.destino) //pega o nome do último ponto da rota
@@ -34,6 +36,9 @@ const MatchRideScreen = ({ route }) => {
   const [carregou, setCarregou] = useState(false)
 
   const [readyUpdate, setReadyUpdate] = useState(true)
+
+  const origin = coordenadas.origin
+  const destination = coordenadas.destination
 
   async function getData() {
     console.log("CORRIDA: ", corrida)
@@ -59,16 +64,13 @@ const MatchRideScreen = ({ route }) => {
     return true
   }
 
-  async function acabar(finalizar){
+  async function acabar(finalizar) {
     let resp = await acabarCorrida(corrida.idRota, finalizar)
 
-    if(await resp.response){
-      
+    if (await resp.response) {
       dispatch(cancelar_corrida())
       navigation.navigate("HomeScreen")
-    }
-    else{
-      
+    } else {
     }
   }
 
@@ -84,24 +86,25 @@ const MatchRideScreen = ({ route }) => {
   //       setReadyUpdate(false)
   //       verficarStatus()
   //     }
-      
+
   //   }, 4000);
   //   return () => clearInterval(interval);
 
   // }, []);
-  
+
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ backgroundColor: "#EFE9E5", flex: 1 }}>
-          <Image //por o mapa
+          <View //por o mapa
             style={{
               width: "100%",
               height: undefined,
               aspectRatio: 1,
             }}
-            source={require("../images/mapapici.png")}
-          />
+          >
+            <Map origin={origin} destination={destination} />
+          </View>
           <View
             style={{
               //'rgba(144,144, 144, 0.1)'

@@ -7,17 +7,17 @@ import { selectDestination, selectOrigin } from "../slices/navSlice"
 import MapViewDirections from "react-native-maps-directions"
 import { GOOGLE_MAPS_APIKEY } from "@env"
 
-const Map = () => {
-  const origin = useSelector(selectOrigin)
-  const destination = useSelector(selectDestination)
-  const mapRef = useRef(null)
+// const Map = () => {
+//   const origin = useSelector(selectOrigin)
+//   const destination = useSelector(selectDestination)
+//   const mapRef = useRef(null)
 
-  // const Map = (props) => {
-  //   const origin = props.origin ? props.origin : useSelector(selectOrigin)
-  //   const destination = props.destination
-  //     ? props.destination
-  //     : useSelector(selectDestination)
-  //   const mapRef = useRef(null)
+const Map = (props) => {
+  const origin = props.origin ? props.origin : useSelector(selectOrigin)
+  const destination = props.destination
+    ? props.destination
+    : useSelector(selectDestination)
+  const mapRef = useRef(null)
 
   return (
     <MapView
