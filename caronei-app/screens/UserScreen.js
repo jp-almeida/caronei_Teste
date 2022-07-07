@@ -173,15 +173,15 @@ const UserScreen = ({ route }) => {
             data={data}
             keyExtractor={(item, index) => index.toString()}
             renderItem={(item) => (
-              <View>
+              <View style={{ flex: 1, marginVertical: "2%" }}>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-around",
                   }}
                 >
-                  <View style={{ width: "20%", marginTop: "3%" }}>
-                    <Icon name="account-circle" type="material" size={30} />
+                  <View style={{ width: "20%" }}>
+                    <Icon name="account-circle" type="material" size={45} />
                   </View>
                   <View style={{ width: "80%" }}>
                     <Text
@@ -202,7 +202,6 @@ const UserScreen = ({ route }) => {
                     </Text>
                   </View>
                 </View>
-                <View style={{ height: "2%" }} />
               </View>
             )}
           />
