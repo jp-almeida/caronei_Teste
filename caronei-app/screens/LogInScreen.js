@@ -49,7 +49,7 @@ const LogInScreen = () => {
       navigation.navigate('HomeScreen')
     }
     else{
-      onsole.log("Login inválido")
+      console.log("Login inválido")
     }
   }
 
