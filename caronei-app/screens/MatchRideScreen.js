@@ -134,10 +134,10 @@ const MatchRideScreen = ({ route }) => {
                 justifyContent: "space-around",
               }}
             >
-              <View>
+              <View style={{ width: "25%" }}>
                 <Icon name="account-circle" type="material" size={100} />
               </View>
-              <View>
+              <View style={{ width: "75%" }}>
                 <View
                   style={{
                     backgroundColor: "#4D4C7D",
@@ -148,7 +148,7 @@ const MatchRideScreen = ({ route }) => {
                   store.getState().ride.ride == EM_CORRIDA_MOTORISTA ? (
                     <Text style={{ color: "white" }}> Em corrida </Text>
                   ) : store.getState().ride.role == MOTORISTA ? (
-                    <Text style={{ color: "white" }}>
+                    <Text style={{ marginLeft: "5%", color: "white" }}>
                       {" "}
                       Passageiro está esperando{" "}
                     </Text>
@@ -159,10 +159,14 @@ const MatchRideScreen = ({ route }) => {
                     </Text>
                   )}
 
-                  <Text>{usuario.name}</Text>
-                  <Text>
-                    {partida} - {destino}
-                  </Text>
+                  <Text style={{ marginLeft: "5%" }}>{usuario.name}</Text>
+                  <View style={{ marginLeft: "5%", flexDirection: "row" }}>
+                    <Text style={{ width: "47%" }}>{partida}</Text>
+                    <View style={{ width: "6%" }}>
+                      <Text> - </Text>
+                    </View>
+                    <Text style={{ width: "47%" }}>{destino}</Text>
+                  </View>
                 </View>
 
                 <View
