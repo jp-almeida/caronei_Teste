@@ -25,7 +25,7 @@ const MatchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
-  const { corrida, rota, matricula} = route.params
+  const { corrida, rota, matricula } = route.params
 
   const [partida, setPartida] = useState(rota.partida) //pega o nome do primeiro ponto da roda
   const [destino, setDestino] = useState(rota.destino) //pega o nome do último ponto da rota
@@ -42,18 +42,17 @@ const MatchRideScreen = ({ route }) => {
     setUsuario(resp)
   }
 
-  async function verficarStatus(){ //verifica o status da corrida: se ela foi cancelada ou finalizada
+  async function verficarStatus() {
+    //verifica o status da corrida: se ela foi cancelada ou finalizada
     let resp = await verficarStatus(corrida.idRota)
-    if(! await resp.ativa){
+    if (!(await resp.ativa)) {
       console.log("Não está mais ativa")
-      if(await resp.finalizada){
+      if (await resp.finalizada) {
         console.log("Foi finalizada")
-      }
-      else{
+      } else {
         console.log("foi finalizada")
       }
-    }
-    else{
+    } else {
       console.log("ainda está ativa")
     }
     return true
@@ -67,16 +66,14 @@ const MatchRideScreen = ({ route }) => {
   //verifica o status da corrida a cada 4 segundos
   useEffect(() => {
     const interval = setInterval(() => {
-      if(readyUpdate){
+      if (readyUpdate) {
         setReadyUpdate(false)
         setReadyUpdate(verficarStatus())
       }
-      
-    }, 4000);
-    return () => clearInterval(interval);
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
 
-  }, []);
-  
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -158,7 +155,7 @@ const MatchRideScreen = ({ route }) => {
 
           <View
             style={{
-              marginTop: 190,
+              marginTop: 100,
               padding: 25,
 
               flexDirection: "row",
@@ -172,14 +169,6 @@ const MatchRideScreen = ({ route }) => {
                 navigation.navigate("HomeScreen")
               }}
             />
-          </View>
-          <View
-            style={{
-              padding: 5,
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
             <DefaultButton
               title="Finalizar viagem"
               onPress={() => {
