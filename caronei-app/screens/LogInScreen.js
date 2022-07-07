@@ -45,8 +45,11 @@ const LogInScreen = () => {
     if (typeof response.token === 'number') {
       //muda o estado para logado caso tenha recebido o token
       dispatch(loginAuth(response.token))
-
+      console.log("Login - Matricula:" + response.token)
       navigation.navigate('HomeScreen')
+    }
+    else{
+      onsole.log("Login inválido")
     }
   }
 

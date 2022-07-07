@@ -84,6 +84,7 @@ const SignUpScreen = () => {
     })
     let resp = await reqs.json()
     setMessage(resp)
+    console.log(message)
   }
 
   return (
