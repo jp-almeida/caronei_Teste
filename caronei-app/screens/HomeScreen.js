@@ -18,6 +18,7 @@ import { logoutAuth } from "../slices/userAuth"
 import config from "../config/config.json"
 import { store } from "../store"
 import { logout } from "../slices/rideState"
+import { getUsernameData } from "../requestsFunctions"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -30,22 +31,8 @@ export default function HomeScreen() {
     navigation.navigate("LogInScreen")
   }
   async function getUserName() {
-    //gambiarra porque as portas não estavam batendo
-    let original_port = config.urlRootNode.split(":")[2]
-    let url = config.urlRootNode.replace(original_port, config.backend_port)
-
-    let reqs = await fetch(
-      url + "/username/" + store.getState().auth.matricula,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    const response = await reqs.json()
-    setName(response)
+    let reqs = getUsernameData(store.getState().auth.matricula)
+    setName(await reqs)
   }
   getUserName()
 

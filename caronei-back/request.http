@@ -13,8 +13,6 @@ Content-Type: application/json
 GET http://192.168.1.16:3000/oferecer
 
 
-
-
 ###
 GET http://192.168.1.7:3000/dados-publicos/1
 
@@ -120,6 +118,9 @@ POST http://192.168.1.7:3000/acabar-corrida-ativa
 Content-Type: application/json
 
 {
-    "idCorrida":3,
+    "idCorrida":7,
     "finalizada":true
 }
+###
+
+GET http://192.168.1.7:3000/verificar-status/3

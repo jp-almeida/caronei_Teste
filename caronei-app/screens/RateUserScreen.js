@@ -18,20 +18,35 @@ import { useNavigation } from '@react-navigation/native'
 import { DefaultButton } from '../components/Button'
 import StarRating from 'react-native-star-rating'
 import { Icon } from 'react-native-elements'
-import { getUserData, rateUser } from '../requestsFunctions'
+import { getUserData, getUsernameData, rateUser } from '../requestsFunctions'
 import { styles } from '../styles'
 
-//chamar com {matricula: <matricula>, name: <nome do usuario>}
+//chamar {matricula: <matricula>, rota: {partida: <partida>, destino: <destino>}}
 
 const RateUserScreen = ({ route }) => {
+  console.log("[" + store.getState().auth.matricula +"]" + " - Tela de avaliação")
+
   const dispatch = useDispatch()
   const navigation = useNavigation()
-  const { matricula, name } = route.params
+  const { matricula, rota } = route.params
 
   const [comment, setComment] = useState(null)
   const [rating, setRating] = useState(null)
-  const [parada, setParada] = useState('Parada')
-  const [destino, setDestino] = useState('Destino')
+  const [partida, setPartida] = useState(rota.partida)
+  const [destino, setDestino] = useState(rota.destino)
+  const [name, setName] = useState(null)
+  const [carregou, setCarregou] = useState(false)
+
+  async function getData() {
+    //carrega os dados do passeiro de acordo com a matricula encontrada
+    let resp = await getUsernameData(matricula)
+    setName(resp)
+  }
+
+  if (!carregou) {
+    setCarregou(true)
+    getData()
+  }
 
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
@@ -75,7 +90,7 @@ const RateUserScreen = ({ route }) => {
             >
               <Icon name="room" type="material" size={15} color="gray" />
               <Text style={{ textAlign: 'center', color: '#4D4C7D' }}>
-                {parada}
+                {partida}
               </Text>
               <Icon name="east" type="material" size={15} color="gray" />
               <Text style={{ textAlign: 'center', color: '#4D4C7D' }}>
@@ -139,6 +154,7 @@ const RateUserScreen = ({ route }) => {
                 onPress={text => {
                   if (rating) {
                     let resp = rateUser(matricula, rating)
+                    console.log("[" + store.getState().auth.matricula +"]" + " - avaliou")
                   }
                 }}
               />
@@ -147,14 +163,18 @@ const RateUserScreen = ({ route }) => {
             <View style={{ marginBottom: 300 }}>
               <DefaultButton
                 title="Lembrar mais tarde"
-                onPress={() => navigation.navigate('HomeScreen')}
+                onPress={() => {
+                  console.log("[" + store.getState().auth.matricula +"]" + " - lembrar da avaliação depois")
+                  navigation.navigate('HomeScreen')}}
               />
             </View>
 
             <View style={{}}>
               <DefaultButton
                 title="Denunciar usuário"
-                onPress={() => navigation.navigate('ReportScreen')}
+                onPress={() => {
+                  console.log("[" + store.getState().auth.matricula +"]" + " - quer reportar o usuário")
+                  navigation.navigate('ReportScreen')}}
               />
             </View>
           </View>
