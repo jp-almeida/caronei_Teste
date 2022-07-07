@@ -139,24 +139,6 @@ app.post("/update", async (request, response) => {
     )
 })
 
-//oferecer carona
-app.get(
-  "/oferecer/:matricula/:coordOrigem/:coordDestino/:nomeOrigem/:nomeDestino",
-  async (request, response) => {
-    //recuperar todas as corridas no banco de dados
-    let pedidos = await model.Pedidos.findAll({
-      attributes: [
-        "nomeDestino",
-        "nomePartida",
-        "latitudePartida",
-        "longitudePartida",
-        "latitudeDestino",
-        "longitudeDestino",
-      ],
-    }) //retorna um array
-  }
-)
-
 //ADICIONAR UM CARRO
 app.post("/adicionar-carro/", async (request, response) => {
   let user,
@@ -329,18 +311,6 @@ app.post("/matchroute",
                                             matriculaPassageiro: 
                                             pedidoEscolhido.matriculaPedido,
                                             rota: pedidoEscolhido.rota })) //retorna o ID do pedido que deu match
-      // [corrida, created] = await model.Matches.findOrCreate(
-      //   {
-      //     where: { idRota: pedidoEscolhido.id },
-      //     defaults: {
-      //       matriculaMotorista: request.body.driverMatricula,
-      //       matriculaPassageiro: pedidoEscolhido.matriculaPedido,
-      //       nomeDestino: "nada",
-      //       nomeOrigem: "nada",
-      //       createdAt: new Date(),
-      //       updatedAt: new Date(),
-      //     }
-      //   })
     }
     //não apagar a rota da tabela de pedidos agora, porque o motorista precisa 
     // confirmar o passageiro primeiro. Depois que ele confirmar, a gente remove 
@@ -351,7 +321,7 @@ app.post("/matchroute",
 
 //PASSAGEIRO BUSCAR POR MOTORISTA - vê se na tabela de matches apareceu alguma corrida com o seu ID
 app.get("/buscar-motorista/:idRota", async (request, response) => {
-  const corrida = await model.Matches.findByPk(request.params.idRota)
+  const corrida = await model.CorridasAtivas.findByPk(request.params.idRota)
   console.log(corrida)
   if (corrida) {
     return response.end(JSON.stringify({response: true, content: corrida}))
@@ -373,25 +343,27 @@ app.post("/aceitar-passageiro", async (request, response) => {
         { id: request.body.idRota }
     })
     .then((a) => {
+      
       console.log("deletou")
-      model.Matches.create({
+      model.CorridasAtivas.create({
         idRota: request.body.idRota,
         matriculaMotorista: request.body.matriculaMotorista,
         matriculaPassageiro: match.matriculaPedido,
-        nomeDestino: "nada",
-        nomeOrigem: "nada",
         createdAt: new Date(),
         updatedAt: new Date()
-      }).then((b) => {
+      })
+      .then((b) => {
           console.log("criou")
           response.end(JSON.stringify({ response: true, message: "Passageiro aceito com sucesso" }))
-        }).catch((err) => {
+        })
+      .catch((err) => {
+          console.log("errou")
           console.log(err)
-          response.end(JSON.stringify({ response: false, message: "Não foi possível criar a corrida" }))
+          response.end(JSON.stringify({ error: err, response: false, message: "Não foi possível criar a corrida" }))
         })
     })
     .catch((err) => {
-      response.end(JSON.stringify({ response: false, message: "Não foi possível aceitar o passageiro" }))
+      response.end(JSON.stringify({ error: err, response: false, message: "Não foi possível aceitar o passageiro" }))
     })
 
 })
@@ -428,4 +400,13 @@ app.delete("/deleteroute/",
     })
       .then((result) => response.send(JSON.stringify(true)))
       .catch((err) => response.send(JSON.stringify(false)))
+})
+
+app.get("/verificar-status/:idRota", async (request, response) => {
+  const viagemNaoAtiva = await model.CorridasNaoAtivas.findByPk(idRota)
+  
+  if(viagemNaoAtiva){
+    return response.end(JSON.stringify({finalizada: viagemNaoAtiva.finalizada, ativa: false}))
+  }
+  return response.end(JSON.stringify({finalizada: null, ativa: true}))
 })

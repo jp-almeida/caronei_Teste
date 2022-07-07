@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Corridas extends Model {
+  class CorridasNaoAtivas extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,16 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Corridas.init({
+  CorridasNaoAtivas.init({
     idCorrida: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
       autoIncrement: false,
-      references:{
-        model:"matches",
-        key:"idRota"
-      },
       allowNull: false
     },
     matriculaMotorista: {
@@ -41,13 +37,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       allowNull: false
     },
-    ativa:{
+    finalizada:{
       type: DataTypes.BOOLEAN,
       defaultValue: true
     } 
   }, {
     sequelize,
-    modelName: 'Corridas',
+    modelName: 'CorridasNaoAtivas',
   });
-  return Corridas;
+  return CorridasNaoAtivas;
 };
