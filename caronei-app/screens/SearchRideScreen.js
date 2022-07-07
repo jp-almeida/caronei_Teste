@@ -14,9 +14,9 @@ import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
 import { store } from "../store"
 import { MOTORISTA, PASSAGEIRO, cancelar_corrida } from "../slices/rideState"
-import { searchPassageiro, searchDriver, removeRoute} from "../requestsFunctions"
+import { searchPassageiro, searchDriver, removeRoute } from "../requestsFunctions"
 import { useDispatch } from "react-redux"
-import {getNome} from "../paradas/paradasFunctions"
+import { getNome } from "../paradas/paradasFunctions"
 
 const SearchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
@@ -28,7 +28,7 @@ const SearchRideScreen = ({ route }) => {
   const [rota, setRota] = useState(parametro.rota ? eval(parametro.rota) : null)
   const [partida, setPartida] = useState(rota ? getNome(rota[0]) : null)
   const [destino, setDestino] = useState(rota ? getNome(rota.slice(-1)) : null)
-  
+
   let procurando = false
 
   async function procurarPassageiro() {
@@ -53,10 +53,11 @@ const SearchRideScreen = ({ route }) => {
     const response = await searchDriver(parametro.id)
     if (await response.response) {
       navigation.navigate("MatchRideScreen", {
-        corrida:{
-          matricula: await response.content.matriculaMotorista,
-          rota: {destino: destino,
-          partida: partida}
+        matricula: await response.content.matriculaMotorista,
+        corrida: await response.content,
+        rota: {
+          destino: destino,
+          partida: partida
         }
       })
     } else {
@@ -68,7 +69,7 @@ const SearchRideScreen = ({ route }) => {
     //parametro é o id da rota
     const response = await removeRoute(parametro)
 
-    if(await response){
+    if (await response) {
       navigation.navigate("HomeScreen")
     }
   }
@@ -179,14 +180,14 @@ const SearchRideScreen = ({ route }) => {
             <DefaultButton
               title="Cancelar viagem"
               onPress={() => {
-                if(store.getState().ride.role == MOTORISTA){
+                if (store.getState().ride.role == MOTORISTA) {
                   dispatch(cancelar_corrida())
                   navigation.navigate("HomeScreen")
                 }
-                else{
+                else {
                   cancelarRota()
                 }
-                  
+
               }}
             />
           </View>

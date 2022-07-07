@@ -54,10 +54,9 @@ const AcceptRideScreen = ({ route }) => {
 
     if (await resp.response) {
       navigation.navigate("MatchRideScreen", {
-        corrida: {
-          matricula: corrida.matriculaPassageiro,
-          rota: { destino: destino, partida: partida },
-        },
+        corrida: corrida,
+        matricula: corrida.matriculaPassageiro,
+        rota: { destino: destino, partida: partida },
       })
     }
   }

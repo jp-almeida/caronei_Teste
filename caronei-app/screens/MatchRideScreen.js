@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   Keyboard,
 } from "react-native"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import tw from "twrnc"
 import { Image } from "react-native"
 import { Icon } from "react-native-elements"
@@ -25,25 +25,58 @@ const MatchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
-  const { corrida } = route.params
+  const { corrida, rota, matricula} = route.params
 
-  const [partida, setPartida] = useState(corrida.rota.partida) //pega o nome do primeiro ponto da roda
-  const [destino, setDestino] = useState(corrida.rota.destino) //pega o nome do último ponto da rota
+  const [partida, setPartida] = useState(rota.partida) //pega o nome do primeiro ponto da roda
+  const [destino, setDestino] = useState(rota.destino) //pega o nome do último ponto da rota
 
   const [usuario, setUsuario] = useState({})
   const [carregou, setCarregou] = useState(false)
 
+  const [readyUpdate, setReadyUpdate] = useState(true)
+
   async function getData() {
-    console.log(corrida.matricula)
+    console.log(matricula)
     //carrega os dados do passeiro ou do motorista de acordo com a matricula encontrada
-    let resp = await getPublicData(corrida.matricula)
+    let resp = await getPublicData(matricula)
     setUsuario(resp)
+  }
+
+  async function verficarStatus(){ //verifica o status da corrida: se ela foi cancelada ou finalizada
+    let resp = await verficarStatus(corrida.idRota)
+    if(! await resp.ativa){
+      console.log("Não está mais ativa")
+      if(await resp.finalizada){
+        console.log("Foi finalizada")
+      }
+      else{
+        console.log("foi finalizada")
+      }
+    }
+    else{
+      console.log("ainda está ativa")
+    }
+    return true
   }
 
   if (!carregou) {
     setCarregou(true)
     getData()
   }
+
+  //verifica o status da corrida a cada 4 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if(readyUpdate){
+        setReadyUpdate(false)
+        setReadyUpdate(verficarStatus())
+      }
+      
+    }, 4000);
+    return () => clearInterval(interval);
+
+  }, []);
+  
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
