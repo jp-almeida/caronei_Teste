@@ -198,3 +198,18 @@ export async function verifcarStatus(idRota){
   let resp = await reqs.json()
   return resp
 }
+
+export async function acabarCorrida(idCorrida, finalizada){
+  let reqs = await fetch(url + '/acabar-corrida-ativa', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      idCorrida: idCorrida,
+      finalizada: finalizada
+    })
+  })
+  return await reqs.json()
+}

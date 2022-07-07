@@ -114,3 +114,12 @@ Content-Type: application/json
 ###
 
 GET http://192.168.1.7:3000/buscar-motorista/200
+###
+
+POST http://192.168.1.7:3000/acabar-corrida-ativa
+Content-Type: application/json
+
+{
+    "idCorrida":3,
+    "finalizada":true
+}

@@ -404,9 +404,53 @@ app.delete("/deleteroute/",
 
 app.get("/verificar-status/:idRota", async (request, response) => {
   const viagemNaoAtiva = await model.CorridasNaoAtivas.findByPk(idRota)
-  
+
   if(viagemNaoAtiva){
     return response.end(JSON.stringify({finalizada: viagemNaoAtiva.finalizada, ativa: false}))
   }
   return response.end(JSON.stringify({finalizada: null, ativa: true}))
 })
+
+app.post("/acabar-corrida-ativa",
+  async (request, response) => {
+    const corridaAtiva = await model.CorridasAtivas.findByPk(request.body.idCorrida)
+
+    //setando as mensagens caso ela tenha sido finalizada ou cancelada
+    const msg = request.body.finalizada ? "Corrida finalizada com sucesso" : "Corrida cancelada com sucesso"
+    const msg_erro = request.body.finalizada ? "Não foi possível finalizar a corrida" : "Não foi possível cancelar a corrida"
+
+    if(corridaAtiva){
+      //apaga a corrida da tabela de corridas ativas
+      model.CorridasAtivas.destroy(
+        {where:
+            { idRota: request.body.idCorrida }
+        })
+        .then((a) => {
+          console.log("deletou")
+          //adiciona a corrida na tabela de corridas não ativas
+          model.CorridasNaoAtivas.create({
+            idCorrida: request.body.idCorrida,
+            matriculaMotorista: corridaAtiva.matriculaMotorista,
+            matriculaPassageiro: corridaAtiva.matriculaPassageiro,
+            finalizada: request.body.finalizada,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          })
+          .then((b) => {
+              console.log("criou")
+              response.end(JSON.stringify({ response: true, message: msg }))
+            })
+          .catch((err) => {
+              console.log("errou")
+              response.end(JSON.stringify({ error: err, response: false, message: msg_erro }))
+            })
+        })
+        .catch((err) => {
+          response.end(JSON.stringify({ error: err, response: false, message: msg_erro }))
+        })
+    }
+    else{
+      return response.send(JSON.stringify({response: false, error:"Corrida não existe"}))
+    }
+    
+  })

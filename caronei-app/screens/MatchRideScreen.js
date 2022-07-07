@@ -19,7 +19,7 @@ import {
   MOTORISTA,
 } from "../slices/rideState"
 import { useDispatch } from "react-redux"
-import { getPublicData } from "../requestsFunctions"
+import { acabarCorrida, getPublicData } from "../requestsFunctions"
 
 const MatchRideScreen = ({ route }) => {
   const dispatch = useDispatch()
@@ -59,23 +59,33 @@ const MatchRideScreen = ({ route }) => {
     return true
   }
 
+  async function acabar(finalizar){
+    let resp = await acabarCorrida(corrida.idRota, finalizar)
+
+    if(await resp.response){
+      console.log(resp.message)
+      dispatch(cancelar_corrida())
+      navigation.navigate("HomeScreen")
+    }
+  }
+
   if (!carregou) {
     setCarregou(true)
     getData()
   }
 
   //verifica o status da corrida a cada 4 segundos
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if(readyUpdate){
-        setReadyUpdate(false)
-        setReadyUpdate(verficarStatus())
-      }
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if(readyUpdate){
+  //       setReadyUpdate(false)
+  //       verficarStatus()
+  //     }
       
-    }, 4000);
-    return () => clearInterval(interval);
+  //   }, 4000);
+  //   return () => clearInterval(interval);
 
-  }, []);
+  // }, []);
   
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
@@ -121,7 +131,7 @@ const MatchRideScreen = ({ route }) => {
                   ) : store.getState().ride.role == MOTORISTA ? (
                     <Text style={{ color: "white" }}>
                       {" "}
-                      Passageiro está a caminho{" "}
+                      Passageiro está esperando{" "}
                     </Text>
                   ) : (
                     <Text style={{ color: "white" }}>
@@ -168,8 +178,7 @@ const MatchRideScreen = ({ route }) => {
             <DefaultButton
               title="Cancelar viagem"
               onPress={() => {
-                dispatch(cancelar_corrida())
-                navigation.navigate("HomeScreen")
+                acabar(false)
               }}
             />
           </View>
@@ -183,8 +192,7 @@ const MatchRideScreen = ({ route }) => {
             <DefaultButton
               title="Finalizar viagem"
               onPress={() => {
-                dispatch(cancelar_corrida())
-                navigation.navigate("HomeScreen")
+                acabar(true)
               }}
             />
           </View>
