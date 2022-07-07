@@ -16,13 +16,16 @@ import {
   cancelar_corrida,
   EM_CORRIDA_MOTORISTA,
   EM_CORRIDA_PASSAGEIRO,
-  MOTORISTA
-} from '../slices/rideState'
-import { useDispatch } from 'react-redux'
-import { acabarCorrida, getPublicData, verificarStatus } from '../requestsFunctions'
-import { getCoords } from '../paradas/paradasFunctions'
-import Map from '../components/Map'
-
+  MOTORISTA,
+} from "../slices/rideState"
+import { useDispatch } from "react-redux"
+import {
+  acabarCorrida,
+  getPublicData,
+  verificarStatus,
+} from "../requestsFunctions"
+import { getCoords } from "../paradas/paradasFunctions"
+import Map from "../components/Map"
 
 // chamar {corrida: <obj corrida>, rota: {partida: <partida>, destino: <destino>}, matricula: <matricula outro usuario>, coordenadas: {origin: <origin>, destination: <destination>}}
 
@@ -68,9 +71,10 @@ const MatchRideScreen = ({ route }) => {
           store.getState().ride.role + " - Identificou: corrida cancelada"
         )
       }
-    } 
-    else {
-      console.log(store.getState().ride.role + " - Identificou: corrida ainda ativa")
+    } else {
+      console.log(
+        store.getState().ride.role + " - Identificou: corrida ainda ativa"
+      )
     }
   }
 
@@ -83,7 +87,10 @@ const MatchRideScreen = ({ route }) => {
           " - Desativação da corrida com sucesso. Indo para homescreen"
       )
       dispatch(cancelar_corrida())
-      navigation.navigate('RateUserScreen', {matricula: matricula, rota: {partida: partida, destino: destino}})
+      navigation.navigate("RateUserScreen", {
+        matricula: matricula,
+        rota: { partida: partida, destino: destino },
+      })
     } else {
     }
   }
@@ -138,7 +145,7 @@ const MatchRideScreen = ({ route }) => {
               <View style={{ width: "25%" }}>
                 <Icon name="account-circle" type="material" size={100} />
               </View>
-              <View style={{ width: "75%" }}>
+              <View style={{ marginLeft: "3%", width: "75%" }}>
                 <View
                   style={{
                     backgroundColor: "#4D4C7D",
