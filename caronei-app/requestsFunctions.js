@@ -214,3 +214,18 @@ export async function acabarCorrida(idCorrida, finalizada){
   let resp = await reqs.json()
   return resp
 }
+
+export async function getUsernameData(matricula){
+  let resp = await fetch(
+    url + "/username/" + matricula,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  return await resp.json()
+}
