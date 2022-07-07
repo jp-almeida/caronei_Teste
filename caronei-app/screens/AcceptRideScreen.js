@@ -26,6 +26,7 @@ import { getNome, getCoords } from "../paradas/paradasFunctions"
 import Map from "../components/Map"
 
 const AcceptRideScreen = ({ route }) => {
+  console.log(store.getState().ride.role + " - Tela de aceitação")
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
@@ -53,6 +54,7 @@ const AcceptRideScreen = ({ route }) => {
     let resp = await aceitarPassageiro(corrida.pedidoId)
 
     if (await resp.response) {
+      console.log(store.getState().ride.role + " - Aceitou passageiro")
       navigation.navigate("MatchRideScreen", {
         corrida: resp.content,
         coordenadas: { origin: origin, destination: destination },
@@ -153,6 +155,7 @@ const AcceptRideScreen = ({ route }) => {
               title="Recusar"
               onPress={() => {
                 dispatch(recusar(corrida.matriculaPassageiro))
+                console.log(store.getState().ride.role + " - Recusou passageiro")
                 navigation.navigate("SearchRideScreen", {
                   parametro: rotaMotorista,
                 })
@@ -170,6 +173,7 @@ const AcceptRideScreen = ({ route }) => {
             <DefaultButton
               title="Cancelar viagem"
               onPress={() => {
+                console.log(store.getState().ride.role + " - Cancelou viagem")
                 dispatch(cancelar_corrida())
                 navigation.navigate("HomeScreen")
               }}

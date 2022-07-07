@@ -22,8 +22,11 @@ import { addRoute } from "../requestsFunctions"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
 import { carregar_passageiro } from "../slices/rideState"
+import { store } from "../store"
 
 const PassengerRoute = () => {
+  console.log(store.getState().ride.role + " - Tela de rota")
+  
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [partida, setPartida] = useState("")
@@ -172,6 +175,7 @@ const PassengerRoute = () => {
           title="Confirmar"
           onPress={() => {
             if (origin?.location && destination?.location) {
+              console.log(store.getState().ride.role + " - Escolheu rota")
               seguirParaMotorista(rota)
             }
           }}

@@ -24,6 +24,7 @@ import { getCoords } from '../paradas/paradasFunctions'
 import Map from '../components/Map'
 
 const MatchRideScreen = ({ route }) => {
+  console.log(store.getState().ride.role + " - Tela da corrida")
   const dispatch = useDispatch()
   const navigation = useNavigation()
 
@@ -52,14 +53,14 @@ const MatchRideScreen = ({ route }) => {
     //verifica o status da corrida: se ela foi cancelada ou finalizada
     let resp = await verficarStatus(corrida.idRota)
     if (!(await resp.ativa)) {
-      console.log('Não está mais ativa')
+      console.log(store.getState().ride.role + " - Identificou: corrida inativa")
       if (await resp.finalizada) {
-        console.log('Foi finalizada')
+        console.log(store.getState().ride.role + " - Identificou: corrida finalizada")
       } else {
-        console.log('foi finalizada')
+        console.log(store.getState().ride.role + " - Identificou: corrida cancelada")
       }
     } else {
-      console.log('ainda está ativa')
+      console.log(store.getState().ride.role + " - Identificou: corrida ainda ativa")
     }
     return true
   }
@@ -68,6 +69,7 @@ const MatchRideScreen = ({ route }) => {
     let resp = await acabarCorrida(corrida.idRota, finalizar)
 
     if (await resp.response) {
+      console.log(store.getState().ride.role + " - Desativação da corrida com sucesso. Indo para homescreen")
       dispatch(cancelar_corrida())
       navigation.navigate('HomeScreen')
     } else {
@@ -202,12 +204,14 @@ const MatchRideScreen = ({ route }) => {
             <DefaultButton
               title="Cancelar viagem"
               onPress={() => {
+                console.log(store.getState().ride.role + " - Cancelou corrida ativa")
                 acabar(false)
               }}
             />
             <DefaultButton
               title="Finalizar viagem"
               onPress={() => {
+                console.log(store.getState().ride.role + " - Finalizou corrida")
                 acabar(true)
               }}
             />

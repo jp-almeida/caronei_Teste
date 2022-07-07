@@ -11,12 +11,14 @@ import { Image } from "react-native"
 
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from '../components/Button'
+import { useDispatch } from "react-redux"
+import { em_corrida_passageiro } from "../slices/rideState"
 
 
 const MainScreen = () => {
 
     const navigation = useNavigation()
-
+    const dispatch = useDispatch()
 
     return (
         <SafeAreaView style={tw`bg-white h-full`}>
@@ -43,11 +45,15 @@ const MainScreen = () => {
 
                         <View>
                             <View style={{ marginBottom: 15 }}>
-                                <DefaultButton title="Solicitar carona" onPress={() => {}} />
+                                <DefaultButton title="Solicitar carona" onPress={() => {
+                                    dispatch(em_corrida_passageiro())
+                                }} />
                             </View>
     
                             <View style={{}}>
-                                <DefaultButton title="Oferecer carona" onPress={() => {}} />
+                                <DefaultButton title="Oferecer carona" onPress={() => {
+                                    dispatch(em_corrida_motorista())
+                                }} />
                             </View>
                              
                         </View>

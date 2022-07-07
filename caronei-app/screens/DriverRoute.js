@@ -17,8 +17,10 @@ import { addRoute } from "../requestsFunctions"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
 import { carregar_motorista } from "../slices/rideState"
+import { store } from "../store"
 
 const DriverRoute = () => {
+  console.log(store.getState().ride.role + " - Tela de rotas")
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [partida, setPartida] = useState("")
@@ -157,6 +159,7 @@ const DriverRoute = () => {
       <View style={tw`h-10%`}>
       <DefaultButton title="Confirmar" onPress={() => {
         if (origin?.location && destination?.location){
+          console.log(store.getState().ride.role + " - Escolheu rota")
           dispatch(carregar_motorista())
           navigation.navigate("SearchRideScreen", {parametro: rota})
         }

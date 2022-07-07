@@ -24,6 +24,8 @@ import { getNome } from '../paradas/paradasFunctions'
 import { selectDestination, selectOrigin } from '../slices/navSlice'
 
 const SearchRideScreen = ({ route }) => {
+  console.log(store.getState().ride.role + " - Tela de espera")
+  
   const dispatch = useDispatch()
   const { parametro } = route.params
   const navigation = useNavigation()
@@ -38,11 +40,13 @@ const SearchRideScreen = ({ route }) => {
   let procurando = false
 
   async function procurarPassageiro() {
+    console.log(store.getState().ride.role + " - Procurando passageiro")
     const response = await searchPassageiro(parametro)
 
     if (await response.response) {
       //caso ache uma corrida, vai para a tela de aceitar corrida (apenas motoristas)
 
+      console.log(store.getState().ride.role + " - Identificou: match!")
       navigation.navigate('AcceptRideScreen', {
         //chama a tela de aceitar o passageiro
         corrida: await response,
@@ -56,8 +60,11 @@ const SearchRideScreen = ({ route }) => {
   }
 
   async function procurarMotorista() {
+    console.log(store.getState().ride.role + " - Procurando motorista")
     const response = await searchDriver(parametro.id)
     if (await response.response) {
+
+      console.log(store.getState().ride.role + " - Identificou: match!")
       navigation.navigate('MatchRideScreen', {
         matricula: await response.content.matriculaMotorista,
         corrida: await response.content,
@@ -81,6 +88,7 @@ const SearchRideScreen = ({ route }) => {
     const response = await removeRoute(parametro)
 
     if (await response) {
+      console.log(store.getState().ride.role + " - Cancelou corrida")
       navigation.navigate('HomeScreen')
     }
   }
@@ -198,6 +206,7 @@ const SearchRideScreen = ({ route }) => {
               title="Cancelar viagem"
               onPress={() => {
                 if (store.getState().ride.role == MOTORISTA) {
+                  console.log(store.getState().ride.role + " - Cancelou corrida")
                   dispatch(cancelar_corrida())
                   navigation.navigate('HomeScreen')
                 } else {
