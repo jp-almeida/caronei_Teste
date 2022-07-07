@@ -31,7 +31,7 @@ const AcceptRideScreen = ({ route }) => {
 
   const { corrida, rotaMotorista } = route.params
   let rota = eval(corrida.rota) //transforma a string da rota em array
-  const partida = getNome(rota[0]) //pega o nome do primeiro ponto da roda
+  const partida = getNome(rota[0]) //pega o nome do primeiro ponto da rota
   const destino = getNome(rota.slice(-1)) //pega o nome do último ponto da rota
   const origin = getCoords(rota[0])
   const destination = getCoords(rota.slice(-1))
@@ -55,6 +55,7 @@ const AcceptRideScreen = ({ route }) => {
     if (await resp.response) {
       navigation.navigate("MatchRideScreen", {
         corrida: resp.content,
+        coordenadas: { origin: origin, destination: destination },
         matricula: corrida.matriculaPassageiro,
         rota: { destino: destino, partida: partida },
       })
@@ -70,15 +71,7 @@ const AcceptRideScreen = ({ route }) => {
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ backgroundColor: "#EFE9E5", flex: 1 }}>
-          <Image //por o mapa
-            style={{
-              width: "100%",
-              height: undefined,
-              aspectRatio: 1,
-            }}
-            source={require("../images/mapapici.png")}
-          />
-          {/* <View
+          <View
             style={{
               width: "100%",
               height: undefined,
@@ -86,7 +79,7 @@ const AcceptRideScreen = ({ route }) => {
             }}
           >
             <Map origin={origin} destination={destination} />
-          </View> */}
+          </View>
           <View
             style={{
               backgroundColor: "rgba(144, 144, 144, 0.1)",
