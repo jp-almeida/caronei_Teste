@@ -28,6 +28,7 @@ const SearchRideScreen = ({ route }) => {
   const { parametro } = route.params
   const navigation = useNavigation()
   const [name, setName] = useState(null)
+  const [message, setMessage] = useState("Procurando...")
 
   //caso exista "rota" no parametro (isso so ocorre se o usuário for motorista), irá setar o nome da origem e do destino para passar para a tela de match
   const [rota, setRota] = useState(parametro.rota ? eval(parametro.rota) : null)
@@ -50,7 +51,7 @@ const SearchRideScreen = ({ route }) => {
     } else {
       //caso não ache, deverá continuar procurando
       procurando = false
-      console.log("Não achou")
+      setMessage("Clique no botão para tentar novamente.")
     }
   }
 
@@ -71,6 +72,7 @@ const SearchRideScreen = ({ route }) => {
       })
     } else {
       console.log(response.content)
+      setMessage("Clique no botão para tentar novamente.")
     }
   }
 
@@ -83,10 +85,10 @@ const SearchRideScreen = ({ route }) => {
     }
   }
 
-  if (store.getState().ride.role == MOTORISTA) {
+  if (store.getState().ride.role == MOTORISTA) { //se for motorista
     procurarPassageiro()
-  } else {
-    console.log(parametro) //printa a rota
+  } else { //se for passageiro
+    procurarMotorista()
   }
 
   return (
@@ -172,10 +174,13 @@ const SearchRideScreen = ({ route }) => {
             <DefaultButton
               title="Atualizar Busca "
               onPress={() => {
-                if (store.getState().ride.role == PASSAGEIRO) {
+                setMessage("Procurando...")
+                if (store.getState().ride.role == PASSAGEIRO) { //se for passageiro
                   procurarMotorista()
                 }
-                // navigation.navigate('HomeScreen')
+                else{ //se for motorista
+                  procurarPassageiro()
+                }
               }}
             />
           </View>
@@ -197,6 +202,8 @@ const SearchRideScreen = ({ route }) => {
                 }
               }}
             />
+
+          <Text>{message}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
