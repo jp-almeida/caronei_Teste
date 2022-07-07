@@ -10,6 +10,8 @@ npx sequelize-cli model:generate --name Carros --attributes placa:string,matricu
 
 npx sequelize-cli model:generate --name Corridas --attributes matriculaMotorista:integer,matriculaPassageiro:integer,idCorrida:integer,timestamp:integer,ativa:boolean
 
+npx sequelize-cli model:generate --name Comentarios --attributes destinatario:integer,remetente:integer,comentario:string,avaliacao:float
+
 
 
 #################

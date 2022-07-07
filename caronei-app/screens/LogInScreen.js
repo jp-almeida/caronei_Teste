@@ -84,7 +84,7 @@ const LogInScreen = () => {
                 <Text
                   style={{ fontSize: 18, marginBottom: 5, color: '#46458D' }}
                 >
-                  E-mail ou matrícula
+                  Matrícula
                 </Text>
                 <TextInput
                   style={{
@@ -94,7 +94,7 @@ const LogInScreen = () => {
                     backgroundColor: '#e6e6e6',
                     borderRadius: 5
                   }}
-                  placeholder="Email ou matrícula"
+                  placeholder="Matrícula"
                   onChangeText={text => setMatricula(text)}
                 />
               </View>
