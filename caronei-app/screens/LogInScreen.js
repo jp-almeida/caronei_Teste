@@ -140,15 +140,7 @@ const LogInScreen = () => {
                   onPress={() => navigation.navigate('InitialScreen')}
                 />
               </View>
-
-              <TouchableOpacity
-                style={{}}
-                onPress={() => {
-                  navigation.navigate('HomeScreen')
-                }}
-              >
-                <Text style={{}}>Pular login</Text>
-              </TouchableOpacity>
+              
             </View>
           </View>
         </View>

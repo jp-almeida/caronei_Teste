@@ -13,4 +13,3 @@ config/
 
 # macOS
 .DS_Store
-.env
