@@ -13,7 +13,7 @@ app.use(bodyParser.json())
 
 
 //configurando o servidor
-let port = config.backend_port //process.env.PORT || 3000
+let port = process.env.PORT || config.backend_port //process.env.PORT || 3000
 
 app.listen(port, (request, response) => {
   console.log("Servidor rodando")
