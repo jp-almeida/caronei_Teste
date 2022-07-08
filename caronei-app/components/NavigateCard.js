@@ -3,11 +3,11 @@ import React, { useEffect } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import tw from "twrnc"
 // @ts-ignore
-import { GOOGLE_MAPS_APIKEY } from "@env"
 import { useDispatch } from "react-redux"
 import { selectOrigin, setDestination } from "../slices/navSlice"
 import { useNavigation } from "@react-navigation/native"
 
+const GOOGLE_MAPS_APIKEY = "AIzaSyC-QBVamaBEmATYgT7D8bJiL-8GJX0layQ"
 const NavigateCard = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
