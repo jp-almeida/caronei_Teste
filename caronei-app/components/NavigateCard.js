@@ -6,8 +6,8 @@ import tw from "twrnc"
 import { useDispatch } from "react-redux"
 import { selectOrigin, setDestination } from "../slices/navSlice"
 import { useNavigation } from "@react-navigation/native"
+import { GOOGLE_MAPS_APIKEY } from "@env"
 
-const GOOGLE_MAPS_APIKEY = "AIzaSyC-QBVamaBEmATYgT7D8bJiL-8GJX0layQ"
 const NavigateCard = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
