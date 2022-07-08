@@ -4,10 +4,8 @@
   "description": "",
   "main": "Controller.js",
   "scripts": {
-    "back": "nodemon Controller.js",
-    "migrate": "npx sequelize db:migrate",
-    "seed": "npx sequelize-cli db:seed:all",
-    "undo-migrate": "npx sequelize-cli db:migrate:undo:all"
+    "start": "nodemon controller.js",
+    "back": "nodemon Controller.js"
   },
   "author": "",
   "license": "ISC",
