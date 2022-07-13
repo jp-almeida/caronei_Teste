@@ -47,6 +47,7 @@ function getGenderName(gender) {
 }
 
 const ProfileScreen = () => {
+  
   const navigation = useNavigation()
   const [name, setName] = useState({
     data: null,
@@ -85,6 +86,7 @@ const ProfileScreen = () => {
   const [selectedGender, setSelectedGender] = useState()
 
   async function getData() {
+    console.log(store.getState().auth.matricula + ' - Carregando dados (tela de perfil)')
     //pega os dados do banco de dados e preenche as variaveis
 
     const response = await getUserData()
@@ -120,7 +122,7 @@ const ProfileScreen = () => {
     setSelectedGender(response.gender)
   }
   async function updateUserData() {
-    //gambiarra porque as portas não estavam batendo
+    console.log(store.getState().auth.matricula + ' - Salvando dados (tela de perfil)')
     let jsonBody = { matricula: store.getState().auth.matricula.toString() }
     if (name.changed) {
       jsonBody.name = name.data

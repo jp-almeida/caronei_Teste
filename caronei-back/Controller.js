@@ -14,13 +14,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 //configurando o servidor
-let port = process.env.PORT || config.backend_port //process.env.PORT || 3000
+let port = process.env.PORT || config.backend_port
 
 app.listen(port, (request, response) => {
   console.log("Servidor rodando")
 })
 
-//criar um usuário
+//CADASTRO
 app.post("/create", async (request, response) => {
   //caso não exista um usuário, ele irá criar
   //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
@@ -35,8 +35,6 @@ app.post("/create", async (request, response) => {
       updatedAt: new Date(),
     },
   })
-  console.log(user)
-  console.log(created)
   if (created) {
     return response.send(
       JSON.stringify("O usuário foi cadastrado com sucesso!")
@@ -51,7 +49,7 @@ app.post("/create", async (request, response) => {
   }
 })
 
-//fazer login
+//LOGIN
 app.post("/login", async (request, response) => {
   const user = await model.Usuarios.findByPk(request.body.userMatricula) //acha o registro no banco de dados pela matricula
 
@@ -77,7 +75,7 @@ app.post("/login", async (request, response) => {
   return response.end(JSON.stringify(response_data))
 })
 
-//achar nome do usuário pela matricula
+//NOME DE USUÁRIO - acha pela matrícula
 app.get("/username/:matricula", async (request, response) => {
   const { matricula } = request.params
   const user = await model.Usuarios.findByPk(matricula)
@@ -87,7 +85,7 @@ app.get("/username/:matricula", async (request, response) => {
     return response.send(JSON.stringify(user.nomeCompleto))
   }
 })
-//achar todos os dados de um usuário pela matrícula
+//TODOS OS DADOS - todos os dados (incluindo privados) do usuário pela matrícula
 app.get("/data/:matricula", async (request, response) => {
   const { matricula } = request.params
   const user = await model.Usuarios.findByPk(matricula)
@@ -116,7 +114,7 @@ app.get("/data/:matricula", async (request, response) => {
   }
 })
 
-//alterar dados do usuário
+//ALTERAR DADOS - altera dados do usuario
 app.post("/update", async (request, response) => {
   model.Usuarios.update(
     {
@@ -141,6 +139,9 @@ app.post("/update", async (request, response) => {
     )
 })
 
+
+
+//CARROS - - -  -
 //ADICIONAR UM CARRO
 app.post("/adicionar-carro/", async (request, response) => {
   let user,
@@ -177,6 +178,35 @@ app.get("/carros/:matricula", async (request, response) => {
 
   return response.send(JSON.stringify(carros))
 })
+//ALTERAR CARRO
+app.put("/alterar-carro/", async (request, response) => {
+  model.Carros.update(
+    {
+      placa: request.body.placaNova,
+      cor: request.body.cor,
+      modelo: request.body.modelo,
+      updatedAt: new Date(),
+    },
+    {
+      where: {
+        matricula: request.body.matricula,
+        placa: request.body.placaAntiga,
+      },
+    }
+  )
+    .then((result) => {
+      response.send(JSON.stringify(true))
+    })
+    .catch((err) => response.send(JSON.stringify(false)))
+})
+//DELETAR CARRO
+app.delete("/deletar-carro/", async (request, response) => {
+  model.Carros.destroy({
+    where: { matricula: request.body.matricula, placa: request.body.placa },
+  })
+    .then((result) => response.send(JSON.stringify(true)))
+    .catch((err) => response.send(JSON.stringify(false)))
+})
 
 //RECUPERAR DADOS PUBLICOS DE UM USUARIO
 app.get("/dados-publicos/:matricula", async (request, response) => {
@@ -208,37 +238,8 @@ app.get("/dados-publicos/:matricula", async (request, response) => {
   }
 })
 
-//ALTERAR CARRO
-app.put("/alterar-carro/", async (request, response) => {
-  model.Carros.update(
-    {
-      placa: request.body.placaNova,
-      cor: request.body.cor,
-      modelo: request.body.modelo,
-      updatedAt: new Date(),
-    },
-    {
-      where: {
-        matricula: request.body.matricula,
-        placa: request.body.placaAntiga,
-      },
-    }
-  )
-    .then((result) => {
-      response.send(JSON.stringify(true))
-    })
-    .catch((err) => response.send(JSON.stringify(false)))
-})
 
-app.delete("/deletar-carro/", async (request, response) => {
-  model.Carros.destroy({
-    where: { matricula: request.body.matricula, placa: request.body.placa },
-  })
-    .then((result) => response.send(JSON.stringify(true)))
-    .catch((err) => response.send(JSON.stringify(false)))
-})
-
-//cadastrando uma rota no bd
+//CADASTRO DE ROTA - pedido de corrida do passageiro
 app.post("/createroute", async (request, response) => {
   //caso não exista um usuário, ele irá criar
   //a variável "user" guarda o modelo criado/encontrado e a "created" indica se foi criado ou não
@@ -271,7 +272,7 @@ app.post("/matchroute", async (request, response) => {
     corrida = null
 
   const driverRoute = eval(request.body.driverRoute)
-  console.log(request.body.recusadas)
+  
   const pedidos = await model.Pedidos.findAll({
     //seleciona todos os pedidos
     attributes: ["id", "matriculaPedido", "rota"],
@@ -309,7 +310,6 @@ app.post("/matchroute", async (request, response) => {
 //PASSAGEIRO BUSCAR POR MOTORISTA - vê se na tabela de matches apareceu alguma corrida com o seu ID
 app.get("/buscar-motorista/:idRota", async (request, response) => {
   const corrida = await model.CorridasAtivas.findByPk(request.params.idRota)
-  console.log(corrida)
   if (corrida) {
     return response.end(JSON.stringify({ response: true, content: corrida }))
   } else {
@@ -321,7 +321,9 @@ app.get("/buscar-motorista/:idRota", async (request, response) => {
 
 // MOTORISTA ACEITAR PASSAGEIRO
 app.post("/aceitar-passageiro", async (request, response) => {
+  //deleta o pedido da tabela de pedidos e o adiciona na tabeal de corridas ativas
   const match = await model.Pedidos.findByPk(request.body.idRota)
+  
   if (!match) {
     return response.end(
       JSON.stringify({ response: false, message: "Corrida não existe" })
@@ -329,7 +331,7 @@ app.post("/aceitar-passageiro", async (request, response) => {
   }
   model.Pedidos.destroy({ where: { id: request.body.idRota } })
     .then((a) => {
-      console.log("deletou")
+      
       model.CorridasAtivas.create({
         idRota: request.body.idRota,
         matriculaMotorista: request.body.matriculaMotorista,
@@ -339,7 +341,7 @@ app.post("/aceitar-passageiro", async (request, response) => {
         updatedAt: new Date(),
       })
         .then((corrida) => {
-          console.log("criou")
+          
           response.end(
             JSON.stringify({
               response: true,
@@ -349,7 +351,7 @@ app.post("/aceitar-passageiro", async (request, response) => {
           )
         })
         .catch((err) => {
-          console.log("errou")
+          
           console.log(err)
           response.end(
             JSON.stringify({
@@ -394,6 +396,7 @@ app.post("/avaliar", async (request, response) => {
     .catch((err) => response.send(JSON.stringify(false)))
 })
 
+//DELETA A ROTA (Quando o passageiro cancela a corrida antes do início)
 app.delete("/deleteroute/", async (request, response) => {
   model.Pedidos.destroy({
     where: {
@@ -418,12 +421,12 @@ app.get("/verificar-status/:idRota", async (request, response) => {
   return response.end(JSON.stringify({ finalizada: null, ativa: true }))
 })
 
+//ACABAR CORRIDA ATIVA - finalizar ou cancelar (quando ativa)
 app.post("/acabar-corrida-ativa", async (request, response) => {
-  console.log("desativando corrida", request.body.idCorrida)
   const corridaAtiva = await model.CorridasAtivas.findByPk(
     request.body.idCorrida
   )
-  console.log(corridaAtiva)
+  
 
   //setando as mensagens caso ela tenha sido finalizada ou cancelada
   const msg = request.body.finalizada
@@ -437,7 +440,7 @@ app.post("/acabar-corrida-ativa", async (request, response) => {
     //apaga a corrida da tabela de corridas ativas
     model.CorridasAtivas.destroy({ where: { idRota: request.body.idCorrida } })
       .then((a) => {
-        console.log("deletou")
+        
         //adiciona a corrida na tabela de corridas não ativas
         model.CorridasNaoAtivas.create({
           idCorrida: request.body.idCorrida,
@@ -449,7 +452,7 @@ app.post("/acabar-corrida-ativa", async (request, response) => {
           updatedAt: new Date(),
         })
           .then((b) => {
-            console.log("criou")
+            
             response.end(JSON.stringify({ response: true, message: msg }))
           })
           .catch((err) => {

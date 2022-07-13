@@ -1,126 +1,17 @@
 ###
-POST http://192.168.1.7:3000/avaliar
+POST http://192.168.1.7:3000/aceitar-passageiro
 Content-Type: application/json
 
 {
-    "matricula": 1,
-    "avaliacao": 5
-}
-
-
-
-###
-GET http://192.168.1.16:3000/oferecer
-
-
-###
-GET http://192.168.1.7:3000/dados-publicos/1
-
-###
-POST http://192.168.1.16:3000/solicitar
-Content-Type: application/json
-
-{
-    "matricula": 111111,
-    "nomeDestino": "Seara",
-    "nomePartida": "Bloco 910",
-    "latitudeDestino":123,
-    "longitudeDestino":456,
-    "latitudePartida":789,
-    "longitudePartida":101112
-}
-
-
-###
-GET http://192.168.1.7:3000/carros/1
-
-
-###
-POST http://192.168.1.16:3000/create
-Content-Type: application/json
-
-{
-    "userName": "teste",
-    "userEmail": "teste@teste.com",
-    "userMatricula": "2",
-    "userPassword": "2"
+    "matriculaMotorista": 1,
+    "idRota": 18
 }
 
 ###
-POST http://192.168.1.16:3000/login
-Content-Type: application/json
-
-{
-    "userMatricula": "12345",
-    "userPassword": "password"
-}
-
-###
-POST https://caronei-app.herokuapp.com/login
-Content-Type: application/json
-
-{
-    "userMatricula": "1",
-    "userPassword": "1"
-}
-
-###
-GET http://192.168.1.16:3000/username/12345
-
-###
-
-GET http://192.168.1.16:3000/data/101010
-
-
-###
-
-POST http://192.168.1.16:3000/update
-Content-Type: application/json
-
-{
-    "matricula": "1",
-    "emailVisibility": false
-}
-###
-
 POST http://192.168.1.7:3000/createroute
 Content-Type: application/json
 
 {
     "passengerMatricula": 1,
-    "passengerRoute": "['b','c','h']"
+    "passengerRoute": "['a','b','c']"
 }
-###
-
-POST http://192.168.1.7:3000/matchroute
-Content-Type: application/json
-
-{
-    "driverMatricula": 1,
-    "driverRoute": "['a','b', 'c', 'd', 'e', 'f']"
-}
-
-###
-
-POST http://192.168.1.7:3000/aceitar-passageiro
-Content-Type: application/json
-
-{
-    "idRota":1,
-    "matriculaMotorista":1
-}
-###
-
-GET http://192.168.1.7:3000/buscar-motorista/200
-###
-
-POST http://192.168.1.7:3000/acabar-corrida-ativa
-Content-Type: application/json
-
-{
-    "idCorrida":7,
-    "finalizada":true
-}
-###
-
-GET http://192.168.1.7:3000/verificar-status/3

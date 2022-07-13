@@ -100,19 +100,6 @@ const MatchRideScreen = ({ route }) => {
     getData()
   }
 
-  //verifica o status da corrida a cada 4 segundos
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if(readyUpdate){
-  //       setReadyUpdate(false)
-  //       verficarStatus()
-  //     }
-
-  //   }, 4000);
-  //   return () => clearInterval(interval);
-
-  // }, []);
-
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

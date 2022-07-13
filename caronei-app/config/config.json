@@ -1,25 +1,3 @@
 {
-  "development": {
-    "username": "root",
-    "password": null,
-    "database": "banco",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "production": {
-    "username": "b5736c99952670",
-    "password": "df4baeba",
-    "database": "heroku_ea28ff8f411c568",
-    "host": "us-cdbr-east-06.cleardb.net",
-    "dialect": "mysql"
-  },
-  "urlRootNode": "https://caronei-app.herokuapp.com",
-  "backend_port": 3000
+  "urlRootNode": "http://192.168.1.7:3000"
 }

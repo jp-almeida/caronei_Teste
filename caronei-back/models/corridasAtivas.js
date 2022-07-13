@@ -34,12 +34,11 @@ module.exports = (sequelize, DataTypes) => {
       references:{
         model:"usuarios",
         key:"matricula"
-      },
-      rota: {
+      }
+    },
+    rota: {
         type: DataTypes.STRING, 
         allowNull: false
-      },
-      allowNull: false
     },
     emProgresso:{
       type: DataTypes.BOOLEAN,

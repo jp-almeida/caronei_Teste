@@ -209,7 +209,7 @@ export async function acabarCorrida(idCorrida, finalizada){
     },
     body: JSON.stringify({
       idCorrida: idCorrida,
-      finalizada: finalizada
+      finalizada: finalizada,
     })
   })
   let resp = await reqs.json()

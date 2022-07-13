@@ -77,7 +77,6 @@ const SearchRideScreen = ({ route }) => {
         }
       })
     } else {
-      console.log(response.content)
       setMessage('Clique no botão para tentar novamente.')
     }
   }

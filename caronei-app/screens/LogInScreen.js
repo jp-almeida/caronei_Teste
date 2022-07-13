@@ -39,7 +39,7 @@ const LogInScreen = () => {
         userPassword: password
       })
     })
-
+    
     let response = await reqs.json()
     setMessage(response.message)
     if (typeof response.token === 'number') {

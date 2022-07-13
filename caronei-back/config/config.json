@@ -20,6 +20,5 @@
     "host": "us-cdbr-east-06.cleardb.net",
     "dialect": "mysql"
   },
-  "urlRootNode": "https://caronei-app.herokuapp.com/",
   "backend_port": 3000
 }

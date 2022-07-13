@@ -107,7 +107,7 @@ const PassengerRoute = () => {
                 <View style={styles.SectionStyle}>
                   <Image
                     style={styles.ImageStyle}
-                    source={require("../images/markerIco.png")}
+                    source={require("../images/profile_picture.png")}
                   />
                   <Text style={styles.rowText} numberOfLines={1}>
                     {item.item.nome}
@@ -159,7 +159,7 @@ const PassengerRoute = () => {
                 <View style={styles.SectionStyle}>
                   <Image
                     style={styles.ImageStyle}
-                    source={require("../images/markerIco.png")}
+                    source={require("../images/profile_picture.png")}
                   />
                   <Text style={styles.rowText} numberOfLines={1}>
                     {item.item.nome}
