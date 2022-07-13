@@ -2,6 +2,7 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   SafeAreaView,
   Keyboard,
 } from "react-native"
@@ -109,7 +110,20 @@ const AcceptRideScreen = ({ route }) => {
                 <Icon name="account-circle" type="material" size={70} />
               </View>
               <View>
-                <Text>{usuario.name}</Text>
+                <View>
+                  <TouchableOpacity
+                    style={{}}
+                    onPress={() => {
+                      console.log("clicou")
+                      navigation.navigate('UserScreen', {
+                        matricula: corrida.matriculaPassageiro
+                      })
+                    }}>
+
+                    <Text>{usuario.name}</Text>
+                  </TouchableOpacity>
+                </View>
+
                 <Text>
                   <Icon name="room" type="material" size={15} />
                   {partida} -- {destino}

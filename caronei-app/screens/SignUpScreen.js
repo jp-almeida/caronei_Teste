@@ -255,13 +255,6 @@ const SignUpScreen = () => {
                     onPress={() => navigation.navigate("LogInScreen")}
                   />
                 </View>
-
-                <TouchableOpacity
-                  style={{}}
-                  onPress={() => navigation.navigate("HomeScreen")}
-                >
-                  <Text style={{}}>Pular cadastro</Text>
-                </TouchableOpacity>
               </View>
             </View>
           </TouchableWithoutFeedback>

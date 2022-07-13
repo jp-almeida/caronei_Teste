@@ -155,6 +155,7 @@ const RateUserScreen = ({ route }) => {
                   if (rating) {
                     let resp = rateUser(matricula, rating)
                     console.log("[" + store.getState().auth.matricula +"]" + " - avaliou")
+                    navigation.navigate('HomeScreen')
                   }
                 }}
               />
