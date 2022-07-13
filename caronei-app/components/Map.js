@@ -6,7 +6,6 @@ import { useSelector } from "react-redux"
 import { selectDestination, selectOrigin } from "../slices/navSlice"
 import MapViewDirections from "react-native-maps-directions"
 import { GOOGLE_MAPS_APIKEY } from "@env"
-import mapStyle from "../paradas/MapStyle.json"
 
 // const Map = () => {
 //   const origin = useSelector(selectOrigin)
@@ -31,7 +30,6 @@ const Map = (props) => {
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       }}
-      customMapStyle={mapStyle}
     >
       {origin.location && destination.location && (
         <MapViewDirections
@@ -45,7 +43,7 @@ const Map = (props) => {
           }}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={3}
-          strokeColor="hotpink"
+          strokeColor="#4D4C7D"
           onReady={() =>
             mapRef.current?.fitToSuppliedMarkers(["origin", "destination"], {
               edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },

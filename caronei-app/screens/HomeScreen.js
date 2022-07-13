@@ -20,7 +20,6 @@ import { store } from "../store"
 import { logout } from "../slices/rideState"
 import { getUsernameData } from "../requestsFunctions"
 import { Icon } from "@rneui/themed"
-import mapStyle from "../paradas/MapStyle.json"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -106,7 +105,6 @@ export default function HomeScreen() {
               latitudeDelta: 0.013,
               longitudeDelta: 0.013,
             }}
-            customMapStyle={mapStyle}
           >
             {paradas.map((marker, index) => (
               <Marker
