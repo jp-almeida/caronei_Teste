@@ -4,6 +4,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 const model = require("./models")
+const {Op} = require("sequelize")
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
 }
@@ -472,4 +473,16 @@ app.post("/acabar-corrida-ativa", async (request, response) => {
       JSON.stringify({ response: false, error: "Corrida não existe" })
     )
   }
+})
+
+app.get("/todas-corridas/:matricula", async(request, response) => {
+  
+  const corridas = await model.CorridasNaoAtivas.findAll({
+    where:{
+      [Op.or]: [
+        { matriculaMotorista: request.params.matricula },
+        { matriculaPassageiro: request.params.matricula }
+      ]}
+  })
+  return response.send(JSON.stringify(corridas))
 })
