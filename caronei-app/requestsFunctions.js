@@ -230,3 +230,18 @@ export async function getUsernameData(matricula){
 
   return await resp.json()
 }
+
+export async function loadRides(){
+  let resp = await fetch(
+    url + "/todas-corridas/" + store.getState().auth.matricula,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  return await resp.json()
+}

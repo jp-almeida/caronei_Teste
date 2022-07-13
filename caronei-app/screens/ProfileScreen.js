@@ -24,7 +24,7 @@ import VisibilityButton from '../components/buttons/VisibilityButton'
 import ExpandButton from '../components/buttons/ExpandButton'
 import { Dialog } from 'react-native-elements'
 import CarProfileLine from '../components/CarProfileLine'
-import { getCars, addCar, getUserData } from '../requestsFunctions'
+import { getCars, addCar, getUserData, loadRides } from '../requestsFunctions'
 import { styles } from '../styles'
 
 //gambiarra porque as portas não estavam batendo
@@ -84,6 +84,9 @@ const ProfileScreen = () => {
   })
   const [cars, setCars] = useState([])
   const [selectedGender, setSelectedGender] = useState()
+  const [rides, setRides] = useState([])
+  const [ridesDriver, setRidesDriver] = useState([])
+  const [ridesPassenger, setRidesPassenger] = useState([])
 
   async function getData() {
     console.log(store.getState().auth.matricula + ' - Carregando dados (tela de perfil)')
@@ -197,9 +200,25 @@ const ProfileScreen = () => {
     await addCar(placa, modelo, cor)
     updateCars() //atualiza os carros
   }
+
+  async function getRides(){
+    const r = await loadRides()
+    setRides(await r)
+    
+    setRidesDriver(await r.filter((element) =>{
+      return element.matriculaMotorista == store.getState().auth.matricula
+    }))
+
+    setRidesPassenger(await r.filter((element) =>{
+      return element.matriculaPassageiro == store.getState().auth.matricula
+    }))
+  }
+
   if (!name.data) {
     getData()
     updateCars()
+    getRides()
+    console.log(ridesPassenger)
   }
 
   const [isCollapsedProfile, setCollapsedProfile] = useState(false)
