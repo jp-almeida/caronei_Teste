@@ -84,9 +84,11 @@ const ProfileScreen = () => {
   })
   const [cars, setCars] = useState([])
   const [selectedGender, setSelectedGender] = useState()
-  const [rides, setRides] = useState([])
-  const [ridesDriver, setRidesDriver] = useState([])
-  const [ridesPassenger, setRidesPassenger] = useState([])
+
+  //arrays de corridas
+  const [rides, setRides] = useState([]) //todas as corridas
+  const [ridesDriver, setRidesDriver] = useState([]) //corridas oferecidas
+  const [ridesPassenger, setRidesPassenger] = useState([]) //corridas solicitadas
 
   async function getData() {
     console.log(store.getState().auth.matricula + ' - Carregando dados (tela de perfil)')
