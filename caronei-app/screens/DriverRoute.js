@@ -12,7 +12,12 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import paradas from "../paradas/paradas.json"
 import tw from "twrnc"
 import { useDispatch, useSelector } from "react-redux"
-import { selectDestination, selectOrigin, setDestination, setOrigin } from "../slices/navSlice"
+import {
+  selectDestination,
+  selectOrigin,
+  setDestination,
+  setOrigin,
+} from "../slices/navSlice"
 import { addRoute } from "../requestsFunctions"
 import { useNavigation } from "@react-navigation/native"
 import { DefaultButton } from "../components/Button"
@@ -93,7 +98,7 @@ const DriverRoute = () => {
                 <View style={styles.SectionStyle}>
                   <Image
                     style={styles.ImageStyle}
-                    source={require("../images/profile_picture.png")}
+                    source={require("../images/markerico.png")}
                   />
                   <Text style={styles.rowText} numberOfLines={1}>
                     {item.item.nome}
@@ -145,7 +150,7 @@ const DriverRoute = () => {
                 <View style={styles.SectionStyle}>
                   <Image
                     style={styles.ImageStyle}
-                    source={require("../images/profile_picture.png")}
+                    source={require("../images/markerico.png")}
                   />
                   <Text style={styles.rowText} numberOfLines={1}>
                     {item.item.nome}
@@ -157,13 +162,16 @@ const DriverRoute = () => {
         />
       </View>
       <View style={tw`h-10%`}>
-      <DefaultButton title="Confirmar" onPress={() => {
-        if (origin?.location && destination?.location){
-          dispatch(carregar_motorista())
-          console.log(store.getState().ride.role + " - Escolheu rota")
-          navigation.navigate("SearchRideScreen", {parametro: rota})
-        }
-      }} />
+        <DefaultButton
+          title="Confirmar"
+          onPress={() => {
+            if (origin?.location && destination?.location) {
+              dispatch(carregar_motorista())
+              console.log(store.getState().ride.role + " - Escolheu rota")
+              navigation.navigate("SearchRideScreen", { parametro: rota })
+            }
+          }}
+        />
       </View>
     </SafeAreaView>
   )

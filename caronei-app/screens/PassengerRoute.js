@@ -26,7 +26,7 @@ import { store } from "../store"
 
 const PassengerRoute = () => {
   console.log(store.getState().ride.role + " - Tela de rota")
-  
+
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const [partida, setPartida] = useState("")
@@ -107,7 +107,7 @@ const PassengerRoute = () => {
                 <View style={styles.SectionStyle}>
                   <Image
                     style={styles.ImageStyle}
-                    source={require("../images/profile_picture.png")}
+                    source={require("../images/markerico.png")}
                   />
                   <Text style={styles.rowText} numberOfLines={1}>
                     {item.item.nome}
@@ -159,7 +159,7 @@ const PassengerRoute = () => {
                 <View style={styles.SectionStyle}>
                   <Image
                     style={styles.ImageStyle}
-                    source={require("../images/profile_picture.png")}
+                    source={require("../images/markerico.png")}
                   />
                   <Text style={styles.rowText} numberOfLines={1}>
                     {item.item.nome}

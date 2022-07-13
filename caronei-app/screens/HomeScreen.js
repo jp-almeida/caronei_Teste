@@ -5,21 +5,22 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  Dimensions
-} from 'react-native'
-import React, { useState } from 'react'
-import MapView, { Marker } from 'react-native-maps'
-import paradas from '../paradas/paradas.json'
-import tw from 'twrnc'
-import NavOptions from '../components/NavOptions'
-import { useDispatch } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
-import { logoutAuth } from '../slices/userAuth'
-import config from '../config/config.json'
-import { store } from '../store'
-import { logout } from '../slices/rideState'
-import { getUsernameData } from '../requestsFunctions'
-import { Icon } from '@rneui/themed'
+  Dimensions,
+} from "react-native"
+import React, { useState } from "react"
+import MapView, { Marker } from "react-native-maps"
+import paradas from "../paradas/paradas.json"
+import tw from "twrnc"
+import NavOptions from "../components/NavOptions"
+import { useDispatch } from "react-redux"
+import { useNavigation } from "@react-navigation/native"
+import { logoutAuth } from "../slices/userAuth"
+import config from "../config/config.json"
+import { store } from "../store"
+import { logout } from "../slices/rideState"
+import { getUsernameData } from "../requestsFunctions"
+import { Icon } from "@rneui/themed"
+import mapStyle from "../paradas/MapStyle.json"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -29,7 +30,7 @@ export default function HomeScreen() {
   function exitAccount() {
     dispatch(logoutAuth())
     dispatch(logout())
-    navigation.navigate('LogInScreen')
+    navigation.navigate("LogInScreen")
   }
   async function getUserName() {
     let reqs = getUsernameData(store.getState().auth.matricula)
@@ -42,36 +43,36 @@ export default function HomeScreen() {
       <View>
         <View
           style={{
-            justifyContent: 'space-between',
-            height: '20%',
+            justifyContent: "space-between",
+            height: "20%",
             paddingHorizontal: 20,
-            alignItems: 'center',
-            flexDirection: 'row',
+            alignItems: "center",
+            flexDirection: "row",
             padding: 10,
-            backgroundColor: '#EFE9E5'
+            backgroundColor: "#EFE9E5",
           }}
         >
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center'
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
             <Image
               style={{
                 width: 140 / 1.5,
-                height: 100 / 1.5
+                height: 100 / 1.5,
               }}
-              source={require('../images/logo.png')}
+              source={require("../images/logo.png")}
             />
 
             {/* <Text>Olá, {name}</Text> */}
           </View>
 
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
               style={styles.homeButton1}
-              onPress={() => navigation.navigate('ProfileScreen')}
+              onPress={() => navigation.navigate("ProfileScreen")}
             >
               <Icon
                 size={20}
@@ -103,15 +104,16 @@ export default function HomeScreen() {
               latitude: -3.742522,
               longitude: -38.574836,
               latitudeDelta: 0.013,
-              longitudeDelta: 0.013
+              longitudeDelta: 0.013,
             }}
+            customMapStyle={mapStyle}
           >
             {paradas.map((marker, index) => (
               <Marker
                 key={index}
                 coordinate={{
                   latitude: marker.lat,
-                  longitude: marker.lng
+                  longitude: marker.lng,
                 }}
                 title={marker.nome}
               />
@@ -120,8 +122,8 @@ export default function HomeScreen() {
         </View>
         <View
           style={{
-            height: '40%',
-            backgroundColor: '#EFE9E5'
+            height: "40%",
+            backgroundColor: "#EFE9E5",
           }}
         >
           <NavOptions />
@@ -134,31 +136,31 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   mapStyle: {
-    width: Dimensions.get('window').width,
-    height: '100%'
+    width: Dimensions.get("window").width,
+    height: "100%",
   },
   homeButton1: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
-    backgroundColor: '#4D4C7D',
-    borderRadius: 8
+    backgroundColor: "#4D4C7D",
+    borderRadius: 8,
   },
   homeButton2: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     borderRadius: 8,
-    marginLeft: 10
+    marginLeft: 10,
   },
   homeButtonText: {
     marginLeft: 5,
-    color: 'white'
-  }
+    color: "white",
+  },
 })
