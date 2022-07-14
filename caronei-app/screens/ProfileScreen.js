@@ -25,10 +25,17 @@ import VisibilityButton from "../components/buttons/VisibilityButton"
 import ExpandButton from "../components/buttons/ExpandButton"
 import { Dialog } from "react-native-elements"
 import CarProfileLine from "../components/CarProfileLine"
-import { getCars, addCar, getUserData, loadRides } from "../requestsFunctions"
+import {
+  getCars,
+  addCar,
+  getUserData,
+  loadRides,
+  getUsernameData,
+} from "../requestsFunctions"
 import { styles } from "../styles"
 import { DefaultButton } from "../components/Button"
 import { ScrollView } from "react-native-gesture-handler"
+import { getNome } from "../paradas/paradasFunctions"
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode
@@ -92,7 +99,16 @@ const ProfileScreen = () => {
   const [ridesDriver, setRidesDriver] = useState([]) //corridas oferecidas
   const [ridesPassenger, setRidesPassenger] = useState([]) //corridas solicitadas
 
-  const [filteSelected, setFilterSelected] = useState("1")
+  const [filterSelected, setFilterSelected] = useState("1")
+
+  async function carregarNome(matricula) {
+    return await getUsernameData(matricula)
+  }
+  const capital = (str) =>
+    str
+      .split("")
+      .filter((a) => a.match(/[A-Z]/))
+      .join("")
 
   async function getData() {
     console.log(
@@ -232,7 +248,7 @@ const ProfileScreen = () => {
     getData()
     updateCars()
     getRides()
-    console.log(ridesPassenger)
+    console.log(rides)
   }
 
   const [isCollapsedProfile, setCollapsedProfile] = useState(false)
@@ -645,7 +661,7 @@ const ProfileScreen = () => {
                     justifyContent: "space-around",
                   }}
                 >
-                  <View style={filteSelected == "1" ? {} : { opacity: 0.5 }}>
+                  <View style={filterSelected == "1" ? {} : { opacity: 0.5 }}>
                     <TouchableOpacity
                       style={styles2.button}
                       onPress={() => {
@@ -655,7 +671,7 @@ const ProfileScreen = () => {
                       <Text style={styles2.text}>Todas</Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={filteSelected == "2" ? {} : { opacity: 0.5 }}>
+                  <View style={filterSelected == "2" ? {} : { opacity: 0.5 }}>
                     <TouchableOpacity
                       style={styles2.button}
                       onPress={() => {
@@ -665,7 +681,7 @@ const ProfileScreen = () => {
                       <Text style={styles2.text}>Oferecidas</Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={filteSelected == "3" ? {} : { opacity: 0.5 }}>
+                  <View style={filterSelected == "3" ? {} : { opacity: 0.5 }}>
                     <TouchableOpacity
                       style={styles2.button}
                       onPress={() => {
@@ -690,45 +706,69 @@ const ProfileScreen = () => {
                 <Text style={styles.profileLineDataTitle}>Rota</Text>
                 <Text style={styles.profileLineDataTitle}>Carro</Text>
               </View>
-              {filteSelected == "1" && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    marginTop: 10,
-                  }}
-                >
-                  <Text style={styles.profileLineDataTitle}>Caronildo 1</Text>
-                  <Text style={styles.profileLineDataTitle}>Rota 1</Text>
-                  <Text style={styles.profileLineDataTitle}>Carro 1</Text>
-                </View>
-              )}
-              {filteSelected == "2" && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    marginTop: 10,
-                  }}
-                >
-                  <Text style={styles.profileLineDataTitle}>Caronildo 2</Text>
-                  <Text style={styles.profileLineDataTitle}>Rota 2</Text>
-                  <Text style={styles.profileLineDataTitle}>Carro 2</Text>
-                </View>
-              )}
-              {filteSelected == "3" && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    marginTop: 10,
-                  }}
-                >
-                  <Text style={styles.profileLineDataTitle}>Caronildo 3</Text>
-                  <Text style={styles.profileLineDataTitle}>Rota 3</Text>
-                  <Text style={styles.profileLineDataTitle}>Carro 3</Text>
-                </View>
-              )}
+              {filterSelected == "1" &&
+                rides.map((r) => {
+                  return (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text style={styles.profileLineDataTitle}>
+                        {r.matriculaMotorista}
+                      </Text>
+                      <Text style={styles.profileLineDataTitle}>
+                        {capital(getNome(eval(r.rota)[0]))} -{" "}
+                        {capital(getNome(eval(r.rota).slice(-1)))}
+                      </Text>
+                      <Text style={styles.profileLineDataTitle}>Carro 1</Text>
+                    </View>
+                  )
+                })}
+              {filterSelected == "2" &&
+                ridesDriver.map((rd) => {
+                  return (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text style={styles.profileLineDataTitle}>
+                        {rd.matriculaMotorista}
+                      </Text>
+                      <Text style={styles.profileLineDataTitle}>
+                        {capital(getNome(eval(rd.rota)[0]))} -{" "}
+                        {capital(getNome(eval(rd.rota).slice(-1)))}
+                      </Text>
+                      <Text style={styles.profileLineDataTitle}>Carro 2</Text>
+                    </View>
+                  )
+                })}
+              {filterSelected == "3" &&
+                ridesPassenger.map((rp) => {
+                  return (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginTop: 10,
+                      }}
+                    >
+                      <Text style={styles.profileLineDataTitle}>
+                        {rp.matriculaMotorista}
+                      </Text>
+                      <Text style={styles.profileLineDataTitle}>
+                        {capital(getNome(eval(rp.rota)[0]))} -{" "}
+                        {capital(getNome(eval(rp.rota).slice(-1)))}
+                      </Text>
+                      <Text style={styles.profileLineDataTitle}>Carro 3</Text>
+                    </View>
+                  )
+                })}
             </Collapsible>
           </View>
         </View>
