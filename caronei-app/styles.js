@@ -56,15 +56,16 @@ export const styles = StyleSheet.create({
     fontSize: 20
   },
   userHeaderView: {
-    alignItems: 'center',
+    //alignItems: 'center',
     display: 'flex',
     flexDirection: 'row'
   },
   userHeaderName: {
+    maxWidth: 300,
     marginLeft: 10,
-    textAlign: 'center',
+    //textAlign: 'center',
     color: '#46458D',
-    fontSize: 40
+    fontSize: 32
   },
   profileSectionHeader: {
     display: 'flex',

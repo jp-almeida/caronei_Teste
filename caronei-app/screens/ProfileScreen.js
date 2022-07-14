@@ -47,7 +47,6 @@ function getGenderName(gender) {
 }
 
 const ProfileScreen = () => {
-  
   const navigation = useNavigation()
   const [name, setName] = useState({
     data: null,
@@ -91,7 +90,9 @@ const ProfileScreen = () => {
   const [ridesPassenger, setRidesPassenger] = useState([]) //corridas solicitadas
 
   async function getData() {
-    console.log(store.getState().auth.matricula + ' - Carregando dados (tela de perfil)')
+    console.log(
+      store.getState().auth.matricula + ' - Carregando dados (tela de perfil)'
+    )
     //pega os dados do banco de dados e preenche as variaveis
 
     const response = await getUserData()
@@ -127,7 +128,9 @@ const ProfileScreen = () => {
     setSelectedGender(response.gender)
   }
   async function updateUserData() {
-    console.log(store.getState().auth.matricula + ' - Salvando dados (tela de perfil)')
+    console.log(
+      store.getState().auth.matricula + ' - Salvando dados (tela de perfil)'
+    )
     let jsonBody = { matricula: store.getState().auth.matricula.toString() }
     if (name.changed) {
       jsonBody.name = name.data
@@ -203,17 +206,21 @@ const ProfileScreen = () => {
     updateCars() //atualiza os carros
   }
 
-  async function getRides(){
+  async function getRides() {
     const r = await loadRides()
     setRides(await r)
-    
-    setRidesDriver(await r.filter((element) =>{
-      return element.matriculaMotorista == store.getState().auth.matricula
-    }))
 
-    setRidesPassenger(await r.filter((element) =>{
-      return element.matriculaPassageiro == store.getState().auth.matricula
-    }))
+    setRidesDriver(
+      await r.filter(element => {
+        return element.matriculaMotorista == store.getState().auth.matricula
+      })
+    )
+
+    setRidesPassenger(
+      await r.filter(element => {
+        return element.matriculaPassageiro == store.getState().auth.matricula
+      })
+    )
   }
 
   if (!name.data) {
@@ -260,76 +267,85 @@ const ProfileScreen = () => {
                 />
               </View>
 
-              <View style={{ alignItems: 'flex-end' }}>
-                <Text style={styles.userHeaderName}>{name.data}</Text>
+              <View
+                style={
+                  {
+                    /*flexDirection: 'column'*/
+                  }
+                }
+              >
+                <View style={{}}>
+                  <Text style={styles.userHeaderName}>
+                    {name.data}
+                    <EditButton element={name} editFunction={setName} />
+                  </Text>
 
-                <EditButton element={name} editFunction={setName} />
-
-                <Dialog visible={name.isEditing} overlayStyle={styles.dialog}>
-                  <Dialog.Title
-                    title="Editar nome"
-                    titleStyle={styles.dialogTitle}
-                  />
-                  <TextInput
-                    style={styles.textInput}
-                    defaultValue={name.data}
-                    onChangeText={text => {
-                      currentName = text
-                    }}
-                  />
-                  <Dialog.Button
-                    title="Salvar"
-                    onPress={() => {
-                      if (currentName) {
+                  <Dialog visible={name.isEditing} overlayStyle={styles.dialog}>
+                    <Dialog.Title
+                      title="Editar nome"
+                      titleStyle={styles.dialogTitle}
+                    />
+                    <TextInput
+                      style={styles.textInput}
+                      defaultValue={name.data}
+                      onChangeText={text => {
+                        currentName = text
+                      }}
+                    />
+                    <Dialog.Button
+                      title="Salvar"
+                      onPress={() => {
+                        if (currentName) {
+                          setName({
+                            ...name,
+                            data: currentName,
+                            isEditing: false,
+                            changed: true
+                          })
+                          setChanged(true)
+                        }
+                        currentName = null
+                      }}
+                    />
+                    <Dialog.Button
+                      title="Cancelar"
+                      onPress={() => {
                         setName({
                           ...name,
-                          data: currentName,
-                          isEditing: false,
-                          changed: true
+                          isEditing: false
                         })
-                        setChanged(true)
-                      }
-                      currentName = null
-                    }}
-                  />
-                  <Dialog.Button
-                    title="Cancelar"
-                    onPress={() => {
-                      setName({
-                        ...name,
-                        isEditing: false
-                      })
-                      currentName = null
-                    }}
-                  />
-                </Dialog>
+                        currentName = null
+                      }}
+                    />
+                  </Dialog>
+                </View>
+
+                {/* AVALIAÇÃO */}
+                {!rating && (
+                  <Text
+                    style={{ color: 'black', fontSize: 15, fontWeight: 'bold' }}
+                  >
+                    Você ainda não foi avaliado
+                  </Text>
+                ) //caso ainda não tenha avaliações
+                }
+
+                {rating && (
+                  <View style={{ width: 100 }}>
+                    <Text style={{ color: '#46458D' }}>{rating}</Text>
+                    <StarRating
+                      disabled={true}
+                      rating={rating}
+                      starSize={30}
+                      fullStarColor="#4D4C7D"
+                      starStyle={{}}
+                    />
+                  </View>
+                )}
               </View>
             </View>
 
-            <View style={{}}>
-              {/* AVALIAÇÃO */}
-              {!rating && (
-                <Text
-                  style={{ color: 'black', fontSize: 15, fontWeight: 'bold' }}
-                >
-                  Você ainda não foi avaliado
-                </Text>
-              ) //caso ainda não tenha avaliações
-              }
-
-              {rating && (
-                <View style={{ width: 100 }}>
-                  <Text style={{ color: '#46458D' }}>{rating}</Text>
-                  <StarRating
-                    disabled={true}
-                    rating={rating}
-                    starSize={30}
-                    fullStarColor="#4D4C7D"
-                    starStyle={{}}
-                  />
-                </View>
-              )}
-
+            <View style={{ marginTop: 20 }}>
               <View>
                 <TouchableOpacity
                   style={{}}
@@ -574,7 +590,9 @@ const ProfileScreen = () => {
                     onPress={() => setAddingCar(false)}
                   />
                 </Dialog>
-                <Text style={{ color: '#46458D' }}>Placa | Modelo | Cor</Text>
+                <Text style={{ color: '#46458D', fontWeight: 'bold' }}>
+                  Placa | Modelo | Cor
+                </Text>
                 {cars.map(c => (
                   <CarProfileLine
                     key={c.placa}
