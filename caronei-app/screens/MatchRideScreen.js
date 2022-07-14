@@ -66,10 +66,12 @@ const MatchRideScreen = ({ route }) => {
         console.log(
           store.getState().ride.role + ' - Identificou: corrida finalizada'
         )
+        navigation.navigate("RateUserScreen", {matricula: matricula, rota: {partida: partida, destino: destino}})
       } else {
         console.log(
           store.getState().ride.role + ' - Identificou: corrida cancelada'
         )
+        navigation.navigate("HomeScreen")
       }
     } else {
       console.log(
