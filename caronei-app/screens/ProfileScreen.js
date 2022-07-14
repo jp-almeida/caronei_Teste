@@ -741,7 +741,7 @@ const ProfileScreen = () => {
                       }}
                     >
                       <Text style={styles.profileLineDataTitle}>
-                        {rd.matriculaMotorista}
+                        {rd.matriculaPassageiro}
                       </Text>
                       <Text style={styles.profileLineDataTitle}>
                         {capital(getNome(eval(rd.rota)[0]))} -{' '}
