@@ -6,36 +6,36 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   TextInput,
-  Pressable,
-} from "react-native"
-import React, { useState } from "react"
-import { Image, Keyboard } from "react-native"
-import tw from "twrnc"
-import { store } from "../store"
-import { useNavigation } from "@react-navigation/native"
-import config from "../config/config.json"
-import { Icon } from "react-native-elements"
-import ProfileData from "../components/ProfileData"
-import Collapsible from "react-native-collapsible"
-import { Picker } from "@react-native-community/picker"
-import StarRating from "react-native-star-rating"
-import RNDateTimePicker from "@react-native-community/datetimepicker"
-import EditButton from "../components/buttons/EditButton"
-import VisibilityButton from "../components/buttons/VisibilityButton"
-import ExpandButton from "../components/buttons/ExpandButton"
-import { Dialog } from "react-native-elements"
-import CarProfileLine from "../components/CarProfileLine"
+  Pressable
+} from 'react-native'
+import React, { useState } from 'react'
+import { Image, Keyboard } from 'react-native'
+import tw from 'twrnc'
+import { store } from '../store'
+import { useNavigation } from '@react-navigation/native'
+import config from '../config/config.json'
+import { Icon } from 'react-native-elements'
+import ProfileData from '../components/ProfileData'
+import Collapsible from 'react-native-collapsible'
+import { Picker } from '@react-native-community/picker'
+import StarRating from 'react-native-star-rating'
+import RNDateTimePicker from '@react-native-community/datetimepicker'
+import EditButton from '../components/buttons/EditButton'
+import VisibilityButton from '../components/buttons/VisibilityButton'
+import ExpandButton from '../components/buttons/ExpandButton'
+import { Dialog } from 'react-native-elements'
+import CarProfileLine from '../components/CarProfileLine'
 import {
   getCars,
   addCar,
   getUserData,
   loadRides,
-  getUsernameData,
-} from "../requestsFunctions"
-import { styles } from "../styles"
-import { DefaultButton } from "../components/Button"
-import { ScrollView } from "react-native-gesture-handler"
-import { getNome } from "../paradas/paradasFunctions"
+  getUsernameData
+} from '../requestsFunctions'
+import { styles } from '../styles'
+import { DefaultButton } from '../components/Button'
+import { ScrollView } from 'react-native-gesture-handler'
+import { getNome } from '../paradas/paradasFunctions'
 
 //gambiarra porque as portas não estavam batendo
 const url = config.urlRootNode
@@ -43,14 +43,14 @@ var cars = []
 
 function getGenderName(gender) {
   switch (gender) {
-    case "M":
-      return "Masculino"
-    case "F":
-      return "Feminino"
-    case "O":
-      return "Outro"
-    case "N":
-      return "Não quero informar"
+    case 'M':
+      return 'Masculino'
+    case 'F':
+      return 'Feminino'
+    case 'O':
+      return 'Outro'
+    case 'N':
+      return 'Não quero informar'
     default:
       return null
   }
@@ -61,7 +61,7 @@ const ProfileScreen = () => {
   const [name, setName] = useState({
     data: null,
     isEditing: false,
-    changed: false,
+    changed: false
   })
   const [changed, setChanged] = useState(false)
   const [rating, setRating] = useState(null)
@@ -70,26 +70,26 @@ const ProfileScreen = () => {
   const [email, setEmail] = useState({
     data: null,
     visibility: null,
-    isEditing: false,
+    isEditing: false
   })
   const [gender, setGender] = useState({
     value: null,
     data: null,
     visibility: null,
     isEditing: false,
-    changed: false,
+    changed: false
   })
   const [phone, setPhone] = useState({
     data: null,
     visibility: null,
     changed: false,
-    isEditing: false,
+    isEditing: false
   })
   const [birth, setBirth] = useState({
     data: null,
     visibility: null,
     isEditing: false,
-    changed: false,
+    changed: false
   })
   const [cars, setCars] = useState([])
   const [selectedGender, setSelectedGender] = useState()
@@ -99,20 +99,20 @@ const ProfileScreen = () => {
   const [ridesDriver, setRidesDriver] = useState([]) //corridas oferecidas
   const [ridesPassenger, setRidesPassenger] = useState([]) //corridas solicitadas
 
-  const [filterSelected, setFilterSelected] = useState("1")
+  const [filterSelected, setFilterSelected] = useState('1')
 
   async function carregarNome(matricula) {
     return await getUsernameData(matricula)
   }
-  const capital = (str) =>
+  const capital = str =>
     str
-      .split("")
-      .filter((a) => a.match(/[A-Z]/))
-      .join("")
+      .split('')
+      .filter(a => a.match(/[A-Z]/))
+      .join('')
 
   async function getData() {
     console.log(
-      store.getState().auth.matricula + " - Carregando dados (tela de perfil)"
+      store.getState().auth.matricula + ' - Carregando dados (tela de perfil)'
     )
     //pega os dados do banco de dados e preenche as variaveis
 
@@ -120,44 +120,44 @@ const ProfileScreen = () => {
 
     setName({
       ...name,
-      data: response.name,
+      data: response.name
     })
     setRating(response.rating)
     setExperience(response.experience)
     setEmail({
       ...email,
       data: response.email,
-      visibility: response.emailVisibility,
+      visibility: response.emailVisibility
     })
     setGender({
       ...gender,
       value: response.gender,
       data: getGenderName(response.gender),
       visibility: response.genderVisibility,
-      changed: false,
+      changed: false
     })
     setPhone({
       ...phone,
       visibility: response.phoneVisibility,
-      changed: false,
+      changed: false
     })
     setBirth({
       ...birth,
       visibility: response.birthVisibility,
-      data: response.birth ? new Date(response.birth) : response.birth, //converte para objeto de data (chega do back em string)
+      data: response.birth ? new Date(response.birth) : response.birth //converte para objeto de data (chega do back em string)
     })
     setSelectedGender(response.gender)
   }
   async function updateUserData() {
     console.log(
-      store.getState().auth.matricula + " - Salvando dados (tela de perfil)"
+      store.getState().auth.matricula + ' - Salvando dados (tela de perfil)'
     )
     let jsonBody = { matricula: store.getState().auth.matricula.toString() }
     if (name.changed) {
       jsonBody.name = name.data
       setName({
         ...name,
-        changed: false,
+        changed: false
       })
     }
     if (email.changed) {
@@ -165,7 +165,7 @@ const ProfileScreen = () => {
       jsonBody.emailVisibility = email.visibility
       setEmail({
         ...email,
-        changed: false,
+        changed: false
       })
     }
 
@@ -175,7 +175,7 @@ const ProfileScreen = () => {
       setGender({
         ...gender,
         isEditing: false,
-        changed: false,
+        changed: false
       })
     }
 
@@ -184,7 +184,7 @@ const ProfileScreen = () => {
       jsonBody.phoneVisibility = phone.visibility
       setPhone({
         ...phone,
-        changed: false,
+        changed: false
       })
     }
 
@@ -193,17 +193,17 @@ const ProfileScreen = () => {
       jsonBody.birthVisibility = birth.visibility
       setBirth({
         ...birth,
-        changed: false,
+        changed: false
       })
     }
 
-    let reqs = await fetch(url + "/update", {
-      method: "POST",
+    let reqs = await fetch(url + '/update', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(jsonBody),
+      body: JSON.stringify(jsonBody)
     })
     let resp = await reqs.json()
 
@@ -213,11 +213,11 @@ const ProfileScreen = () => {
   async function updateCars() {
     let carros = await getCars()
     let carros2 = []
-    await carros.forEach((car) => {
+    await carros.forEach(car => {
       carros2.push({
         ...car,
         isEditing: false,
-        changed: false,
+        changed: false
       })
     })
     setCars(await carros2)
@@ -232,13 +232,13 @@ const ProfileScreen = () => {
     setRides(await r)
 
     setRidesDriver(
-      await r.filter((element) => {
+      await r.filter(element => {
         return element.matriculaMotorista == store.getState().auth.matricula
       })
     )
 
     setRidesPassenger(
-      await r.filter((element) => {
+      await r.filter(element => {
         return element.matriculaPassageiro == store.getState().auth.matricula
       })
     )
@@ -260,13 +260,13 @@ const ProfileScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ScrollView style={{ backgroundColor: "#EFE9E5", flex: 1 }}>
+      <ScrollView style={{ backgroundColor: '#EFE9E5', flex: 1 }}>
         <View
           style={{
             flex: 1,
-            flexDirection: "column",
+            flexDirection: 'column',
 
-            padding: 45,
+            padding: 45
           }}
         >
           {/* HEADER DO PERFIL */}
@@ -274,7 +274,7 @@ const ProfileScreen = () => {
           <View style={styles.userHeaderView}>
             <View
               style={{
-                marginLeft: -10 /*por enquanto*/,
+                marginLeft: -10 /*por enquanto*/
               }}
             >
               <Image
@@ -282,16 +282,17 @@ const ProfileScreen = () => {
                   width: 80,
 
                   height: 80,
-                  resizeMode: "contain",
+                  resizeMode: 'contain'
                 }}
-                source={require("../images/profile_picture.png")}
+                source={require('../images/profile_picture.png')}
               />
             </View>
 
-            <View style={{ alignItems: "flex-end" }}>
-              <Text style={styles.userHeaderName}>{name.data}</Text>
-
-              <EditButton element={name} editFunction={setName} />
+            <View>
+              <Text style={styles.userHeaderName}>
+                {name.data}
+                <EditButton element={name} editFunction={setName} />
+              </Text>
 
               <Dialog visible={name.isEditing} overlayStyle={styles.dialog}>
                 <Dialog.Title
@@ -301,7 +302,7 @@ const ProfileScreen = () => {
                 <TextInput
                   style={styles.textInput}
                   defaultValue={name.data}
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     currentName = text
                   }}
                 />
@@ -313,7 +314,7 @@ const ProfileScreen = () => {
                         ...name,
                         data: currentName,
                         isEditing: false,
-                        changed: true,
+                        changed: true
                       })
                       setChanged(true)
                     }
@@ -325,7 +326,7 @@ const ProfileScreen = () => {
                   onPress={() => {
                     setName({
                       ...name,
-                      isEditing: false,
+                      isEditing: false
                     })
                     currentName = null
                   }}
@@ -338,7 +339,7 @@ const ProfileScreen = () => {
             {/* AVALIAÇÃO */}
             {!rating && (
               <Text
-                style={{ color: "black", fontSize: 15, fontWeight: "bold" }}
+                style={{ color: 'black', fontSize: 15, fontWeight: 'bold' }}
               >
                 Você ainda não foi avaliado
               </Text>
@@ -347,7 +348,7 @@ const ProfileScreen = () => {
 
             {rating && (
               <View style={{ width: 100 }}>
-                <Text style={{ color: "#46458D" }}>{rating}</Text>
+                <Text style={{ color: '#46458D' }}>{rating}</Text>
                 <StarRating
                   disabled={true}
                   rating={rating}
@@ -362,12 +363,12 @@ const ProfileScreen = () => {
               <TouchableOpacity
                 style={{}}
                 onPress={() => {
-                  navigation.navigate("UserScreen", {
-                    matricula: store.getState().auth.matricula,
+                  navigation.navigate('UserScreen', {
+                    matricula: store.getState().auth.matricula
                   })
                 }}
               >
-                <Text style={{ color: "black", fontSize: 13 }}>
+                <Text style={{ color: 'black', fontSize: 13 }}>
                   Como os outros vêem o meu perfil?
                 </Text>
               </TouchableOpacity>
@@ -382,7 +383,7 @@ const ProfileScreen = () => {
                 collapseFunction={setCollapsedProfile}
               />
               <Text
-                style={{ ...styles.profileSectionTitle, fontWeight: "bold" }}
+                style={{ ...styles.profileSectionTitle, fontWeight: 'bold' }}
               >
                 Meus dados
               </Text>
@@ -415,16 +416,16 @@ const ProfileScreen = () => {
 
               <View style={styles.profileLine}>
                 <Text style={styles.profileLineDataTitle}>
-                  Data de nascimento:{" "}
+                  Data de nascimento:{' '}
                 </Text>
                 <Text style={styles.profileLineData}>
                   {birth.data
                     ? birth.data.getDate() +
-                      "/" +
+                      '/' +
                       (birth.data.getMonth() + 1) +
-                      "/" +
+                      '/' +
                       birth.data.getFullYear()
-                    : "(Informe sua data de nascimento)"}
+                    : '(Informe sua data de nascimento)'}
                 </Text>
 
                 <EditButton element={birth} editFunction={setBirth} />
@@ -439,7 +440,7 @@ const ProfileScreen = () => {
                         ...birth,
                         data: date,
                         changed: true,
-                        isEditing: false,
+                        isEditing: false
                       })
                       setChanged(true)
                     }}
@@ -453,7 +454,7 @@ const ProfileScreen = () => {
 
                 {!gender.isEditing && ( //se não tiver editando, mostra o genero como texto
                   <Text style={styles.profileLineData}>
-                    {gender.data ? gender.data : "(Informe seu gênero)"}
+                    {gender.data ? gender.data : '(Informe seu gênero)'}
                   </Text>
                 )}
 
@@ -495,7 +496,7 @@ const ProfileScreen = () => {
                       value: selectedGender,
                       data: getGenderName(selectedGender),
                       isEditing: false,
-                      changed: true,
+                      changed: true
                     })
                     setChanged(true)
                   }}
@@ -506,7 +507,7 @@ const ProfileScreen = () => {
                     setSelectedGender(gender.data)
                     setGender({
                       ...gender,
-                      isEditing: false,
+                      isEditing: false
                     })
                   }}
                 />
@@ -516,19 +517,19 @@ const ProfileScreen = () => {
                 <View
                   style={{
                     marginTop: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
                   <TouchableOpacity
-                    style={{ ...styles.button, width: "60%" }}
+                    style={{ ...styles.button, width: '60%' }}
                     onPress={updateUserData}
                   >
                     <Text
                       style={{
                         ...styles.text,
                         fontSize: 15,
-                        fontWeight: "bold",
+                        fontWeight: 'bold'
                       }}
                     >
                       Salvar alterações
@@ -546,7 +547,7 @@ const ProfileScreen = () => {
               />
 
               <Text
-                style={{ ...styles.profileSectionTitle, fontWeight: "bold" }}
+                style={{ ...styles.profileSectionTitle, fontWeight: 'bold' }}
               >
                 Meus carros
               </Text>
@@ -572,21 +573,21 @@ const ProfileScreen = () => {
                 <Text>Placa</Text>
                 <TextInput
                   style={styles.textInput}
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     placa = text
                   }}
                 />
                 <Text>Modelo</Text>
                 <TextInput
                   style={styles.textInput}
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     modelo = text
                   }}
                 />
                 <Text>Cor</Text>
                 <TextInput
                   style={styles.textInput}
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     cor = text
                   }}
                 />
@@ -602,25 +603,27 @@ const ProfileScreen = () => {
                   onPress={() => setAddingCar(false)}
                 />
               </Dialog>
-              <Text style={{ color: "#46458D" }}>Placa | Modelo | Cor</Text>
-              {cars.map((c) => (
+              <Text style={{ color: '#46458D', fontWeight: 'bold' }}>
+                Placa | Modelo | Cor
+              </Text>
+              {cars.map(c => (
                 <CarProfileLine
                   key={c.placa}
                   carro={c}
-                  editFunction={(value) => {
+                  editFunction={value => {
                     let cars_copia = [...cars] //copia do array (para poder modificar)
                     let idx = cars
-                      .map((car) => {
+                      .map(car => {
                         return car.placa
                       })
                       .indexOf(c.placa) //indice do carro no array
                     cars_copia[idx] = value
                     setCars(cars_copia)
                   }}
-                  deleteFunction={(placa) => {
+                  deleteFunction={placa => {
                     let cars_copia = [...cars] //copia do array (para poder modificar)
                     let idx = cars
-                      .map((car) => {
+                      .map(car => {
                         return car.placa
                       })
                       .indexOf(c.placa) //indice do carro no array
@@ -642,7 +645,7 @@ const ProfileScreen = () => {
               />
 
               <Text
-                style={{ ...styles.profileSectionTitle, fontWeight: "bold" }}
+                style={{ ...styles.profileSectionTitle, fontWeight: 'bold' }}
               >
                 Minhas caronas
               </Text>
@@ -650,42 +653,42 @@ const ProfileScreen = () => {
             <Collapsible collapsed={isCollapsedRides}>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
+                  flexDirection: 'row',
+                  justifyContent: 'space-around'
                 }}
               >
                 <Text style={styles.profileLineDataTitle}>Filtro:</Text>
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
+                    flexDirection: 'row',
+                    justifyContent: 'space-around'
                   }}
                 >
-                  <View style={filterSelected == "1" ? {} : { opacity: 0.5 }}>
+                  <View style={filterSelected == '1' ? {} : { opacity: 0.5 }}>
                     <TouchableOpacity
                       style={styles2.button}
                       onPress={() => {
-                        setFilterSelected("1")
+                        setFilterSelected('1')
                       }}
                     >
                       <Text style={styles2.text}>Todas</Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={filterSelected == "2" ? {} : { opacity: 0.5 }}>
+                  <View style={filterSelected == '2' ? {} : { opacity: 0.5 }}>
                     <TouchableOpacity
                       style={styles2.button}
                       onPress={() => {
-                        setFilterSelected("2")
+                        setFilterSelected('2')
                       }}
                     >
                       <Text style={styles2.text}>Oferecidas</Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={filterSelected == "3" ? {} : { opacity: 0.5 }}>
+                  <View style={filterSelected == '3' ? {} : { opacity: 0.5 }}>
                     <TouchableOpacity
                       style={styles2.button}
                       onPress={() => {
-                        setFilterSelected("3")
+                        setFilterSelected('3')
                       }}
                     >
                       <Text style={styles2.text}>Solicitadas</Text>
@@ -695,9 +698,9 @@ const ProfileScreen = () => {
               </View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  marginTop: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  marginTop: 10
                 }}
               >
                 <Text style={styles.profileLineDataTitle}>
@@ -706,63 +709,63 @@ const ProfileScreen = () => {
                 <Text style={styles.profileLineDataTitle}>Rota</Text>
                 <Text style={styles.profileLineDataTitle}>Carro</Text>
               </View>
-              {filterSelected == "1" &&
-                rides.map((r) => {
+              {filterSelected == '1' &&
+                rides.map(r => {
                   return (
                     <View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: 10
                       }}
                     >
                       <Text style={styles.profileLineDataTitle}>
                         {r.matriculaMotorista}
                       </Text>
                       <Text style={styles.profileLineDataTitle}>
-                        {capital(getNome(eval(r.rota)[0]))} -{" "}
+                        {capital(getNome(eval(r.rota)[0]))} -{' '}
                         {capital(getNome(eval(r.rota).slice(-1)))}
                       </Text>
                       <Text style={styles.profileLineDataTitle}>Carro 1</Text>
                     </View>
                   )
                 })}
-              {filterSelected == "2" &&
-                ridesDriver.map((rd) => {
+              {filterSelected == '2' &&
+                ridesDriver.map(rd => {
                   return (
                     <View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: 10
                       }}
                     >
                       <Text style={styles.profileLineDataTitle}>
-                        {rd.matriculaMotorista}
+                        {rd.matriculaPassageiro}
                       </Text>
                       <Text style={styles.profileLineDataTitle}>
-                        {capital(getNome(eval(rd.rota)[0]))} -{" "}
+                        {capital(getNome(eval(rd.rota)[0]))} -{' '}
                         {capital(getNome(eval(rd.rota).slice(-1)))}
                       </Text>
                       <Text style={styles.profileLineDataTitle}>Carro 2</Text>
                     </View>
                   )
                 })}
-              {filterSelected == "3" &&
-                ridesPassenger.map((rp) => {
+              {filterSelected == '3' &&
+                ridesPassenger.map(rp => {
                   return (
                     <View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: 10
                       }}
                     >
                       <Text style={styles.profileLineDataTitle}>
                         {rp.matriculaMotorista}
                       </Text>
                       <Text style={styles.profileLineDataTitle}>
-                        {capital(getNome(eval(rp.rota)[0]))} -{" "}
+                        {capital(getNome(eval(rp.rota)[0]))} -{' '}
                         {capital(getNome(eval(rp.rota).slice(-1)))}
                       </Text>
                       <Text style={styles.profileLineDataTitle}>Carro 3</Text>
@@ -781,28 +784,28 @@ export default ProfileScreen
 
 const styles2 = StyleSheet.create({
   button: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 6,
     paddingHorizontal: 16,
     marginHorizontal: 2,
     borderRadius: 25,
     elevation: 3,
-    backgroundColor: "#4D4C7D",
+    backgroundColor: '#4D4C7D'
   },
   text: {
     fontSize: 12,
     lineHeight: 15,
-    fontWeight: "normal",
+    fontWeight: 'normal',
     letterSpacing: 0.25,
-    color: "white",
+    color: 'white'
   },
   text2: {
     fontSize: 12,
     lineHeight: 15,
-    fontWeight: "normal",
+    fontWeight: 'normal',
     letterSpacing: 0.25,
-    color: "white",
-    marginHorizontal: 2,
-  },
+    color: 'white',
+    marginHorizontal: 2
+  }
 })

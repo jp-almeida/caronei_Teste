@@ -18,6 +18,3 @@ Content-Type: application/json
 
 ###
 GET http://192.168.1.7:3000/todas-corridas/1
-
-###
-GET https://caronei-app.herokuapp.com/username/1
