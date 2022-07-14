@@ -1,8 +1,10 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Text, StyleSheet, Pressable } from 'react-native'
 
 export function ReportButton(props) {
-  const { onPress, title = 'Save' } = props
+  const {onPress, title} = props
+  const navigation = useNavigation()
 
   return (
     <Pressable style={styles.button} onPress={onPress}>

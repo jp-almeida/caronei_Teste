@@ -20,6 +20,7 @@ import StarRating from 'react-native-star-rating'
 import { Icon } from 'react-native-elements'
 import { getUserData, getUsernameData, rateUser } from '../requestsFunctions'
 import { styles } from '../styles'
+import { ReportButton } from '../components/buttons/ReportButton'
 
 //chamar {matricula: <matricula>, rota: {partida: <partida>, destino: <destino>}}
 
@@ -147,6 +148,7 @@ const RateUserScreen = ({ route }) => {
               placeholder="Escreva seu comentário aqui"
               styles={styles.textInput}
             />
+            
 
             <View style={{ marginBottom: 15 }}>
               <DefaultButton
@@ -160,8 +162,8 @@ const RateUserScreen = ({ route }) => {
                 }}
               />
             </View>
-
-            <View style={{ marginBottom: 300 }}>
+            
+            <View style={{ marginBottom: 100 }}>
               <DefaultButton
                 title="Lembrar mais tarde"
                 onPress={() => {
@@ -169,14 +171,14 @@ const RateUserScreen = ({ route }) => {
                   navigation.navigate('HomeScreen')}}
               />
             </View>
-
             <View style={{}}>
-              <DefaultButton
+              <ReportButton
                 title="Denunciar usuário"
                 onPress={() => {
                   console.log("[" + store.getState().auth.matricula +"]" + " - quer reportar o usuário")
                   navigation.navigate('ReportScreen')}}
               />
+            
             </View>
           </View>
         </View>

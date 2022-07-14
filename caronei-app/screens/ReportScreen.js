@@ -128,12 +128,13 @@ const ReportScreen = () => {
                   color: "#4D4C7D",
                 },
               }}
+              onChangeText={(text) => setReportComment(text)}
             />
 
             <View style={{ marginBottom: 15 }}>
               <DefaultButton
                 title="Enviar"
-                onChangeText={(text) => setReportComment(text)}
+                onPress={() => navigation.navigate("HomeScreen")}
               />
             </View>
 
